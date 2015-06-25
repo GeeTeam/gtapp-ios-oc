@@ -1,9 +1,9 @@
 # gtapp-ios-oc
 gtapp-ios-oc
 
-    1.	gt-iOS-sdk 极验验证iOS版本的SDK，生成一个基于i386、x86_64、armv7、 armv7s、arm64的Static Library，支持iOS7.0＋。开发使用的Xcode版本位Xcode 6.3.1。
+	1.	gt-iOS-sdk 极验验证iOS版本的SDK，生成一个基于i386、x86_64、armv7、 armv7s、arm64的Static Library，支持iOS7.0＋。开发使用的Xcode版本位Xcode 6.3.1。
 	2.	gt-iOS-sdk-demo 调用sdk的演示app程序。
-    3.	直接运行gt-iOS-sdk下的GTFramework项目，选择GTAggregate为Target，在GTFramework/Products目录下生成模拟器、真机可用的GTFramework.framework静态库。
+	3.	直接运行gt-iOS-sdk下的GTFramework项目，选择GTAggregate为Target，在GTFramework/Products目录下生成模拟器、真机可用的GTFramework.framework静态库。
 	3.	在gt-iOS-sdk-demo下TestGT项目倒入生成的GTFramework.framework静态库，即可运行TestGT项目。
 	4.	演示项目提供了完整的一次验证，并将客户端验证结果向示例的客户服务器上发起二次验证的完整通讯过程。
 	5.	二次验证使用MKNetworkKit，可根据项目需要自行修改。
@@ -18,14 +18,14 @@ gtapp-ios-oc
 	
 	回调Block及返回值
 	Block：
-	^(NSString *code, NSDictionary *result, NSString *message) {} 
-	返回值：
-	1.code
-成功或者失败的值（1：成功/其他：失败）
-	2.message
-成功或者失败的信息（success/fail）
-	3.result
-详细的返回信息，用于向客户服务器提交之后的SDK二次验证信息
+		^(NSString *code, NSDictionary *result, NSString *message) {} 
+		返回值：
+		1.code
+	成功或者失败的值（1：成功/其他：失败）
+		2.message
+	成功或者失败的信息（success/fail）
+		3.result
+	详细的返回信息，用于向客户服务器提交之后的SDK二次验证信息
 
 		{
 		 "geetest_challenge": "5a8c21e206f5f7ba4fa630acf269d0ec4z",
