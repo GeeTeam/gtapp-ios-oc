@@ -59,11 +59,18 @@
     }
 }
 
+/**
+ *  <#Description#>
+ *
+ *  @param code    <#code description#>
+ *  @param result  <#result description#>
+ *  @param message <#message description#>
+ */
 - (void)gtCallBack:(JSValue *)code :(JSValue *)result :(JSValue *)message {
     NSString *r_code = [code toString];
     NSString *r_result = [result toString];
     NSString *r_message = [message toString];
-    NSData* data = [r_result dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *data = [r_result dataUsingEncoding:NSUTF8StringEncoding];
     NSError *error = nil;
     NSDictionary *dictionary  = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
     if (error || !dictionary) {
@@ -89,6 +96,7 @@
 @end
 
 @implementation GTView
+
 
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -117,7 +125,11 @@
 }
 
 #pragma mark -- load
-
+/**
+ *  加载服务器返回数据
+ *
+ *  @param the_captcha_id <#the_captcha_id description#>
+ */
 - (void)startLoadWithCaptcha_id:(NSString *)the_captcha_id {
     [self stopLoad];
     
@@ -159,6 +171,11 @@
     }
 }
 
+/**
+ *  设置加载状态视图
+ *
+ *  @param loadingState 是否处于加载状态（bool）
+ */
 - (void)updateLoadingState:(BOOL)loadingState {
     if (!_activeIndicatorView) {
         _activeIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];

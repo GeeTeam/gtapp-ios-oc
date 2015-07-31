@@ -12,7 +12,7 @@
 /**
  *  验证完成回调
  *
- *  @param code    验证结果 0 成功/ 其他 失败
+ *  @param code    验证结果 1 成功/ 其他 失败
  *  @param result  返回二次验证所需数据
                      {
                      "geetest_challenge": "5a8c21e206f5f7ba4fa630acf269d0ec4z",

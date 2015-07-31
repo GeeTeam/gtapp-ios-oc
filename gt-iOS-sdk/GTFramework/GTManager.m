@@ -35,7 +35,9 @@
 
 - (void)applicationDidChangeStatusBarOrientation ;
 
+//
 @property (nonatomic, assign) BOOL shown;
+// 公匙
 @property (nonatomic, strong) NSString *captcha_id;
 
 // 验证结果
@@ -73,9 +75,9 @@ static CGRect g3 = {{0, 0}, {363, 427}};
 #define UIColorFromRGB(rgbValue ,alphaValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:((alphaValue>=0 && alphaValue <=1.0) ? alphaValue : 1.0)]
 
 #pragma mark -- 初始化
-
 __strong static id sharedGTManger = nil;
 
+//gcd 一次性执行
 + (instancetype)sharedGTManger {
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
@@ -85,6 +87,7 @@ __strong static id sharedGTManger = nil;
     return sharedGTManger;
 }
 
+//第一次执行分出一块内存空间
 + (id)allocWithZone:(NSZone *)zone{
     static dispatch_once_t onceToken = 0;
     dispatch_once(&onceToken, ^{
@@ -95,32 +98,37 @@ __strong static id sharedGTManger = nil;
     return sharedGTManger;
 }
 
+//
 - (id)copyWithZone:(NSZone *)zone{
     return sharedGTManger;
 }
 
 /**
- *  设计尺寸
+ *  设置webview尺寸
  *
  *  @param screen 屏幕尺寸
  *
  *  @return 依据屏幕尺寸设计的最佳展示尺寸
  */
 - (CGRect)getMainRectFromScreen:(CGRect)screen {
+    //iphone4,iphone4s,iphone5,iphone5s
     if (CGRectEqualToRect(screen, s320480) ||
         CGRectEqualToRect(screen, s480320) ||
         CGRectEqualToRect(screen, s320568) ||
         CGRectEqualToRect(screen, s568320)) {
         return g1;
     }
+    //iphone6
     if (CGRectEqualToRect(screen, s375667) ||
         CGRectEqualToRect(screen, s667375)) {
         return g2;
     }
+    //iphone6plus
     if (CGRectEqualToRect(screen, s414736) ||
         CGRectEqualToRect(screen, s736414)) {
         return g3;
     }
+    //ipad1,ipad retina
     if (CGRectEqualToRect(screen, s7681024) ||
         CGRectEqualToRect(screen, s1024768) ||
         CGRectEqualToRect(screen, s15362048) ||
@@ -144,7 +152,11 @@ __strong static id sharedGTManger = nil;
     }
     return _backGroundView;
 }
-
+/**
+ *  设置圆角view
+ *
+ *  @return 圆角
+ */
 - (UIView *)cornerView {
     if (!_cornerView) {
         CGRect mainFrame = [[UIScreen mainScreen] bounds];
@@ -165,7 +177,11 @@ __strong static id sharedGTManger = nil;
     return _cornerView;
 }
 
-
+/**
+ *  设置验证view
+ *
+ *  @return 验证view
+ */
 - (GTView *)gtView {
     if (!_gtView) {
         CGRect mainRect = [[UIScreen mainScreen] bounds];
@@ -189,8 +205,10 @@ __strong static id sharedGTManger = nil;
     NSError *error = nil;
     NSHTTPURLResponse *response = nil;
     
+    //生成请求链接
     NSURL *sendurl = [NSURL URLWithString:[NSString stringWithFormat:@"http://api.geetest.com/register.php?gt=%@",captcha_id]];
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:sendurl cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:3.0];
+    //接收返回服务状态
     NSData *receivedData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
     if (!error && receivedData.length > 0) {
         if (response.statusCode==200) {
@@ -263,7 +281,7 @@ __strong static id sharedGTManger = nil;
     }
 }
 
-#pragma mark --
+#pragma mark -- 加载views到主屏幕
 
 - (void)applicationDidChangeStatusBarOrientation {
     if (_shown) {
@@ -274,6 +292,12 @@ __strong static id sharedGTManger = nil;
     }
 }
 
+/**
+ *  验证滑块的变化
+ *
+ *  @param changeOutView 验证滑块的视图
+ *  @param dur           滑动时长
+ */
 - (void)exChangeOut:(UIView *)changeOutView dur:(CFTimeInterval)dur{
     
     CAKeyframeAnimation * animation;

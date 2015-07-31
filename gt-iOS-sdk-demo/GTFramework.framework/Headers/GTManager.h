@@ -34,7 +34,7 @@
 
 /**
  *  展示验证
- *  实现方式 直接在 keyWindow 上添加遮罩视图、几极速验证的UIWebView视图
+ *  实现方式 直接在 keyWindow 上添加遮罩视图、极验验证的UIWebView视图
  *  极速验证UIWebView通过JS与SDK通信
  *  
  *

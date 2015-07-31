@@ -5,6 +5,8 @@
 //  Created by LYJ on 15/5/14.
 //  Copyright (c) 2015年 LYJ. All rights reserved.
 //
+//  设备信息、版本信息
+
 
 #import "GTData.h"
 
@@ -56,6 +58,11 @@
     return self;
 }
 
+/**
+ *  构造设备及系统信息的json数据
+ *
+ *  @return 必要的json数据
+ */
 - (NSMutableDictionary *)mobileInfo {
     if (!_mobileInfo) {
         _mobileInfo = [@{@"mType" : [GTData osType],
@@ -68,6 +75,7 @@
                          @"gsdkVerCode" : @"2.15.5.15.1",
                          @"imei" : @"000000000000000" } mutableCopy];
     }
+    NSLog(@"mobileInfo === %@",_mobileInfo);
     return _mobileInfo;
 }
 
@@ -83,23 +91,27 @@
 
 + (NSString *)systemVersion {
     NSString *systemVersion = [[UIDevice currentDevice] systemVersion];
+    NSLog(@"systemVersion === %@",systemVersion);
     return systemVersion;
 }
 
 + (NSString *)osType {
     NSString *model = [[UIDevice currentDevice] model];
+    NSLog(@"model === %@",model);
     return model;
 }
 
 + (NSString *)buildVersionRelease {
     NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
-    NSString *version =[infoDict objectForKey:@"CFBundleShortVersionString"];
+    NSString *version = [infoDict objectForKey:@"CFBundleShortVersionString"];
+    NSLog(@"versionR === %@",version);
     return version;
 }
 
 + (NSString *)buildVersion {
     NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
     NSString *version =[infoDict objectForKey:@"CFBundleVersion"];
+    NSLog(@"version === %@",version);
     return version;
 }
 
@@ -108,6 +120,7 @@
     CGSize size_screen = rect_screen.size;
     CGFloat scale_screen = [UIScreen mainScreen].scale;
     NSString *screenString = [NSString stringWithFormat:@"%0.fx%0.f",size_screen.width*scale_screen,size_screen.height*scale_screen];
+    NSLog(@"screenString === %@",screenString);
     return screenString;
 }
 
