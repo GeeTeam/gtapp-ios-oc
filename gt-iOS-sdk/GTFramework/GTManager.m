@@ -147,7 +147,7 @@ __strong static id sharedGTManger = nil;
     if (!_backGroundView) {
         CGRect mainFrame = [[UIScreen mainScreen] bounds];
         _backGroundView = [[UIControl alloc] initWithFrame:mainFrame];
-        [_backGroundView setBackgroundColor:UIColorFromRGB(0xa0a0a0, 0.3)];
+        [_backGroundView setBackgroundColor:UIColorFromRGB(0xa0a0a0, 0.4)];
         [_backGroundView setUserInteractionEnabled:YES];
     }
     return _backGroundView;
@@ -169,10 +169,10 @@ __strong static id sharedGTManger = nil;
         [_cornerView.layer setCornerRadius:7.0];
         
         [_cornerView.layer setMasksToBounds:NO];
-        _cornerView.layer.shadowColor = UIColorFromRGB(0xb2afaf, 1.0).CGColor;//shadowColor阴影颜色
-        _cornerView.layer.shadowOffset = CGSizeMake(2.5,2.5);//shadowOffset阴影偏移,x向右偏移4，y向下偏移4，默认(0, -3),这个跟shadowRadius配合使用
-        _cornerView.layer.shadowOpacity = 0.75;//阴影透明度，默认0
-        _cornerView.layer.shadowRadius = 7.0;
+//        _cornerView.layer.shadowColor = UIColorFromRGB(0xb2afaf, 1.0).CGColor;//shadowColor阴影颜色
+//        _cornerView.layer.shadowOffset = CGSizeMake(2.5,2.5);//shadowOffset阴影偏移,x向右偏移4，y向下偏移4，默认(0, -3),这个跟shadowRadius配合使用
+//        _cornerView.layer.shadowOpacity = 0.75;//阴影透明度，默认0
+//        _cornerView.layer.shadowRadius = 7.0;
     }
     return _cornerView;
 }
@@ -244,6 +244,7 @@ __strong static id sharedGTManger = nil;
     }
     self.gtView.gtdelegate = nil;
     self.gtView = nil;
+    [_gtView removeFromSuperview];
 }
 
 #pragma mark -- 显示验证
