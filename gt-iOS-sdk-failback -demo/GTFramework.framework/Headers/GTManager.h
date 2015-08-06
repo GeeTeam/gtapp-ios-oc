@@ -22,23 +22,14 @@
 + (instancetype)sharedGTManger;
 
 /**
- *  向CustomServer发送geetest验证请求，如果服务器判断geetest服务可用，返回captcha_id字符串，否则返回nil
+ *  向CustomServer发送geetest验证请求，如果网站主服务器判断geetest服务可用，返回captcha_id字符串，否则返回nil
  *
- *  @param askCustomServerForGTestURL 客户端向用户服务端发起验证请求的链接(api_1)
+ *  @param askCustomServerForGTestURL 客户端向网站主服务端发起验证请求的链接(api_1)
  *
- *  @return captcha_id 只有当服务器判断极验验证可用时，返回captcha_id，否则返回nil
+ *  @return captcha_id 只有当网站主服务器判断极验验证可用时，返回captcha_id，否则返回nil
  */
-- (NSString *)askCustomServerForGTest:(NSURL *)askCustomServerForGTestURL;
+- (NSString *)requestCustomServerForGTest:(NSURL *)requestCustomServerForGTestURL;
 
-
-/**
- *  测试服务是否可用
- *
- *  @param captcha_id 分配的captcha_id
- *
- *  @return YES则服务可用；NO则不可用
- */
-- (BOOL)serverStatusWithCaptcha_id:(NSString *)captcha_id;
 
 /**
  *  展示验证
@@ -55,5 +46,6 @@
  *  若验证显示则关闭验证界面
  */
 - (void)closeGTViewIfIsOpen;
+
 
 @end
