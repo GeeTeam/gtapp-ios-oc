@@ -91,14 +91,23 @@ _mobileInfo   手机静态信息 Code Sample
 
 gt验证SDK Header暴露的方法
 =============================
-客户端向用户服务器发起验证请求
+客户端向网站主服务器发起验证请求
 -------------------------------
 
  @param askCustomServerForGTestURL 客户端向用户服务端发起验证请求的链接(api_1)
- @return captcha_id 只有当服务器判断极验验证可用时，返回captcha_id，否则返回nil
-..code::
+ @return 只有当网站主服务器可用时，返回customRetDict，否则返回nil
+
+.. code::
+	{
+     "challenge": "12ae1159ffdfcbbc306897e8d9bf6d06" ,
+     "gt"       : "ad872a4e1a51888967bdb7cb45589605" ,
+     "success"  : 1 ,
+     "gt_fail"  : 1
+    }
+
+.. code::
     
-    - (NSString *)askCustomServerForGTest:(NSURL *)askCustomServerForGTestURL;
+    - (NSDictionary *)requestCustomServerForGTest:(NSURL *)requestCustomServerForGTestURL;;
 
 测试服务是否可用
 ------------------

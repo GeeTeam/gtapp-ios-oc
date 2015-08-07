@@ -33,6 +33,7 @@
     return YES;
 }
 
+
 - (IBAction)testAction:(id)sender {
     [self requestGTest];
 }
@@ -46,12 +47,17 @@
 
     GTManager *manger = [GTManager sharedGTManger];
     
-    NSString *gt_id = [manger requestCustomServerForGTest:requestGTestURL];
-    NSString * GT_captcha_id = gt_id;
+    NSDictionary *retDict = [[NSDictionary alloc] init];
+    //获取返回的json数据转字典
+    retDict = [manger requestCustomServerForGTest:requestGTestURL];
+    NSString *GT_captcha_id = [retDict objectForKey:@"gt"];
+    NSNumber *gt_success = [retDict objectForKey:@"success"];
+    
     NSLog(@"从网站主服务器获取的id === %@",GT_captcha_id);
     
-    //根据custom server的返回字段判断是否开启failback
-    if (GT_captcha_id != nil) {
+    if ([gt_success intValue] == 1 ) {
+        //根据custom server的返回字段判断是否开启failback
+        if (GT_captcha_id != nil) {
             
             //打开极速验证，在此处完成gt验证结果的返回
             [manger openGTViewAddFinishHandler:^(NSString *code, NSDictionary *result, NSString *message) {
@@ -60,9 +66,9 @@
                     // TODO 在用户服务器进行二次验证
                     [weakSelf gttest:code result:result message:message];
                 } else {
-                    NSLog(@"gt callback code === %@",code);
+                    NSLog(@"validate Error, code === %@",code);
                 }
-            
+                
             } closeHandler:^{
                 //用户关闭验证后执行的方法
                 
@@ -71,10 +77,20 @@
             // TODO 使用自己的验证码体系来进行判断，或者不做任何处理
             NSLog(@"请求验证初始化失败");
         }
-    
+    }else{
+     //TODO 极验服务器不可用，在此处写入网站主的自定义验证方法
+        
+    }
     
 }
 
+/**
+ *  二次验证
+ *
+ *  @param code    <#code description#>
+ *  @param result  <#result description#>
+ *  @param message <#message description#>
+ */
 - (void)gttest:(NSString *)code result:(NSDictionary *)result message:(NSString *)message {
     if (code && result) {
         @try {
@@ -116,5 +132,6 @@
         }
     }
 }
+
 
 @end
