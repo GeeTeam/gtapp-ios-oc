@@ -38,7 +38,7 @@
     [self requestGTest];
 }
 
-//向custom服务器询问gt验证
+//向custom服务器请求gt验证
 - (void)requestGTest{
     __weak __typeof(self) weakSelf = self;
     
@@ -66,7 +66,7 @@
                     // TODO 在用户服务器进行二次验证
                     [weakSelf gttest:code result:result message:message];
                 } else {
-                    NSLog(@"validate Error, code === %@",code);
+                    NSLog(@"validate Fail, code === %@",code);
                 }
                 
             } closeHandler:^{

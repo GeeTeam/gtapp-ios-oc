@@ -34,7 +34,7 @@ iOS-Dev
 
 通讯流程图
 ============
-具体见官网安装文档`官网   <http://www.geetest.com>`__
+具体见官网安装文档 `官网   <http://www.geetest.com>`__
 
 
 
