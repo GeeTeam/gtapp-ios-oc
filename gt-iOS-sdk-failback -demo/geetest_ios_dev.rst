@@ -59,7 +59,7 @@ _mobileInfo   手机静态信息 Code Sample
                          @"osVerInt" : [GTData systemVersion],
                          @"hAppVerCode" : [GTData buildVersion],
                          @"hAppVerName" : [GTData buildVersionRelease],
-                         @"gsdkVerCode" : @"2.15.5.15.1",
+                         @"gsdkVerCode" : @"2.15.8.7.1",
                          @"imei" : @"000000000000000" } mutableCopy];
 
 	
@@ -101,8 +101,7 @@ gt验证SDK Header暴露的方法
 	{
      "challenge": "12ae1159ffdfcbbc306897e8d9bf6d06" ,
      "gt"       : "ad872a4e1a51888967bdb7cb45589605" ,
-     "success"  : 1 ,
-     "gt_fail"  : 1
+     "success"  : 1 
     }
 
 .. code::
