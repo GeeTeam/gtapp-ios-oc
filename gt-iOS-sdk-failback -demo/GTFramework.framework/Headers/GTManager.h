@@ -15,6 +15,11 @@
 @interface GTManager : NSObject
 
 /**
+ *  第一次向网站主服务器API_1请求返回的cookie里的session ID
+ */
+@property (nonatomic, strong) NSString *sessionID;
+
+/**
  *  验证实例（单例）
  *
  *  @return 单例
@@ -51,6 +56,5 @@
  *  若验证显示则关闭验证界面
  */
 - (void)closeGTViewIfIsOpen;
-
 
 @end

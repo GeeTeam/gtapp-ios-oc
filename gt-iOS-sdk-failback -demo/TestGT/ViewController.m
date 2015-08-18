@@ -53,6 +53,7 @@
     NSString *GT_captcha_id = [retDict objectForKey:@"gt"];
     NSNumber *gt_success = [retDict objectForKey:@"success"];
     
+    NSLog(@"sessionID === %@",manger.sessionID);
     NSLog(@"从网站主服务器获取的id === %@",GT_captcha_id);
     
     if ([gt_success intValue] == 1 ) {
