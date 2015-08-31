@@ -2,6 +2,8 @@
 //  ViewController.m
 //  TestGT
 //
+//  this is a demo app. we just give you a sample in this demo. you can code or change what you need.
+//
 //  Created by LYJ on 15/6/14.
 //  Copyright (c) 2015年 gt. All rights reserved.
 //
@@ -45,27 +47,30 @@
     /* TODO 在此写入客户端首次向网站主服务端请求gt验证的链接(api_1) */
     NSURL *requestGTestURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://testcenter.geetest.com/gtweb/start_mobile_captcha/"]];
 
-    GTManager *manger = [GTManager sharedGTManger];
+    GTManager *manager = [GTManager sharedGTManger];
     
     NSDictionary *retDict = [[NSDictionary alloc] init];
-    //获取返回的json数据转字典
-    retDict = [manger requestCustomServerForGTest:requestGTestURL];
+    //从字典中取出返回的数据
+    retDict = [manager requestCustomServerForGTest:requestGTestURL];
     NSString *GT_captcha_id = [retDict objectForKey:@"gt"];
     NSNumber *gt_success = [retDict objectForKey:@"success"];
     
-    NSLog(@"sessionID === %@",manger.sessionID);
+    //在此设置验证背景遮罩的透明度
+    manager.backgroundAlpha = 0.16;
+    
+    NSLog(@"sessionID === %@",manager.sessionID);
     NSLog(@"从网站主服务器获取的id === %@",GT_captcha_id);
     
     if ([gt_success intValue] == 1 ) {
         //根据custom server的返回字段判断是否开启failback
-        if (GT_captcha_id != nil) {
+        if (GT_captcha_id.length == 32) {
             
             //打开极速验证，在此处完成gt验证结果的返回
-            [manger openGTViewAddFinishHandler:^(NSString *code, NSDictionary *result, NSString *message) {
+            [manager openGTViewAddFinishHandler:^(NSString *code, NSDictionary *result, NSString *message) {
                 
                 if ([code isEqualToString:@"1"]) {
-                    // TODO 在用户服务器进行二次验证
-                    [weakSelf gttest:code result:result message:message];
+                    //在用户服务器进行二次验证
+                    [weakSelf seconderyTest:code result:result message:message];
                 } else {
                     NSLog(@"validate Fail, code === %@",code);
                 }
@@ -75,12 +80,13 @@
                 
             }];
         } else {
-            // TODO 使用自己的验证码体系来进行判断，或者不做任何处理
-            NSLog(@"请求验证初始化失败");
+            // TODO 写上检测网络的方法，或者不做任何处理
+            NSLog(@"连接网站主服务器异常");
         }
     }else{
-     //TODO 极验服务器不可用，在此处写入网站主的自定义验证方法
-        
+     //TODO 当极验服务器不可用时，在此处执行网站主的自定义验证方法后者其他处理方法
+        /*请网站主务必考虑这一处的逻辑处理，否者当极验服务不可用的时候会导致用户的业务无法正常执行*/
+        NSLog(@"极验验证服务暂时不可用");
     }
     
 }
@@ -92,7 +98,7 @@
  *  @param result  <#result description#>
  *  @param message <#message description#>
  */
-- (void)gttest:(NSString *)code result:(NSDictionary *)result message:(NSString *)message {
+- (void)seconderyTest:(NSString *)code result:(NSDictionary *)result message:(NSString *)message {
     if (code && result) {
         @try {
             if ([code isEqualToString:@"1"]) {
@@ -133,6 +139,5 @@
         }
     }
 }
-
 
 @end
