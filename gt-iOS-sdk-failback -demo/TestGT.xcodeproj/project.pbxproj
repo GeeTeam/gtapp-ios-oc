@@ -22,7 +22,7 @@
 		2967F3701B2D8A060081A66F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2967F36E1B2D8A060081A66F /* Main.storyboard */; };
 		2967F3721B2D8A060081A66F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2967F3711B2D8A060081A66F /* Images.xcassets */; };
 		2967F3751B2D8A060081A66F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2967F3731B2D8A060081A66F /* LaunchScreen.xib */; };
-		29A1E8551B3BEA5C008544F9 /* GTFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29A1E8541B3BEA5C008544F9 /* GTFramework.framework */; };
+		73C687A71B8D64CC00F65F20 /* GTFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29A1E8541B3BEA5C008544F9 /* GTFramework.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,7 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				29A1E8551B3BEA5C008544F9 /* GTFramework.framework in Frameworks */,
+				73C687A71B8D64CC00F65F20 /* GTFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

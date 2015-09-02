@@ -29,12 +29,14 @@ iOS-Dev
 #.	将gt-iOS-sdk下的GTFramework项目生成的静态库GTFramework.framework引入到项目中
 #.	将GTFramework.framework项目以Static Library的方式进行引用。
         将所需的GTFramework.framework拷贝到工程所在文件夹下。在 TARGETS->Build Phases-> Link Binary With Libaries中点击“+”按钮，在弹出的窗口中点击“Add Other”按钮，选择GTFramework.framework文件添加到工程中。
-#.	在项目标注的TODO中根据提示写入用户自已的处理代码。
+#.	在项目中有4处标注'TODO'的位置，请网站主根据提示写入用户自已的处理代码。
+#.	在项目中有4处标注'TODO'的位置，请网站主根据提示写入用户自已的处理代码。
+#.	在项目中有4处标注'TODO'的位置，请网站主根据提示写入用户自已的处理代码。
 
 
 通讯流程图
 ============
-具体见官网安装文档`官网   <http://www.geetest.com>`__
+具体见官网安装文档 `官网   <http://www.geetest.com>`__
 
 
 
@@ -59,7 +61,7 @@ _mobileInfo   手机静态信息 Code Sample
                          @"osVerInt" : [GTData systemVersion],
                          @"hAppVerCode" : [GTData buildVersion],
                          @"hAppVerName" : [GTData buildVersionRelease],
-                         @"gsdkVerCode" : @"2.15.5.15.1",
+                         @"gsdkVerCode" : @"2.15.8.7.1",
                          @"imei" : @"000000000000000" } mutableCopy];
 
 	
@@ -101,8 +103,7 @@ gt验证SDK Header暴露的方法
 	{
      "challenge": "12ae1159ffdfcbbc306897e8d9bf6d06" ,
      "gt"       : "ad872a4e1a51888967bdb7cb45589605" ,
-     "success"  : 1 ,
-     "gt_fail"  : 1
+     "success"  : 1 
     }
 
 .. code::
