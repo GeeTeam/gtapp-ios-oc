@@ -78,7 +78,7 @@
             } closeHandler:^{
                 //用户关闭验证后执行的方法
                 
-            }];
+            } animated:YES];
         } else {
             // TODO 写上检测网络的方法，或者不做任何处理
             NSLog(@"连接网站主服务器异常");
@@ -116,8 +116,12 @@
                     if (completedOperation.HTTPStatusCode == 200) {
                         //TODO 二次验证成功后执行的方法
                         NSLog(@"client captcha response:%@",completedOperation.responseString);
+                        
+                        [self showSuccessView:YES];
                     } else {
                         NSLog(@"client captcha response:%@",completedOperation.responseString);
+                        
+                        [self showSuccessView:NO];
                     }
                 
                 } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
@@ -138,6 +142,21 @@
             
         }
     }
+}
+
+- (void)showSuccessView:(BOOL)result{
+    NSString *message = [[NSString alloc] init];
+    if (result) {
+        message = @"成功";
+    }else{
+        message = @"失败";
+    }
+    UIAlertView *seconderyResult = [[UIAlertView alloc] initWithTitle:@"二次验证结果"
+                                                              message:message
+                                                             delegate:self
+                                                    cancelButtonTitle:@"确定"
+                                                    otherButtonTitles:nil, nil];
+    [seconderyResult show];
 }
 
 @end
