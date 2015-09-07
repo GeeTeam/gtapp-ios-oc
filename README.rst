@@ -6,13 +6,16 @@ gtapp-ios-oc
 .. contents:: 目录
 .. sectnum::
 
-
+关于版本综述
+================
+1.	在gtapp-ios-oc项目下已经有两个版本，一个是早期版本，版本号为1.*,已经停止开发,另一个是有failback版本的,版本号为2.15.8.*之后的版本,现在在持续更新和维护。
+2.	failback版本在项目路径的‘gt-iOS-sdk-failback -demo’下。
 
 gtapp-ios-oc
 ======================
 
-1.	 gt-iOS-sdk 极验验证iOS版本的SDK，生成一个基于i386、x86_64、armv7、 armv7s、arm64的Static Library，支持iOS7.0＋。开发使用的Xcode版本位Xcode 6.3.1。
-#.	 gt-iOS-sdk-demo 调用sdk的演示app程序。
+1.	gt-iOS-sdk 极验验证iOS版本的SDK，生成一个基于i386、x86_64、armv7、 armv7s、arm64的Static Library，支持iOS7.0＋。开发使用的Xcode版本位Xcode 6.3.1。
+#.	gt-iOS-sdk-demo 调用sdk的演示app程序。
 #.	直接运行gt-iOS-sdk下的GTFramework项目，选择GTAggregate为Target，在GTFramework/Products目录下生成模拟器、真机可用的GTFramework.framework静态库。
 #.	在gt-iOS-sdk-demo下TestGT项目倒入生成的GTFramework.framework静态库，即可运行TestGT项目。
 #.	演示项目提供了完整的一次验证，并将客户端验证结果向示例的客户服务器上发起二次验证的完整通讯过程。
