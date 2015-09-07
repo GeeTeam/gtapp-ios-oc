@@ -40,7 +40,9 @@
     [self requestGTest];
 }
 
-//向custom服务器请求gt验证
+/**
+ *  向custom服务器请求gt验证
+ */
 - (void)requestGTest{
     __weak __typeof(self) weakSelf = self;
     
@@ -56,7 +58,11 @@
     NSNumber *gt_success = [retDict objectForKey:@"success"];
     
     //在此设置验证背景遮罩的透明度
-    manager.backgroundAlpha = 0.16;
+    manager.backgroundAlpha = 0.5;
+    //开启验证视图的阴影
+    manager.cornerViewShadow = YES;
+    //验证背景颜色
+    manager.colorWithHexInt = 0xa0a0a0;
     
     NSLog(@"sessionID === %@",manager.sessionID);
     NSLog(@"从网站主服务器获取的id === %@",GT_captcha_id);
@@ -81,7 +87,7 @@
             } animated:YES];
         } else {
             // TODO 写上检测网络的方法，或者不做任何处理
-            NSLog(@"连接网站主服务器异常");
+            NSLog(@"连接网站主服务器异常,网络不通畅");
         }
     }else{
      //TODO 当极验服务器不可用时，在此处执行网站主的自定义验证方法后者其他处理方法
@@ -102,14 +108,16 @@
     if (code && result) {
         @try {
             if ([code isEqualToString:@"1"]) {
-                // TODO 验证成功，进行二次验证
+                // TODO 行为判定通过，进行二次验证
                 
                 /* custom_server_validate_url 网站主部署的二次验证链接 (api_2)*/
                 NSString *custom_server_validate_url = @"http://testcenter.geetest.com/gtweb/android_sdk_demo_server_validate/";
                 NSDictionary *headerFields = @{@"Content-Type":@"application/x-www-form-urlencoded;charset=UTF-8"};
                 MKNetworkEngine *engine = [[MKNetworkEngine alloc] initWithHostName:nil customHeaderFields:headerFields];
                 
-                MKNetworkOperation *operation = [engine operationWithURLString:custom_server_validate_url params:result httpMethod:@"POST"];
+                MKNetworkOperation *operation = [engine operationWithURLString:custom_server_validate_url
+                                                                        params:result
+                                                                    httpMethod:@"POST"];
                 
                 [operation addCompletionHandler:^(MKNetworkOperation *completedOperation) {
                     

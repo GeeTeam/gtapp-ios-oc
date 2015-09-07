@@ -119,15 +119,15 @@ gt验证SDK Header暴露的方法
     
     - (BOOL)serverStatusWithCaptcha_id:(NSString *)captcha_id;
 
-验证完成回调
-------------
+验证完成回调block
+------------------
 
 .. code::
 
     typedef void(^GTCallFinishBlock)(NSString *code, NSDictionary *result, NSString *message);
 
-关闭验证
----------
+验证关闭block
+----------------
 
 .. code::
 
