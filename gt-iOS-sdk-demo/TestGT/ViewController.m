@@ -40,13 +40,13 @@
     // TODO 使用申请的极速验证应用公钥
     static NSString * const GT_captcha_id =  @"ad872a4e1a51888967bdb7cb45589605";
     
-    GTManager *manger = [GTManager sharedGTManger];
+    GTManager *manager = [GTManager sharedGTManger];
     
     //检测极速验证服务器是否畅通（可添加请求提示）
-    if ([manger serverStatusWithCaptcha_id:GT_captcha_id]) {
+    if ([manager serverStatusWithCaptcha_id:GT_captcha_id]) {
         
         //打开极速验证
-        [manger openGTViewAddFinishHandler:^(NSString *code, NSDictionary *result, NSString *message) {
+        [manager openGTViewAddFinishHandler:^(NSString *code, NSDictionary *result, NSString *message) {
             if ([code isEqualToString:@"1"]) {
                 // TODO 可进行二次验证
                 [weakSelf gttest:code result:result message:message];

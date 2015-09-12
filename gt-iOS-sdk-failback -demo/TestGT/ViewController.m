@@ -54,13 +54,14 @@
     NSDictionary *retDict = [[NSDictionary alloc] init];
     //从字典中取出返回的数据
     retDict = [manager requestCustomServerForGTest:requestGTestURL];
+    NSLog(@"retDict === %@",retDict);
     NSString *GT_captcha_id = [retDict objectForKey:@"gt"];
     NSNumber *gt_success = [retDict objectForKey:@"success"];
     
     //在此设置验证背景遮罩的透明度
-    manager.backgroundAlpha = 0.5;
+    manager.backgroundAlpha = 0.4;
     //开启验证视图的阴影
-    manager.cornerViewShadow = YES;
+    manager.cornerViewShadow = NO;
     //验证背景颜色
     manager.colorWithHexInt = 0xa0a0a0;
     
@@ -83,7 +84,7 @@
                 
             } closeHandler:^{
                 //用户关闭验证后执行的方法
-                
+                NSLog(@"close geetest");
             } animated:YES];
         } else {
             // TODO 写上检测网络的方法，或者不做任何处理
@@ -92,13 +93,13 @@
     }else{
      //TODO 当极验服务器不可用时，在此处执行网站主的自定义验证方法后者其他处理方法
         /*请网站主务必考虑这一处的逻辑处理，否者当极验服务不可用的时候会导致用户的业务无法正常执行*/
-        NSLog(@"极验验证服务暂时不可用");
+        NSLog(@"极验验证服务暂时不可用,请网站主在此写入启用备用验证的方法");
     }
     
 }
 
 /**
- *  二次验证
+ *  二次验证是验证的必要环节,此方法的构造供参考
  *
  *  @param code    <#code description#>
  *  @param result  <#result description#>

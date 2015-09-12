@@ -5,5 +5,5 @@ README
 注意
 ===========================
 
-* 此工程文件为初始的sdk源码，该源码不支持failback，版本号为2.15.5.15.1。
-* 推荐使用支持failback功能的framework，请移步至/gt-iOS-sdk-failback -demo/文件夹，此文件夹下的GTframework 高于 2.15.8.7.1。
+* 此工程文件为极验验证首个sdk源码，该源码不支持failback，版本号为2.15.5.15.1。
+* 推荐使用支持failback功能的framework，请移步至/gt-iOS-sdk-failback -demo/文件夹，此文件夹下的GTframework 版本高于 2.15.8.7.1。
