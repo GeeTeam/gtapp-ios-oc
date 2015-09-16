@@ -12,6 +12,14 @@ QQ群: 487868018 (iOS) 请注明验证信息
 .. contents:: 目录
 .. sectnum::
 
+Screenshot
+==================
+.. image:: img/demo_0.png
+
+.. image:: img/demo_1.png
+
+.. image:: img/demo_2.png
+
 Version
 ================
 
