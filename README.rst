@@ -56,8 +56,9 @@ iOS9适配详细可跳转至  `iOS9适配tips <https://github.com/ChenYilong/iOS
 
 1. 对网络传输安全协议https的支持
     由于 iOS 9 改用更安全的https，为了能够在iOS9中正常使用http，请在"Info.plist"中进行如下配置，否则影响网络的使用。
-    暂时的解决方案:
-    方案A:
+
+暂时的解决方案:
+方案A:
     强制将NSAllowsArbitraryLoads属性设置为YES，并添加到你应用的plist中
 
 .. code ::
@@ -68,7 +69,7 @@ iOS9适配详细可跳转至  `iOS9适配tips <https://github.com/ChenYilong/iOS
     <true/>
     </dict>
 
-    方案B:
+方案B:
     建立白名单并添加到你的app的plsit中
 
 .. code ::
