@@ -60,7 +60,7 @@ iOS9适配详细可跳转至  `iOS9适配tips <https://github.com/ChenYilong/iOS
     方案A:
     强制将NSAllowsArbitraryLoads属性设置为YES，并添加到你应用的plist中
 
-    .. code ::
+.. code ::
 
     <key>NSAppTransportSecurity</key>
     <dict>
@@ -71,7 +71,7 @@ iOS9适配详细可跳转至  `iOS9适配tips <https://github.com/ChenYilong/iOS
     方案B:
     建立白名单并添加到你的app的plsit中
 
-    .. code ::
+.. code ::
 
     <key>NSAppTransportSecurity</key>
     <dict>
