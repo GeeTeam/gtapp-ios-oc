@@ -34,9 +34,8 @@ description
 detail
 --------------
 
-1.  2.15. 5.x              : no failback version
-#.  2.15. 8.x - 2.15.9.x   : failback version
-#.  2.15.10.x - current    : failback version with motion version
+1.  2.15. 5.x            : no failback version
+#.  2.15. 8.x - current  : failback version
 
 About gtapp-ios-oc
 ======================
