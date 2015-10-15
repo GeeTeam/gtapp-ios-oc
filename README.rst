@@ -23,12 +23,22 @@ Screenshot
 Version
 ================
 
+description
+-------------
+
 1.  请认真查阅开发者文档,支持iOS7以上.[*please read developer doc, and support iOS7+*]
 #.  在gtapp-ios-oc项目下已经有两个版本，一个是早期版本，framework版本号为2.15.5.＊之前,已经停止开发,另一个是有failback版本的,版本号为2.15.8.＊之后的版本,现在持续更新和维护中。[*There are two versions of GTFramework. The latest one has the failback feature (version 2.15.8.＊ +). We had stopped to develop the old version. So we recommend you to use the failback version.*]
 #.  failback版本在项目路径的‘gt-iOS-sdk-failback -demo’下。[*the failback version in the file 'gt-iOS-sdk-failback -demo'*]
 #.  推荐failback版本！！！该版本更为安全，即使极验服务暂时不可用，网站主在相应逻辑位置写入备用验证或处理方法，即可轻松切换。[*The faiback version more safe than the old one. If gt-server is not available, you can set some handle methods.*]
 
-gtapp-ios-oc
+detail
+--------------
+
+1.  2.15. 5.x              : no failback version
+#.  2.15. 8.x - 2.15.9.x   : failback version
+#.  2.15.10.x - current    : failback version with motion version
+
+About gtapp-ios-oc
 ======================
 
 1.	GTFramework 极验验证iOS版本的SDK，生成一个基于i386、x86_64、armv7、 armv7s、arm64的framework，支持iOS7.0＋。开发使用的Xcode版本为Xcode 7.0。[*build on i386、x86_64、armv7、 armv7s、arm64, and support iOS7+*]
@@ -37,7 +47,7 @@ gtapp-ios-oc
 #.	二次验证使用MKNetworkKit用于演示，可根据网站主项目需要自行修改。[*you can change what you want in the demo*]
 #.  如果使用failback版本的请下看项目路径下‘gt-iOS-sdk-failback -demo’ [*the failback version in the file 'gt-iOS-sdk-failback -demo'*]
 
-使用以上步骤，用户可以运行Demo示例
+How to use GTFramework, run the demo first
 ================================================
 
 自建项目引用
@@ -48,8 +58,29 @@ gtapp-ios-oc
 #.	将GTFramework.framework项目以Static Library的方式进行引用。将所需的GTFramework.framework拷贝到工程所在文件夹下。在 TARGETS->Build Phases-> Link Binary With Libaries中点击“+”按钮，在弹出的窗口中点击“Add Other”按钮，选择GTFramework.framework文件添加到工程中。[*add GTframework to 'Link Binary With Libaries'*]
      
 #.	在项目标有TODO注释的地方写入网站主自已的处理代码。[*add you handle method where signed 'TODO'*]
+   
+集成GTFramework到swift项目
+===========================
 
-iOS9的适配问题
+暂时只提供纯Objective-C的Framework
+
+导入外部框架,无论框架是纯Objective-C,纯Swift还是混合语言,import外部框架的流程是一样的。当你要导入外部框架的时,确保Build >Packaging >Defines Modele 设置为Yes.
+
+用下面的语法将框架导入到相应的target的Swift文件中:
+
+.. code ::
+
+    import FrameworkName
+
+用下面的语法将框架导入到相应target的 Objective-C .m 文件中:
+
+.. code ::
+    
+    @import FrameworkName;
+
+更多请查阅官方文档 `Using Swift with Cocoa and Objective-C (Swift 2) <https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html#//apple_ref/doc/uid/TP40014216-CH10-ID122>`_
+
+iOS9的适配问题<tips>
 ==================
 
 iOS9适配详细可跳转至  `iOS9适配tips <https://github.com/ChenYilong/iOS9AdaptationTips>`_
@@ -92,7 +123,7 @@ iOS9适配详细可跳转至  `iOS9适配tips <https://github.com/ChenYilong/iOS
     </dict>
 
 2. bitcode
-    苹果在iOS9的SDK中添加了对应用的瘦身的支持，其中就包括bitcode。我们目前也在对SDK添加对bitcode的支持。你可以用demo目录下的"GTFramework_bitcode"去掉后缀后的替换原GTFramework文件。（通过设置编译标志ENABLE_BITCODE = NO，或者修改工程的构建设置(build settings)可关闭bitcode功能）
+    苹果在iOS9的SDK中添加了对应用的瘦身的支持，其中就包括bitcode。我们目前也在编译生成了支持bitcode版本的sdk。该版本的sdk请见failback demo目录，将文件"GTFramework_bitcode"去掉后缀后的替换原GTFramework文件。（或者通过设置编译标志ENABLE_BITCODE = NO，亦或者修改工程的构建设置(build settings)可关闭bitcode功能）
 	
 回调Block及返回值
 ===========================
