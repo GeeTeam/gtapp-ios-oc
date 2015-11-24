@@ -61,9 +61,20 @@
  *
  *  @param captcha_id 分配的captcha_id
  *
- *  @return YES则服务可用；NO则不可用
+ *  @return YES则服务可用；NO则则客户端与geetest服务端之间连接不通畅
  */
 - (BOOL)serverStatusWithCaptcha_id:(NSString *)captcha_id;
+
+/**
+ *  当网站主使用自己的failback逻辑的时候使用此方法开启验证
+    使用此方法之前，网站主必须在服务端测试geetest服务可用性然后通知客户端
+ *
+ *  @param captcha_id   在官网申请的captcha_id
+ *  @param gt_challenge 从geetest服务器获取的challenge
+ *
+ *  @return YES可开启验证，NO则客户端与geetest服务端之间连接不通畅
+ */
+- (BOOL)requestGTest:(NSString *)captcha_id withChallenge:(NSString *)gt_challenge;
 
 /**
  *  展示验证

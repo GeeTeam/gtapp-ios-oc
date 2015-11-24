@@ -47,8 +47,7 @@
     __weak __typeof(self) weakSelf = self;
     
     /* TODO 在此写入客户端首次向网站主服务端请求gt验证的链接(api_1) (replace demo api_1 with yours)*/
-    NSURL *requestGTestURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://testcenter.geetest.com/gtweb/start_mobile_captcha/"]];
-
+    NSURL *requestGTestURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://testcenter.geetest.com/webapi/apis/start-mobile-captcha/"]];
     GTManager *manager = [GTManager sharedGTManger];
     
     NSDictionary *retDict = [[NSDictionary alloc] init];
@@ -71,13 +70,13 @@
     if ([gt_success intValue] == 1 ) {
         //根据custom server的返回字段判断是否开启failback
         if (GT_captcha_id.length == 32) {
-            
             //打开极速验证，在此处完成gt验证结果的返回
             [manager openGTViewAddFinishHandler:^(NSString *code, NSDictionary *result, NSString *message) {
                 
                 if ([code isEqualToString:@"1"]) {
                     //在用户服务器进行二次验证(start Secondery-Validate)
                     [weakSelf seconderyValidate:code result:result message:message];
+//                    [weakSelf performSelectorOnMainThread:@selector(updateUI) withObject:nil waitUntilDone:nil];
                 } else {
                     NSLog(@"code : %@, message : %@",code,message);
                 }
@@ -91,7 +90,7 @@
             NSLog(@"连接网站主服务器异常,网络不通畅");
         }
     }else{
-     //TODO 当极验服务器不可用时，在此处执行网站主的自定义验证方法后者其他处理方法(gt-server is not available, add your hanle methods)
+     //TODO 当极验服务器不可用时，将执行此处网站主的自定义验证方法或者其他处理方法(gt-server is not available, add your hanle methods)
         /*请网站主务必考虑这一处的逻辑处理，否者当极验服务不可用的时候会导致用户的业务无法正常执行*/
         NSLog(@"极验验证服务暂时不可用,请网站主在此写入启用备用验证的方法");
     }
@@ -122,7 +121,7 @@
                 [operation addCompletionHandler:^(MKNetworkOperation *completedOperation) {
                     
                     if (completedOperation.HTTPStatusCode == 200) {
-                        //TODO 二次验证成功后执行的方法(after finish Secondery-Validate)
+                        //TODO 二次验证成功后执行的方法(after finish Secondery-Validate, to do something)
                         NSLog(@"client captcha response:%@",completedOperation.responseString);
                         
                         [self showSuccessView:YES];

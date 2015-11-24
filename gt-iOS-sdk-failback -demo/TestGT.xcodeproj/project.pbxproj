@@ -57,8 +57,6 @@
 		2967F36F1B2D8A060081A66F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2967F3711B2D8A060081A66F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		2967F3741B2D8A060081A66F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		2967F37F1B2D8A060081A66F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2967F3801B2D8A060081A66F /* TestGTTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestGTTests.m; sourceTree = "<group>"; };
 		29A1E8541B3BEA5C008544F9 /* GTFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GTFramework.framework; sourceTree = "<group>"; };
 		7353CC2B1BB3A39100D5F191 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		73B577441BA1527B0005EE5B /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
@@ -127,7 +125,6 @@
 				73B577441BA1527B0005EE5B /* WebKit.framework */,
 				29A1E8541B3BEA5C008544F9 /* GTFramework.framework */,
 				2967F3631B2D8A060081A66F /* TestGT */,
-				2967F37D1B2D8A060081A66F /* TestGTTests */,
 				2967F3621B2D8A060081A66F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -161,23 +158,6 @@
 			children = (
 				2967F3651B2D8A060081A66F /* Info.plist */,
 				2967F3661B2D8A060081A66F /* main.m */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		2967F37D1B2D8A060081A66F /* TestGTTests */ = {
-			isa = PBXGroup;
-			children = (
-				2967F3801B2D8A060081A66F /* TestGTTests.m */,
-				2967F37E1B2D8A060081A66F /* Supporting Files */,
-			);
-			path = TestGTTests;
-			sourceTree = "<group>";
-		};
-		2967F37E1B2D8A060081A66F /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				2967F37F1B2D8A060081A66F /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -308,7 +288,8 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -353,7 +334,8 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
