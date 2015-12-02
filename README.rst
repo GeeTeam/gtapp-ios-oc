@@ -23,7 +23,7 @@ Screenshot
 Version
 ================
 
-description
+Description
 -------------
 
 1.  请认真查阅开发者文档,支持iOS7以上.[*please read developer doc, and support iOS7+*]

@@ -158,12 +158,13 @@ gt验证SDK Header暴露的方法
 实现方式 直接在 keyWindow 上添加遮罩视图、极验验证的UIWebView视图
 极速验证UIWebView通过JS与SDK通信
 
-@param finish 验证返回结果
-@param close  关闭验证
+@param finish   验证返回结果
+@param close    关闭验证
+@param animated 开启动画 
 
 .. code::
     
-    - (void)openGTViewAddFinishHandler:(GTCallFinishBlock)finish closeHandler:(GTCallCloseBlock)close;
+    - (void)openGTViewAddFinishHandler:(GTCallFinishBlock)finish closeHandler:(GTCallCloseBlock)close animated:(BOOL)animated;
 
 提前关闭gt验证
 ----------------

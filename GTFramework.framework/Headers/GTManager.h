@@ -15,7 +15,7 @@
 @interface GTManager : NSObject
 
 /**
- *  第一次向网站主服务器API_1请求返回的cookie里的Session ID
+ *  第一次向网站主服务器API_1请求返回的cookie里的Session ID,cookie name: "msid"
  */
 @property (nonatomic, strong) NSString *sessionID;
 
@@ -57,17 +57,20 @@
 - (NSDictionary *)requestCustomServerForGTest:(NSURL *)requestCustomServerForGTestURL;
 
 /**
- *  测试用户端与极验服务连接是否畅通可用,如果直接使用此方法来判断是否开启验证,则会导致当极验验证动态服务器宕机的情况下无法正常进行极验验证
+ *  **仅允许在debugMode下调用**
+    测试用户端与极验服务连接是否畅通可用,如果直接使用此方法来判断是否开启验证,则会导致当极验验证动态服务器宕机的情况下无法正常进行极验验证。
+    此方法仅用于debugMode
  *
  *  @param captcha_id 分配的captcha_id
  *
- *  @return YES则服务可用；NO则则客户端与geetest服务端之间连接不通畅
+ *  @return YES则服务可用；NO则客户端与geetest服务端之间连接不通畅
  */
 - (BOOL)serverStatusWithCaptcha_id:(NSString *)captcha_id;
 
 /**
  *  当网站主使用自己的failback逻辑的时候使用此方法开启验证
     使用此方法之前，网站主必须在服务端测试geetest服务可用性然后通知客户端
+    此方法与方法requestCustomServerForGTest:二选一
  *
  *  @param captcha_id   在官网申请的captcha_id
  *  @param gt_challenge 从geetest服务器获取的challenge
@@ -92,5 +95,11 @@
  */
 - (void)closeGTViewIfIsOpen;
 
+/**
+ *  开启debugMode,在开启验证之前调用此方法
+ *
+ *  @param debugModeAvailable YES开启,NO关闭
+ */
+- (void)debugModeEnable:(BOOL)debugEnable;
 
 @end
