@@ -49,7 +49,7 @@ mobileInfo里面的具体字段描述表
 
 .. image:: img/mobile-info.png
 
-_mobileInfo   手机静态信息 Code Sample
+_mobileInfo   手机静态信息举例 Code Sample
 -----------------------------------------------------
 
 .. code::
@@ -76,9 +76,9 @@ _mobileInfo   手机静态信息 Code Sample
 返回值：
 
 1.code
-    成功或者失败的值（1：成功/其他：失败）
+    成功或者失败的值（1：成功/其他：失败）（success/fail）
 2.message
-    成功或者失败的信息（success/fail）
+    成功或者失败的信息（some description）
 3.result
     详细的返回信息，用于向客户服务器提交之后的SDK二次验证信息
 	
@@ -96,6 +96,8 @@ gt验证SDK Header暴露的方法
 客户端向网站主服务器发起验证请求
 -------------------------------
 
+获取并且解析用于验证的关键数据,并且自动配置验证
+
  @param askCustomServerForGTestURL 客户端向用户服务端发起验证请求的链接(api_1)
  @return 只有当网站主服务器可用时，返回customRetDict，否则返回nil
 
@@ -108,10 +110,24 @@ gt验证SDK Header暴露的方法
 
 .. code::
     
-    - (NSDictionary *)requestCustomServerForGTest:(NSURL *)requestCustomServerForGTestURL;;
+    - (NSDictionary *)requestCustomServerForGTest:(NSURL *)requestCustomServerForGTestURL;
 
-测试服务是否可用
-------------------
+
+使用id和challenge配置验证
+--------------------------
+
+此方法提供给不使用或不便于使用默认failback功能而自己搭建failback机制的用户
+
+@param captcha_id   在官网申请的captcha_id
+@param gt_challenge 从geetest服务器获取的challenge
+@return YES可开启验证，NO则客户端与geetest服务端之间连接不通畅
+.. code::
+
+	- (BOOL)requestGTest:(NSString *)captcha_id withChallenge:(NSString *)gt_challenge;
+ 
+
+测试服务是否可用(仅限debugMode)
+------------------------------
 
 @param captcha_id 分配的captcha_id
 @return YES则服务可用；NO则不可用
@@ -134,8 +150,10 @@ gt验证SDK Header暴露的方法
     typedef void(^GTCallCloseBlock)(void);
 
 
-展示验证
----------
+<!>展示验证<!>
+---------------
+
+验证最核心的方法，在此之前必须先配置好验证
 
 实现方式 直接在 keyWindow 上添加遮罩视图、极验验证的UIWebView视图
 极速验证UIWebView通过JS与SDK通信
@@ -156,6 +174,15 @@ gt验证SDK Header暴露的方法
     
     - (void)closeGTViewIfIsOpen;
 
+
+开启debugMode
+------------------
+
+在此开启debugMode用于debug
+
+.. code::
+
+	- (void)debugModeEnable:(BOOL)debugEnalbe;
 
 参考资料
 =========

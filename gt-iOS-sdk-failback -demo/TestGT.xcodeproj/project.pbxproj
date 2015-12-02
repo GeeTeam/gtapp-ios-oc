@@ -22,9 +22,7 @@
 		2967F3701B2D8A060081A66F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2967F36E1B2D8A060081A66F /* Main.storyboard */; };
 		2967F3721B2D8A060081A66F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2967F3711B2D8A060081A66F /* Images.xcassets */; };
 		2967F3751B2D8A060081A66F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2967F3731B2D8A060081A66F /* LaunchScreen.xib */; };
-		7353CC2C1BB3A39100D5F191 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7353CC2B1BB3A39100D5F191 /* CoreMotion.framework */; };
 		73B4F4521BB3DFBE00D45739 /* GTFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29A1E8541B3BEA5C008544F9 /* GTFramework.framework */; };
-		73B577451BA1527B0005EE5B /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73B577441BA1527B0005EE5B /* WebKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,8 +56,6 @@
 		2967F3711B2D8A060081A66F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		2967F3741B2D8A060081A66F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		29A1E8541B3BEA5C008544F9 /* GTFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GTFramework.framework; sourceTree = "<group>"; };
-		7353CC2B1BB3A39100D5F191 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
-		73B577441BA1527B0005EE5B /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,8 +63,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7353CC2C1BB3A39100D5F191 /* CoreMotion.framework in Frameworks */,
-				73B577451BA1527B0005EE5B /* WebKit.framework in Frameworks */,
 				73B4F4521BB3DFBE00D45739 /* GTFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -121,8 +115,6 @@
 		2967F3581B2D8A060081A66F = {
 			isa = PBXGroup;
 			children = (
-				7353CC2B1BB3A39100D5F191 /* CoreMotion.framework */,
-				73B577441BA1527B0005EE5B /* WebKit.framework */,
 				29A1E8541B3BEA5C008544F9 /* GTFramework.framework */,
 				2967F3631B2D8A060081A66F /* TestGT */,
 				2967F3621B2D8A060081A66F /* Products */,
@@ -360,6 +352,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -380,6 +373,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

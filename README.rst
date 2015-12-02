@@ -121,6 +121,31 @@ iOS9适配详细可跳转至  `iOS9适配tips <https://github.com/ChenYilong/iOS
         </dict>
     </dict>
 
+方案C:
+	依赖TLS建立白名单的另一种配置方法
+
+.. code ::
+
+    <key>NSAppTransportSecurity</key>
+    <dict>
+    	<dict>
+    	<key>NSAllowsArbitraryLoads</key>
+    	<true/>
+    	</dict>
+        <key>NSExceptionDomains</key>
+        <dict>
+            <key>geetest.com</key>
+            <dict>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+                <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+                <true/>
+                <key>NSTemporaryExceptionMinimumTLSVersion</key>
+                <string>TLSv1.1</string>
+            </dict>
+        </dict>
+    </dict>
+
 2. bitcode
     苹果在iOS9的SDK中添加了对应用的瘦身的支持，其中就包括bitcode。我们目前也在编译生成了支持bitcode版本的sdk。该版本的sdk请见failback demo目录，将文件"GTFramework_bitcode"去掉后缀后的替换原GTFramework文件。（或者通过设置编译标志ENABLE_BITCODE = NO，亦或者修改工程的构建设置(build settings)可关闭bitcode功能）
 	
@@ -139,7 +164,7 @@ iOS9适配详细可跳转至  `iOS9适配tips <https://github.com/ChenYilong/iOS
     status code, (1: success/2: fail)
 2.message
     成功或者失败的信息（success/fail）
-    description about you result
+    description about your result
 3.result
     详细的返回信息，用于向客户服务器提交之后的SDK二次验证信息
     if you want to finish Secondery-Validate ,you should send those result information to your server.

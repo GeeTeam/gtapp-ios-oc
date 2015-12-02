@@ -13,7 +13,7 @@
 #import <GTFramework/GTFramework.h>
 
 
-@interface ViewController ()<UIWebViewDelegate, UISearchBarDelegate>
+@interface ViewController ()
 
 - (IBAction)testAction:(id)sender;
 
@@ -30,12 +30,6 @@
     [super didReceiveMemoryWarning];
 }
 
-
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    return YES;
-}
-
-
 - (IBAction)testAction:(id)sender {
     [self requestGTest];
 }
@@ -48,12 +42,14 @@
     
     /* TODO 在此写入客户端首次向网站主服务端请求gt验证的链接(api_1) (replace demo api_1 with yours)*/
     NSURL *requestGTestURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://testcenter.geetest.com/webapi/apis/start-mobile-captcha/"]];
+//    NSURL *requestGTestURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://testcenter.geetest.com/gtweb/start_mobile_captcha/"]];/*已经被遗弃的的演示用API*/
     GTManager *manager = [GTManager sharedGTManger];
+    [manager debugModeEnable:NO];
     
     NSDictionary *retDict = [[NSDictionary alloc] init];
     //从字典中取出返回的数据
     retDict = [manager requestCustomServerForGTest:requestGTestURL];
-    NSLog(@"retDict === %@",retDict);
+    NSLog(@"\nretDict : %@",retDict);
     NSString *GT_captcha_id = [retDict objectForKey:@"gt"];
     NSNumber *gt_success = [retDict objectForKey:@"success"];
     
@@ -65,9 +61,9 @@
     manager.colorWithHexInt = 0xa0a0a0;
     
     NSLog(@"sessionID === %@",manager.sessionID);
-    NSLog(@"从网站主服务器获取的id === %@",GT_captcha_id);
+    NSLog(@"gt_id(custom) === %@",GT_captcha_id);
     
-    if ([gt_success intValue] == 1 ) {
+    if ([gt_success intValue] == 1) {
         //根据custom server的返回字段判断是否开启failback
         if (GT_captcha_id.length == 32) {
             //打开极速验证，在此处完成gt验证结果的返回
@@ -76,7 +72,7 @@
                 if ([code isEqualToString:@"1"]) {
                     //在用户服务器进行二次验证(start Secondery-Validate)
                     [weakSelf seconderyValidate:code result:result message:message];
-//                    [weakSelf performSelectorOnMainThread:@selector(updateUI) withObject:nil waitUntilDone:nil];
+//                    [weakSelf performSelectorOnMainThread:@selector(updateUI) withObject:nil waitUntilDone:nil];/*UI请在主线程操作*/
                 } else {
                     NSLog(@"code : %@, message : %@",code,message);
                 }
@@ -86,11 +82,11 @@
                 NSLog(@"close geetest");
             } animated:YES];
         } else {
-            // TODO 写上检测网络的方法，或者不做任何处理(network error,check your network)
-            NSLog(@"连接网站主服务器异常,网络不通畅");
+            // TODO 网络可能异常，或者不做任何处理 (network error,check your network)
+            NSLog(@"连接服务器网络异常");
         }
     }else{
-     //TODO 当极验服务器不可用时，将执行此处网站主的自定义验证方法或者其他处理方法(gt-server is not available, add your hanle methods)
+     //TODO 当极验服务器不可用时，将执行此处网站主的自定义验证方法或者其他处理方法(gt-server is not available, add your handler methods)
         /*请网站主务必考虑这一处的逻辑处理，否者当极验服务不可用的时候会导致用户的业务无法正常执行*/
         NSLog(@"极验验证服务暂时不可用,请网站主在此写入启用备用验证的方法");
     }
