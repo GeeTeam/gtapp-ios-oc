@@ -41,21 +41,20 @@
     __weak __typeof(self) weakSelf = self;
     
     /* TODO 在此写入客户端首次向网站主服务端请求gt验证的链接(api_1) (replace demo api_1 with yours)*/
-    NSURL *requestGTestURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://testcenter.geetest.com/webapi/apis/start-mobile-captcha/"]];
-//    NSURL *requestGTestURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://testcenter.geetest.com/gtweb/start_mobile_captcha/"]];/*已经被遗弃的的演示用API*/
+    NSURL *requestGTestURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://webapi.geetest.com/apis/start-mobile-captcha/"]];
     GTManager *manager = [GTManager sharedGTManger];
     [manager debugModeEnable:NO];
     
     NSDictionary *retDict = [[NSDictionary alloc] init];
-    //从字典中取出返回的数据
-    retDict = [manager requestCustomServerForGTest:requestGTestURL];
+    //从字典中取出返回的数据, HttpCookieName 根据网站主服务器的设置配置
+    retDict = [manager requestCustomServerForGTest:requestGTestURL withHTTPCookieName:@"msid"];
     NSLog(@"\nretDict : %@",retDict);
     NSString *GT_captcha_id = [retDict objectForKey:@"gt"];
     NSNumber *gt_success = [retDict objectForKey:@"success"];
     
-    //在此设置验证背景遮罩的透明度
+    //在此设置验证背景遮罩的透明度,如果不想要背景遮罩,将此属性设置为0
     manager.backgroundAlpha = 0.4;
-    //开启验证视图的阴影
+    //开启验证视图的外围阴影
     manager.cornerViewShadow = NO;
     //验证背景颜色(例:yellow 0xffc832 rgb(255,200,50))
     manager.colorWithHexInt = 0xa0a0a0;
@@ -82,12 +81,17 @@
                 NSLog(@"close geetest");
             } animated:YES];
         } else {
-            // TODO 网络可能异常，或者不做任何处理 (network error,check your network)
-            NSLog(@"连接服务器网络异常");
+            NSLog(@"illegal geetest ID, please set right ID");
         }
     }else{
      //TODO 当极验服务器不可用时，将执行此处网站主的自定义验证方法或者其他处理方法(gt-server is not available, add your handler methods)
         /*请网站主务必考虑这一处的逻辑处理，否者当极验服务不可用的时候会导致用户的业务无法正常执行*/
+        UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Warning"
+                                                          message:@"极验验证服务异常不可用,请准备备用验证"
+                                                         delegate:self
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil, nil];
+        [warning show];
         NSLog(@"极验验证服务暂时不可用,请网站主在此写入启用备用验证的方法");
     }
     
