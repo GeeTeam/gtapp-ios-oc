@@ -124,7 +124,11 @@ gt验证SDK Header暴露的方法
 
 .. code::
     
-    - (void)requestCustomServerForGTest:(NSURL *)requestCustomServerForGTestURL timeoutInterval:(NSTimeInterval)timeoutInterval withHTTPCookieName:(NSString *)name options:(DefaultRequestTypeOptions)RequestType completionHandler:(GTDefaultCaptchaHandlerBlock)handler;
+    - (void)requestCustomServerForGTest:(NSURL *)requestCustomServerForGTestURL 
+    					timeoutInterval:(NSTimeInterval)timeoutInterval 
+    				 withHTTPCookieName:(NSString *)name
+    				 			options:(DefaultRequestTypeOptions)RequestType 
+    				  completionHandler:(GTDefaultCaptchaHandlerBlock)handler;
 
 
 使用id,challenge和success配置验证
@@ -139,7 +143,9 @@ gt验证SDK Header暴露的方法
 @return YES可开启验证，NO则客户端与geetest服务端之间连接不通畅
 .. code::
 
-	- (BOOL)requestGTest:(NSString *)captcha_id challenge:(NSString *)gt_challenge success:(NSNumber *)successCode;
+	- (BOOL)requestGTest:(NSString *)captcha_id 
+			   challenge:(NSString *)gt_challenge
+			     success:(NSNumber *)successCode;
  
 
 测试服务是否可用(仅限debugMode)
@@ -180,7 +186,9 @@ gt验证SDK Header暴露的方法
 
 .. code::
     
-    - (void)openGTViewAddFinishHandler:(GTCallFinishBlock)finish closeHandler:(GTCallCloseBlock)close animated:(BOOL)animated;
+    - (void)openGTViewAddFinishHandler:(GTCallFinishBlock)finish 
+    					  closeHandler:(GTCallCloseBlock)close
+    					  	  animated:(BOOL)animated;
 
 提前关闭gt验证
 ----------------

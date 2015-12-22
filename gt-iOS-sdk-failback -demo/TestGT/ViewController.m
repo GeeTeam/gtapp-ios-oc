@@ -64,41 +64,39 @@
     NSURL *requestGTestURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://webapi.geetest.com/apis/start-mobile-captcha/"]];
     
     [self.manager requestCustomServerForGTest:requestGTestURL
-                                  timeoutInterval:30.0
-                               withHTTPCookieName:@"msid"
-                                          options:GTDefaultAsynchronousRequest
-                                completionHandler:^(NSString *gt_captcha_id, NSString *gt_challenge, NSNumber *gt_success_code) {
+                              timeoutInterval:30.0
+                           withHTTPCookieName:@"msid"
+                                      options:GTDefaultAsynchronousRequest
+                            completionHandler:^(NSString *gt_captcha_id, NSString *gt_challenge, NSNumber *gt_success_code) {
+                                NSLog(@"sessionID === %@",self.manager.sessionID);
+                                
+                                if ([gt_success_code intValue] == 1) {
                                     
-                                    NSLog(@"sessionID === %@",self.manager.sessionID);
-                                    
-                                    if ([gt_success_code intValue] == 1) {
+                                    //根据custom server的返回字段判断是否开启failback
+                                    if (gt_captcha_id.length == 32) {
                                         
-                                        //根据custom server的返回字段判断是否开启failback
-                                        if (gt_captcha_id.length == 32) {
+                                        //打开极速验证，在此处完成gt验证结果的返回
+                                        [weakSelf.manager openGTViewAddFinishHandler:^(NSString *code, NSDictionary *result, NSString *message) {
                                             
-                                            //打开极速验证，在此处完成gt验证结果的返回
-                                            [weakSelf.manager openGTViewAddFinishHandler:^(NSString *code, NSDictionary *result, NSString *message) {
+                                            if ([code isEqualToString:@"1"]) {
                                                 
-                                                if ([code isEqualToString:@"1"]) {
-                                                    
-                                                    //在用户服务器进行二次验证(start Secondery-Validate)
-                                                    [weakSelf seconderyValidate:code result:result message:message];
-                                                    /*UI请在主线程操作*/
-                                                } else {
-                                                    NSLog(@"code : %@, message : %@",code,message);
-                                                }
+                                                //在用户服务器进行二次验证(start Secondery-Validate)
+                                                [weakSelf seconderyValidate:code result:result message:message];
+                                                /*UI请在主线程操作*/
+                                            } else {
+                                                NSLog(@"code : %@, message : %@",code,message);
                                             }
-                                     closeHandler:^{
-                                                
-                                                //用户关闭验证后执行的方法
-                                                [self removeMBProgressHUD];
-                                                NSLog(@"close geetest");
-                                            } animated:YES];
-                                        } else {
+                                        }closeHandler:^{
+                                            //用户关闭验证后执行的方法
                                             [self removeMBProgressHUD];
-                                            NSLog(@"invalid geetest ID, please set right ID");
-                                        }
-                                    }else{
+                                            NSLog(@"close geetest");
+                                        } animated:YES];
+                                        
+                                    } else {
+                                        [self removeMBProgressHUD];
+                                        NSLog(@"invalid geetest ID, please set right ID");
+                                    }
+                                }else{
                                     //TODO 当极验服务器不可用时，将执行此处网站主的自定义验证方法或者其他处理方法(gt-server is not available, add your handler methods)
                                     /*请网站主务必考虑这一处的逻辑处理，否者当极验服务不可用的时候会导致用户的业务无法正常执行*/
                                     UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Warning"
@@ -111,7 +109,7 @@
                                             [warning show];
                                     });
                                     NSLog(@"极验验证服务暂时不可用,请网站主在此写入启用备用验证的方法");
-                                    }
+                                }
     }];
 }
 
