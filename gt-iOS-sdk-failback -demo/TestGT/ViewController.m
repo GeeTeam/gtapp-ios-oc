@@ -57,12 +57,13 @@
 - (void)requestGTest{
     __weak __typeof(self) weakSelf = self;
     
+    //MBProgressHUD 是不必要的,仅用于演示
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     /* TODO 在此写入客户端首次向网站主服务端请求gt验证的链接(api_1) (replace demo api_1 with yours)*/
     NSURL *requestGTestURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://webapi.geetest.com/apis/start-mobile-captcha/"]];
     
-    [weakSelf.manager requestCustomServerForGTest:requestGTestURL
+    [self.manager requestCustomServerForGTest:requestGTestURL
                                   timeoutInterval:30.0
                                withHTTPCookieName:@"msid"
                                           options:GTDefaultAsynchronousRequest
@@ -98,18 +99,18 @@
                                             NSLog(@"invalid geetest ID, please set right ID");
                                         }
                                     }else{
-                                        //TODO 当极验服务器不可用时，将执行此处网站主的自定义验证方法或者其他处理方法(gt-server is not available, add your handler methods)
-                                        /*请网站主务必考虑这一处的逻辑处理，否者当极验服务不可用的时候会导致用户的业务无法正常执行*/
-                                        UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Warning"
-                                                                                          message:@"极验验证服务异常不可用,请准备备用验证"
-                                                                                         delegate:self
-                                                                                cancelButtonTitle:@"OK"
-                                                                                otherButtonTitles:nil, nil];
-                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                    //TODO 当极验服务器不可用时，将执行此处网站主的自定义验证方法或者其他处理方法(gt-server is not available, add your handler methods)
+                                    /*请网站主务必考虑这一处的逻辑处理，否者当极验服务不可用的时候会导致用户的业务无法正常执行*/
+                                    UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Warning"
+                                                                                      message:@"极验验证服务异常不可用,请准备备用验证"
+                                                                                     delegate:self
+                                                                            cancelButtonTitle:@"OK"
+                                                                            otherButtonTitles:nil, nil];
+                                    dispatch_async(dispatch_get_main_queue(), ^{
                                             [MBProgressHUD hideHUDForView:self.view animated:YES];
                                             [warning show];
-                                        });
-                                        NSLog(@"极验验证服务暂时不可用,请网站主在此写入启用备用验证的方法");
+                                    });
+                                    NSLog(@"极验验证服务暂时不可用,请网站主在此写入启用备用验证的方法");
                                     }
     }];
 }
@@ -193,10 +194,10 @@
 - (void)GTNetworkErrorHandler:(NSError *)error{
     NSLog(@"GTNetWork Error: %@",error.localizedDescription);
     UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"错误"
-                                                              message:error.localizedDescription
-                                                             delegate:self
-                                                    cancelButtonTitle:@"确定"
-                                                    otherButtonTitles:nil, nil];
+                                                         message:error.localizedDescription
+                                                        delegate:self
+                                               cancelButtonTitle:@"确定"
+                                               otherButtonTitles:nil, nil];
     dispatch_async(dispatch_get_main_queue(), ^{
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         [errorAlert show];
