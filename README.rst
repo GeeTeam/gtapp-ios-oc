@@ -29,7 +29,8 @@ Description
 1.  请认真查阅开发者文档,支持iOS7以上.[*please read developer doc, and support iOS7+*]
 #.  在gtapp-ios-oc项目下已经有两个版本，一个是早期版本，framework版本号为2.15.5.＊之前,已经停止开发,另一个是有failback版本的,版本号为2.15.8.＊之后的版本,现在持续更新和维护中。[*There are two versions of GTFramework. The latest one has the failback feature (version 2.15.8.＊ +). We had stopped to develop the old version. So we recommend you to use the failback version.*]
 #.  failback版本在项目路径的‘gt-iOS-sdk-failback -demo’下。[*the failback version in the file 'gt-iOS-sdk-failback -demo'*]
-#.  推荐failback版本！！！该版本更为安全，即使极验服务暂时不可用，网站主在相应逻辑位置写入备用验证或处理方法，即可轻松切换。[*The faiback version more safe than the old one. If gt-server is not available, you can set some handle methods.*]
+#.  推荐failback版本！！！该版本更为安全，即使极验服务暂时不可用，网站主在相应逻辑位置写入备用验证或处理方法，即可轻松切换。[*The faiback version more safe than the old one. If gt-server is not available, you can set some handle methods*]
+#.  详细内容查看目录下的开发者文档。[*get more information in demo files*]
 
 detail
 --------------
