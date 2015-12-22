@@ -20,6 +20,20 @@ Screenshot
 
 .. image:: img/demo_2.png
 
+Outline
+======================
+验证主要分为三个部分：
+    1.  从网站主服务器 获取所需的验证数据 (id,challenge,success)
+    2.  核心验证过程
+    3.  根据验证回调数据进行二次验证
+
+iOS SDK 主要完成过程:
+    1.  给出默认的failback机制 获取所需的验证数据 (网站主可以根据自己的需求自己完成此过程)
+    2.  完成核心验证过程
+
+demo 演示完成的部分
+    1.  二次验证不是由sdk完成，而是网站主自己根据demo的逻辑来完成这一块的部署
+
 Version
 ================
 
@@ -32,7 +46,7 @@ Description
 #.  推荐failback版本！！！该版本更为安全，即使极验服务暂时不可用，网站主在相应逻辑位置写入备用验证或处理方法，即可轻松切换。[*The faiback version more safe than the old one. If gt-server is not available, you can set some handle methods*]
 #.  详细内容查看目录下的开发者文档。[*get more information in demo files*]
 
-detail
+failback
 --------------
 
 1.  2.15. 5.x            : no failback version
