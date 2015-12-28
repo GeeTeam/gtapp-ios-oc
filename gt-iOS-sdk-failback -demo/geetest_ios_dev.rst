@@ -7,7 +7,7 @@ iOS-Dev
 
 
 概述
-===================
+================================================
 
 1.	 gt-iOS-sdk 极验验证iOS版本的SDK，生成一个基于i386、x86_64、armv7、 armv7s、arm64的Static Library，支持iOS7.0＋。开发使用的Xcode版本位Xcode 7.2。
 #.	 gt-iOS-sdk-demo 调用sdk的演示app程序。
@@ -32,24 +32,25 @@ iOS SDK 主要完成过程:
 自建项目引用
 假设用户自建项目名称为：TestGT
 
-1.	在极验官方主页www.geetest.com注册账号并申请相应的应用公钥，id:{{id}}
-#.	将gt-iOS-sdk-failback文件夹下的GTFramework.framework引入到项目中
-#.	将GTFramework.framework项目以Static Library的方式进行引用。
+1.  在极验官方主页www.geetest.com注册账号并申请相应的应用公钥，id:{{id}} 
+#.  将gt-iOS-sdk-failback文件夹下的GTFramework.framework引入到项目中
+#.  将GTFramework.framework项目以Static Library的方式进行引用。
         将所需的GTFramework.framework拷贝到工程所在文件夹下。在 TARGETS->Build Phases-> Link Binary With Libaries中点击“+”按钮，在弹出的窗口中点击“Add Other”按钮，选择GTFramework.framework文件添加到工程中。
-#.	在项目中有4处标注'TODO'的位置，请网站主根据提示写入用户自已的处理代码。
-#.	在项目中有4处标注'TODO'的位置，请网站主根据提示写入用户自已的处理代码。
-#.	在项目中有4处标注'TODO'的位置，请网站主根据提示写入用户自已的处理代码。
+#.  在项目中有4处标注'TODO'的位置，请网站主根据提示写入用户自已的处理代码。
 
 
 通讯流程图
-============
-具体见官网安装文档 `官网   <http://www.geetest.com>`__
+=======================================
 
+.. image:: img/geetest_flow.png
 
+技术实现展示
+=======================================
 
+.. image:: img/geetest_ios.png
 
 采集设备静态信息
-========================
+=======================================
 
 mobileInfo里面的具体字段描述表
 -------------------------------------------------------------------
@@ -57,7 +58,7 @@ mobileInfo里面的具体字段描述表
 .. image:: img/mobile-info.png
 
 _mobileInfo   手机静态信息举例 Code Sample
------------------------------------------------------
+-------------------------------------------------------------------
 
 .. code::
 
@@ -73,7 +74,7 @@ _mobileInfo   手机静态信息举例 Code Sample
 
 	
 回调Block及返回值
-==============================
+========================================
 
 .. code::
 	
@@ -99,18 +100,22 @@ _mobileInfo   手机静态信息举例 Code Sample
 
 
 gt验证SDK Header暴露的方法
-=============================
+========================================
 客户端向网站主服务器发起验证请求
--------------------------------
+---------------------------------------------------------------
 
 获取并且解析用于验证的关键数据,并且自动配置验证
 
 向CustomServer发送geetest验证请求，如果网站主服务器判断geetest服务可用，返回验证必要的数据
 
 @param requestCustomServerForGTestURL   客户端向网站主服务端发起验证请求的链接(api_1)
+
 @param timeoutInterval                  超时间隔
+
 @param name                             网站主http cookie name的键名
+
 @param RequestType                      请求的类型
+
 @param handler                          请求完成后的处理
 
 @return 只有当网站主服务器可用时，以block的形式返回以下数据
@@ -130,42 +135,74 @@ gt验证SDK Header暴露的方法
     				 			options:(DefaultRequestTypeOptions)RequestType 
     				  completionHandler:(GTDefaultCaptchaHandlerBlock)handler;
 
+options: 请求选项
+
+.. code::
+    
+    typedef NS_ENUM(NSInteger, DefaultRequestTypeOptions){
+        //发送同步请求, 基于 [NSURLConnection sendSynchronousRequest: returningResponse: error:&error]
+        GTDefaultSynchronousRequest,
+        //发送异步请求, 基于 NSURLConnectionDataDelegate
+        GTDefaultAsynchronousRequest
+    };
+
 
 使用id,challenge和success配置验证
--------------------------------------
+-------------------------------------------------------------------
 
 此方法提供给不使用或不便于使用默认failback功能而自己搭建failback机制的用户
 
 @param captcha_id   在官网申请的captcha_id
+
 @param gt_challenge 从geetest服务器获取的challenge
+
 @param success      网站主服务器监测geetest服务的可用状态
 
 @return YES可开启验证，NO则客户端与geetest服务端之间连接不通畅
+
 .. code::
 
 	- (BOOL)requestGTest:(NSString *)captcha_id 
 			   challenge:(NSString *)gt_challenge
 			     success:(NSNumber *)successCode;
- 
 
-测试服务是否可用(仅限debugMode)
-------------------------------
 
-@param captcha_id 分配的captcha_id
-@return YES则服务可用；NO则不可用
-..code::
+错误处理的代理方法
+-------------------------------------------------------------------
+
+GTManageDelegate, 处理错误的代理方法
+
+.. code::
+
+    @required
+    - (void)GTNetworkErrorHandler:(NSError *)error;
+
+可能出现的error:
+
+1.  NSURLErrorTimedOut 超时
     
-    - (BOOL)serverStatusWithCaptcha_id:(NSString *)captcha_id;
+        与开发人员配置的超时时间和用户的网络情况的有关,在低速网络可以对这块做测试
+#.  NSURLErrorCancelled 取消了网络请求
+
+        一般不出现,SDK里并没有给出用户提前取消请求的方法
+#.  json解析出错
+        
+        只有在使用默认的failback里使用了json转字典
+
+        解析使用JSONObjectWithData: options: error:方法
+    
+
 
 验证完成回调block
-------------------
+-------------------------------------------------------------------
 
 .. code::
 
     typedef void(^GTCallFinishBlock)(NSString *code, NSDictionary *result, NSString *message);
 
+
 验证关闭block
-----------------
+-------------------------------------------------------------------
 
 .. code::
 
@@ -173,7 +210,7 @@ gt验证SDK Header暴露的方法
 
 
 <!>展示验证<!>
----------------
+-------------------------------------------------------------------
 
 验证最核心的方法，在此之前必须先配置好验证
 
@@ -181,7 +218,9 @@ gt验证SDK Header暴露的方法
 极速验证UIWebView通过JS与SDK通信
 
 @param finish   验证返回结果
+
 @param close    关闭验证
+
 @param animated 开启动画 
 
 .. code::
@@ -190,8 +229,9 @@ gt验证SDK Header暴露的方法
     					  closeHandler:(GTCallCloseBlock)close
     					  	  animated:(BOOL)animated;
 
+
 提前关闭gt验证
-----------------
+-------------------------------------------------------------------
 
 关闭正在显示的验证界面
 
@@ -200,8 +240,20 @@ gt验证SDK Header暴露的方法
     - (void)closeGTViewIfIsOpen;
 
 
+测试服务是否可用(仅限debugMode)
+-------------------------------------------------------------------
+
+@param captcha_id 分配的captcha_id
+
+@return YES则服务可用；NO则不可用
+
+..code::
+    
+    - (BOOL)serverStatusWithCaptcha_id:(NSString *)captcha_id;
+
+
 开启debugMode
-------------------
+-------------------------------------------------------------------
 
 在此开启debugMode用于debug
 
@@ -209,12 +261,7 @@ gt验证SDK Header暴露的方法
 
 	- (void)debugModeEnable:(BOOL)debugEnalbe;
 
+
 参考资料
-=========
-
-OC与JS通信参考(< iOS 7 && > iOS 7的不同实现)
-------------------------------------------------------------------------------
-
-UIWebView 中JavaScript 与 Objective-C 通信 `参考页面   <http://www.bkjia.com/Androidjc/935794.html>`__
-
-
+========================================
+(无)

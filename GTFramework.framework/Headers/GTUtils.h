@@ -10,7 +10,11 @@
 #define GTFramework_GTUtils_h
 
 /**
- *  默认验证
+ *  默认验证处理block
+ *
+ *  @param gt_captcha_id   用于验证的captcha_id
+ *  @param gt_challenge    验证的流水号
+ *  @param gt_success_code 网站主检验极验服务的结果
  */
 typedef void(^GTDefaultCaptchaHandlerBlock)(NSString *gt_captcha_id, NSString *gt_challenge, NSNumber *gt_success_code);
 

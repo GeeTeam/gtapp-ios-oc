@@ -2,7 +2,7 @@
 //  ViewController.m
 //  TestGT
 //
-//  this is a demo app. we just give you a sample in this demo. you can code or change what you need.
+//  !!! this is a demo app. we just give you a sample in this demo. you can code or change what you need.
 //
 //  Created by LYJ on 15/6/14.
 //  Copyright (c) 2015年 gt. All rights reserved.
@@ -18,6 +18,8 @@
 
 @property (nonatomic, strong) GTManager *manager;
 
+@property (nonatomic, strong) UIVisualEffectView *visualEffect;
+
 - (IBAction)testAction:(id)sender;
 
 @end
@@ -30,13 +32,21 @@
         [_manager debugModeEnable:NO];
         [_manager setGTDelegate:self];
         //在此设置验证背景遮罩的透明度,如果不想要背景遮罩,将此属性设置为0
-        _manager.backgroundAlpha = 0.3;
+        _manager.backgroundAlpha = 0.4;
         //开启验证视图的外围阴影
         _manager.cornerViewShadow = NO;
         //验证背景颜色(例:yellow 0xffc832 rgb(255,200,50))
         _manager.colorWithHexInt = 0x0a0a0a;
     }
     return _manager;
+}
+
+- (UIVisualEffectView *)visualEffect{
+    if (!_visualEffect) {
+        _visualEffect = [[UIVisualEffectView alloc] initWithEffect:[UIVibrancyEffect effectForBlurEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]]];
+        [_visualEffect setFrame:[[UIScreen mainScreen] bounds]];
+    }
+    return _visualEffect;
 }
 
 - (void)viewDidLoad {
@@ -58,15 +68,15 @@
     __weak __typeof(self) weakSelf = self;
     
     //MBProgressHUD 是不必要的,仅用于演示
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
-    /* TODO 在此写入客户端首次向网站主服务端请求gt验证的链接(api_1) (replace demo api_1 with yours)*/
+    /** TODO 在此写入客户端首次向网站主服务端请求gt验证的链接(api_1) (replace demo api_1 with yours)*/
     NSURL *requestGTestURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://webapi.geetest.com/apis/start-mobile-captcha/"]];
     
     [self.manager requestCustomServerForGTest:requestGTestURL
-                              timeoutInterval:30.0
+                              timeoutInterval:15.0
                            withHTTPCookieName:@"msid"
-                                      options:GTDefaultAsynchronousRequest
+                                      options:GTDefaultSynchronousRequest
                             completionHandler:^(NSString *gt_captcha_id, NSString *gt_challenge, NSNumber *gt_success_code) {
                                 NSLog(@"sessionID === %@",self.manager.sessionID);
                                 
@@ -82,30 +92,30 @@
                                                 
                                                 //在用户服务器进行二次验证(start Secondery-Validate)
                                                 [weakSelf seconderyValidate:code result:result message:message];
-                                                /*UI请在主线程操作*/
+                                                /**UI请在主线程操作*/
                                             } else {
                                                 NSLog(@"code : %@, message : %@",code,message);
                                             }
                                         }closeHandler:^{
                                             //用户关闭验证后执行的方法
-                                            [self removeMBProgressHUD];
+//                                            [self removeMBProgressHUD];
                                             NSLog(@"close geetest");
                                         } animated:YES];
                                         
                                     } else {
-                                        [self removeMBProgressHUD];
+//                                        [self removeMBProgressHUD];
                                         NSLog(@"invalid geetest ID, please set right ID");
                                     }
                                 }else{
                                     //TODO 当极验服务器不可用时，将执行此处网站主的自定义验证方法或者其他处理方法(gt-server is not available, add your handler methods)
-                                    /*请网站主务必考虑这一处的逻辑处理，否者当极验服务不可用的时候会导致用户的业务无法正常执行*/
+                                    /**请网站主务必考虑这一处的逻辑处理，否者当极验服务不可用的时候会导致用户的业务无法正常执行*/
                                     UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Warning"
                                                                                       message:@"极验验证服务异常不可用,请准备备用验证"
                                                                                      delegate:self
                                                                             cancelButtonTitle:@"OK"
                                                                             otherButtonTitles:nil, nil];
                                     dispatch_async(dispatch_get_main_queue(), ^{
-                                            [MBProgressHUD hideHUDForView:self.view animated:YES];
+//                                            [MBProgressHUD hideHUDForView:self.view animated:YES];
                                             [warning show];
                                     });
                                     NSLog(@"极验验证服务暂时不可用,请网站主在此写入启用备用验证的方法");
@@ -126,7 +136,7 @@
             if ([code isEqualToString:@"1"]) {
                 
                 //TODO行为判定通过，进行二次验证,替换成你的api_2(replace this demo api_2 with yours)
-                /* custom_server_validate_url 网站主部署的二次验证链接 (api_2)*/
+                /** custom_server_validate_url 网站主部署的二次验证链接 (api_2)*/
                 NSString *custom_server_validate_url = @"http://testcenter.geetest.com/gtweb/android_sdk_demo_server_validate/";
                 NSDictionary *headerFields = @{@"Content-Type":@"application/x-www-form-urlencoded;charset=UTF-8"};
                 MKNetworkEngine *engine = [[MKNetworkEngine alloc] initWithHostName:nil customHeaderFields:headerFields];
@@ -164,7 +174,7 @@
             NSLog(@"client captcha exception:%@", exception.description);
         }
         @finally {
-            [self removeMBProgressHUD];
+//            [self removeMBProgressHUD];
         }
     }
 }
@@ -197,7 +207,7 @@
                                                cancelButtonTitle:@"确定"
                                                otherButtonTitles:nil, nil];
     dispatch_async(dispatch_get_main_queue(), ^{
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
+//        [MBProgressHUD hideHUDForView:self.view animated:YES];
         [errorAlert show];
     });
 }
