@@ -185,6 +185,12 @@ GTManageDelegate, 处理错误的代理方法
 #.  NSURLErrorCancelled 取消了网络请求
 
         一般不出现,SDK里并没有给出用户提前取消请求的方法
+#.  NSURLErrorCannotConnectToHost 无法连接到极验服务器
+        
+        网络异常,无法连接到极验服务器
+#.  NSURLErrorNotConnectedToInternet 没有连接到互联网
+
+        没有网络时提示
 #.  json解析出错
         
         只有在使用默认的failback里使用了json转字典

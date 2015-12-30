@@ -18,7 +18,7 @@
 
 typedef NS_ENUM(NSInteger, DefaultRequestTypeOptions){
     /** Send Synchronous Request */
-    GTDefaultSynchronousRequest,
+    GTDefaultSynchronousRequest = 0,
     /** Send Asynchronous Request */
     GTDefaultAsynchronousRequest
 };

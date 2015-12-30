@@ -32,7 +32,7 @@
         [_manager debugModeEnable:NO];
         [_manager setGTDelegate:self];
         //在此设置验证背景遮罩的透明度,如果不想要背景遮罩,将此属性设置为0
-        _manager.backgroundAlpha = 0.4;
+        _manager.backgroundAlpha = 0.2;
         //开启验证视图的外围阴影
         _manager.cornerViewShadow = NO;
         //验证背景颜色(例:yellow 0xffc832 rgb(255,200,50))
@@ -201,7 +201,7 @@
 
 - (void)GTNetworkErrorHandler:(NSError *)error{
     NSLog(@"GTNetWork Error: %@",error.localizedDescription);
-    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"错误"
+    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"网络错误"
                                                          message:error.localizedDescription
                                                         delegate:self
                                                cancelButtonTitle:@"确定"
