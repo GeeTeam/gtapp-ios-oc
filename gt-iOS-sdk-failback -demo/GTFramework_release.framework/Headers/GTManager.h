@@ -12,13 +12,6 @@
 @protocol GTManageDelegate <NSObject>
 
 @required
-/**
- *  验证错误的处理方法
- *  主要捕捉网络错误和Json解析错误, 详见在线文档说明
- *  https://github.com/GeeTeam/gtapp-ios-oc/blob/master/gt-iOS-sdk-failback%20-demo/geetest_ios_dev.rst
- *
- *  @param error 错误源
- */
 - (void)GTNetworkErrorHandler:(NSError *)error;
 
 @end
@@ -69,8 +62,7 @@ typedef NS_ENUM(NSInteger, DefaultRequestTypeOptions){
 + (instancetype)sharedGTManger;
 
 /**
- *  向CustomServer发送geetest验证请求，如果网站主服务器判断geetest服务可用，返回验证必要的数据，否则再错误代理方法里给出错误信息。
- *  此方法与requestGTest:方法二选一
+ *  向CustomServer发送geetest验证请求，如果网站主服务器判断geetest服务可用，返回验证必要的数据，否则再错误代理方法里给出错误信息
  *
  *  @param requestCustomServerForGTestURL   客户端向网站主服务端发起验证请求的链接(api_1)
  *  @param timeoutInterval                  超时间隔
@@ -92,9 +84,8 @@ typedef NS_ENUM(NSInteger, DefaultRequestTypeOptions){
                   completionHandler:(GTDefaultCaptchaHandlerBlock)handler;
 
 /**
- *  取消异步请求。
- *  当希望取消正在执行的 Default Asynchronous Request时，调用此方法取消。
- *  仅当使用默认异步请求可以调用该方法。
+ *  取消异步请求
+ *  仅当使用默认异步请求可以调用该方法
  */
 - (void)cancelRequest;
 
@@ -114,10 +105,9 @@ typedef NS_ENUM(NSInteger, DefaultRequestTypeOptions){
              success:(NSNumber *)successCode;
 
 /**
- *  (必要方法)
  *  展示验证
  *  实现方式 直接在 keyWindow 上添加遮罩视图、极验验证的UIWebView视图
- *  极验验证UIWebView通过JS与SDK通信
+ *  极速验证UIWebView通过JS与SDK通信
  *
  *  @param finish 验证返回结果
  *  @param close  关闭验证
@@ -128,10 +118,9 @@ typedef NS_ENUM(NSInteger, DefaultRequestTypeOptions){
                           animated:(BOOL)animated;
 
 /**
- *  (非必要方法)
  *  **仅允许在debugMode下调用**
  *  测试用户端与极验服务连接是否畅通可用,如果直接使用此方法来判断是否开启验证,则会导致当极验验证动态服务器宕机的情况下无法正常进行极验验证。
- *  此方法仅在debugMode可用,用于测试
+ *  此方法仅用于debugMode,用于测试
  *
  *  @param captcha_id 分配的captcha_id
  *
@@ -145,13 +134,6 @@ typedef NS_ENUM(NSInteger, DefaultRequestTypeOptions){
 - (void)closeGTViewIfIsOpen;
 
 /**
- *  (非必要方法)
- *  使用HTTPS协议请求验证
- */
-- (void)needSecurityAuthentication:(BOOL)secured;
-
-/**
- *  (非必要方法)
  *  开启debugMode,在开启验证之前调用此方法
  *
  *  @param debugModeAvailable YES开启,NO关闭

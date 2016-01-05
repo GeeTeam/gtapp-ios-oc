@@ -37,8 +37,12 @@
     // Use XCTAssert and related functions to verify your tests produce the correct results.
     
     XCUIApplication *app = [[XCUIApplication alloc] init];
-    [app.navigationBars[@"\u8d26\u6237"].buttons[@"\u6d4b\u8bd5"] tap];
-    [[[[app.tables childrenMatchingType:XCUIElementTypeCell] elementBoundByIndex:0] childrenMatchingType:XCUIElementTypeTextField].element tap];
+    XCUIElement *button = app.navigationBars[@"\u8d26\u6237"].buttons[@"\u6d4b\u8bd5"];
+    [button tap];
+    
+    XCUIElement *element = [[[[[app childrenMatchingType:XCUIElementTypeWindow] elementBoundByIndex:0] childrenMatchingType:XCUIElementTypeOther] elementBoundByIndex:1] childrenMatchingType:XCUIElementTypeOther].element;
+    [element tap];
+    
 }
 
 @end

@@ -30,6 +30,7 @@
     if (!_manager) {
         _manager = [GTManager sharedGTManger];
         [_manager debugModeEnable:NO];
+        [_manager needSecurityAuthentication:YES];
         [_manager setGTDelegate:self];
         //在此设置验证背景遮罩的透明度,如果不想要背景遮罩,将此属性设置为0
         _manager.backgroundAlpha = 0.2;
@@ -41,6 +42,7 @@
     return _manager;
 }
 
+//验证无关, 用于验证背景的模糊和虚化
 - (UIVisualEffectView *)visualEffect{
     if (!_visualEffect) {
         _visualEffect = [[UIVisualEffectView alloc] initWithEffect:[UIVibrancyEffect effectForBlurEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]]];
