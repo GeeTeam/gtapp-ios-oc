@@ -23,13 +23,6 @@
 
 @end
 
-typedef NS_ENUM(NSInteger, DefaultRequestTypeOptions){
-    /** Send Synchronous Request */
-    GTDefaultSynchronousRequest = 0,
-    /** Send Asynchronous Request */
-    GTDefaultAsynchronousRequest
-};
-
 /**
  * 验证管理器
  */
@@ -47,7 +40,7 @@ typedef NS_ENUM(NSInteger, DefaultRequestTypeOptions){
 
 /**
  *  验证背景的16进制颜色,例如灰色:0xa0a0a0,对应rgb颜色(160,160,160)
-    范围为:0x000000~0xffffff,请慎用此属性
+ *  范围为:0x000000~0xffffff,请慎用此属性
  */
 @property (nonatomic, assign) int colorWithHexInt;
 
@@ -149,6 +142,13 @@ typedef NS_ENUM(NSInteger, DefaultRequestTypeOptions){
  *  使用HTTPS协议请求验证
  */
 - (void)needSecurityAuthentication:(BOOL)secured;
+
+/**
+ *  切换验证语言
+ *
+ *  @param lang 语言
+ */
+- (void)languageSwitch:(LanguageType)Type;
 
 /**
  *  (非必要方法)

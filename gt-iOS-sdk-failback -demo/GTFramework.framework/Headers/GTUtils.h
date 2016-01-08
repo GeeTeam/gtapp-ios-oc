@@ -10,6 +10,36 @@
 #define GTFramework_GTUtils_h
 
 /**
+ *  默认failback请求类型选项
+ */
+typedef NS_ENUM(NSInteger, DefaultRequestTypeOptions) {
+    /** Send Synchronous Request */
+    GTDefaultSynchronousRequest = 0,
+    /** Send Asynchronous Request */
+    GTDefaultAsynchronousRequest
+};
+
+/**
+ *  语言选项
+ */
+typedef NS_ENUM(NSInteger, LanguageType) {
+    /** Simplified Chinese */
+    LANGTYPE_ZH_CN = 0,
+    /** Traditional Chinese */
+    LANGTYPE_ZH_TW,
+    /** Traditional Chinese */
+    LANGTYPE_ZH_HK,
+    /** Korean */
+    LANGTYPE_KO_KR,
+    /** Japenese */
+    LANGTYPE_JA_JP,
+    /** English */
+    LANGTYPE_EN_US,
+    /** System language */
+    LANGTYPE_AUTO
+};
+
+/**
  *  默认验证处理block
  *
  *  @param gt_captcha_id   用于验证的captcha_id
