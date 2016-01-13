@@ -29,9 +29,9 @@
 - (GTManager *)manager{
     if (!_manager) {
         _manager = [GTManager sharedGTManger];
-        [_manager debugModeEnable:YES];
+        [_manager debugModeEnable:NO];
         [_manager needSecurityAuthentication:NO];
-        [_manager languageSwitch:LANGTYPE_AUTO];
+        [_manager languageSwitch:LANGTYPE_ZH_CN];
         [_manager setGTDelegate:self];
         //在此设置验证背景遮罩的透明度,如果不想要背景遮罩,将此属性设置为0
         _manager.backgroundAlpha = 0.2;
@@ -61,6 +61,8 @@
 }
 
 - (IBAction)testAction:(id)sender {
+    //dismiss keyboard if there is a keyboard.
+    [self.view endEditing:YES];
     [self requestGTest];
 }
 
@@ -128,6 +130,7 @@
 
 /**
  *  二次验证是验证的必要环节,此方法的构造供参考,可根据需求自行调整(MKNetworkKit is just for this demo. You can choose what your like to complete this step.)
+ *  使用POST请求将 result 发送至网站主服务器, 极验的server sdk会判断这块的结果
  *
  *  @param code    <#code description#>
  *  @param result  <#result description#>

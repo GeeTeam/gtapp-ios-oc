@@ -144,7 +144,8 @@
 - (void)needSecurityAuthentication:(BOOL)secured;
 
 /**
- *  切换验证语言
+ *  (非必要方法)
+ *  切换验证语言,默认中文
  *
  *  @param lang 语言
  */
