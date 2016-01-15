@@ -27,11 +27,8 @@
         [_manager debugModeEnable:NO];
         [_manager setGTDelegate:self];
         //在此设置验证背景遮罩的透明度,如果不想要背景遮罩,将此属性设置为0
-        _manager.backgroundAlpha = 0.2;
         //开启验证视图的外围阴影
         _manager.cornerViewShadow = NO;
-        //验证背景颜色(例:yellow 0xffc832 rgb(255,200,50))
-        _manager.colorWithHexInt = 0x0a0a0a;
     }
     return _manager;
 }
@@ -98,36 +95,58 @@
 }
 
 /**
- *  测试自定义的failback验证
+ *  测试自定义的failback验证,因为是验证产品的关系,需要人工操作通过一次验证
  */
-- (void)testCustomCaptcha{
+- (void)testCustomFailbackCaptcha{
     
     self.customExpectation = [self expectationWithDescription:@"Test Custom Captcha"];
     //创建请求
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:self.requestGTestURL
-                                                  cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
-                                              timeoutInterval:15.0];
-    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-    [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse * response, NSData * data, NSError * connectionError) {
-        
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:self.requestGTestURL
+                                                                cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
+                                                            timeoutInterval:15.0];
+    NSURLSessionConfiguration *configurtion = [NSURLSessionConfiguration defaultSessionConfiguration];
+    configurtion.allowsCellularAccess = YES;
+    configurtion.timeoutIntervalForRequest = 15.0;
+    configurtion.timeoutIntervalForResource = 15.0;
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:configurtion];
+    request.HTTPMethod = @"GET";
+    NSURLSessionDataTask *sessionDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
         if (httpResponse.statusCode == 200) {
-            
-            if (data.length > 0 && !connectionError) {
-                
-                NSDictionary *customRetDict = [NSJSONSerialization JSONObjectWithData:data
-                                                                              options:NSJSONReadingAllowFragments
-                                                                                error:nil];
-                
+            if (data && !error) {
+                NSDictionary *customRetDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
                 [self performSelectorOnMainThread:@selector(requestGeeTestWithDictionary:) withObject:customRetDict waitUntilDone:YES];
+            }else{
+                NSLog(@"error: %@",error.localizedDescription);
             }
         }else{
-            NSLog(@"responseCode : %ld , error : %@", (long)httpResponse.statusCode, connectionError.localizedDescription);
+            NSLog(@"statusCode: %ld",(long)httpResponse.statusCode);
         }
     }];
+    [sessionDataTask resume];
     
     [self waitForExpectationsWithTimeout:30.0 handler:^(NSError * _Nullable error) {
         NSLog(@"WARNING: You should finish the captcha to complete this test.");
+    }];
+}
+
+/**
+ *  测试HTTPS,因为是验证产品的关系,需要人工操作通过一次验证
+ */
+- (void)testHTTPs{
+    [self.manager needSecurityAuthentication:YES];
+    
+    self.customExpectation = [self expectationWithDescription:@"Test HTTPs"];
+    
+    [self.manager requestCustomServerForGTest:self.requestGTestURL
+                              timeoutInterval:15.0
+                           withHTTPCookieName:nil
+                                      options:GTDefaultSynchronousRequest
+                            completionHandler:^(NSString *gt_captcha_id, NSString *gt_challenge, NSNumber *gt_success_code) {
+                                [self coreCaptchaMethod:gt_captcha_id withChallenge:gt_challenge succesCode:gt_success_code];
+                            }];
+    [self waitForExpectationsWithTimeout:30.0 handler:^(NSError * _Nullable error) {
+        NSLog(@"WARNING: You should finish the captcha to complete this test. Or there are some errors with SSL.");
     }];
 }
 
@@ -171,6 +190,11 @@
     NSNumber *gt_success = [dic objectForKey:@"success"];
     NSLog(@"id : %@, challenge : %@",gt_captcha_id,gt_challenge);
     
+    [self coreCaptchaMethod:gt_captcha_id withChallenge:gt_challenge succesCode:gt_success];
+    
+}
+
+- (void)coreCaptchaMethod:(NSString *)gt_captcha_id withChallenge:(NSString *)gt_challenge succesCode:(NSNumber *)gt_success{
     //如果failback使用我们的静态验证方式,下面的bool值填入YES/true
     if ([gt_success intValue] == 1) {
         //根据custom server的返回字段判断是否开启failback
@@ -188,7 +212,6 @@
             } closeHandler:^{
                 //用户关闭验证后执行的方法
                 NSLog(@"close geetest");
-                [self.customExpectation fulfill];
             } animated:YES];
         } else {
             // TODO 写上检测网络的方法，或者不做任何处理(network error,check your network)
@@ -199,7 +222,6 @@
         /** 请网站主务必考虑这一处的逻辑处理，否者当极验服务不可用的时候会导致用户的业务无法正常执行*/
         NSLog(@"极验验证服务暂时不可用,请网站主在此写入启用备用验证的方法");
     }
-    
 }
 
 #pragma mark -- GTManageDelegate

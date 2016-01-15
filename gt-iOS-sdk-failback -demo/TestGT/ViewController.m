@@ -29,21 +29,24 @@
 - (GTManager *)manager{
     if (!_manager) {
         _manager = [GTManager sharedGTManger];
-        [_manager debugModeEnable:NO];
+        [_manager debugModeEnable:YES];
+        [_manager setGTDelegate:self];
+        /** 以下方法按需使用,非必要方法,有默认值 */
         [_manager needSecurityAuthentication:NO];
         [_manager languageSwitch:LANGTYPE_ZH_CN];
-        [_manager setGTDelegate:self];
-        //在此设置验证背景遮罩的透明度,如果不想要背景遮罩,将此属性设置为0
-        _manager.backgroundAlpha = 0.2;
+        [_manager configureAnimatedAcitvityIndicator:^(CALayer *layer, CGSize size, UIColor *color) {
+            [self setupIndicatorAnimation:layer withSize:size tintColor:color];
+        } withActivityIndicatorViewType:GTIndicatorCustomType];
+        /** 注释在此结束 */
         //开启验证视图的外围阴影
         _manager.cornerViewShadow = NO;
-        //验证背景颜色(例:yellow 0xffc832 rgb(255,200,50))
-        _manager.colorWithHexInt = 0x0a0a0a;
+        //验证背景颜色(例:yellow rgb(255,200,50))
+        _manager.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.2];
     }
     return _manager;
 }
 
-//验证无关, 用于验证背景的模糊和虚化
+//验证无关, 可用于验证背景的模糊和虚化, sdk本身不带此类效果
 - (UIVisualEffectView *)visualEffect{
     if (!_visualEffect) {
         _visualEffect = [[UIVisualEffectView alloc] initWithEffect:[UIVibrancyEffect effectForBlurEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]]];
@@ -72,7 +75,7 @@
 - (void)requestGTest{
     __weak __typeof(self) weakSelf = self;
     
-    //MBProgressHUD 是不必要的,仅用于演示
+    //MBProgressHUD 是不必要的,仅用于演示。建议在异步请求方式时提供状态指示器以告诉用户验证状态。
 //    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     /** TODO 在此写入客户端首次向网站主服务端请求gt验证的链接(api_1) (replace demo api_1 with yours)*/
@@ -182,6 +185,54 @@
         @finally {
 //            [self removeMBProgressHUD];
         }
+    }
+}
+
+/**
+ *  自定义状态指示器动画
+ *
+ *  @param layer <#layer description#>
+ *  @param size  <#size description#>
+ *  @param color <#color description#>
+ */
+- (void)setupIndicatorAnimation:(CALayer *)layer withSize:(CGSize)size tintColor:(UIColor *)color{
+    CGFloat duration = 1.0f;
+    CGFloat beginTime = CACurrentMediaTime();
+    
+    // Scale Animation
+    CABasicAnimation *scaleAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+    
+    scaleAnimation.duration = duration;
+    scaleAnimation.fromValue = @0.0f;
+    scaleAnimation.toValue = @1.0f;
+    
+    // Opacity Animation
+    CAKeyframeAnimation *opacityAnimation = [CAKeyframeAnimation animationWithKeyPath:@"opacity"];
+    
+    opacityAnimation.duration = duration;
+    opacityAnimation.keyTimes = @[@0.0f, @0.05f, @1.0f];
+    opacityAnimation.values = @[@0.0f, @0.7f, @0.0f];
+    
+    // Group Animation
+    CAAnimationGroup *animation = [CAAnimationGroup animation];
+    
+    animation.animations = @[scaleAnimation, opacityAnimation];
+    animation.duration = duration + 1.2f;
+    animation.repeatCount = HUGE_VALF;
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    animation.removedOnCompletion = NO;
+    
+    for (int i = 0; i < 4; i++) {
+        CAShapeLayer *circle = [CAShapeLayer layer];
+        UIBezierPath *circlePath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, size.width, size.height) cornerRadius:size.width / 2];
+        
+        animation.beginTime = beginTime + i * 0.2f;
+        circle.fillColor = color.CGColor;
+        circle.path = circlePath.CGPath;
+        circle.opacity = 0.0f;
+        [circle addAnimation:animation forKey:@"animation"];
+        circle.frame = CGRectMake((layer.bounds.size.width - size.width) / 2, (layer.bounds.size.height - size.height) / 2, size.width, size.height);
+        [layer addSublayer:circle];
     }
 }
 

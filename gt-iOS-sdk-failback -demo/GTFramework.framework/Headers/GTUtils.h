@@ -9,6 +9,8 @@
 #ifndef GTFramework_GTUtils_h
 #define GTFramework_GTUtils_h
 
+#import <UIKit/UIKit.h>
+
 /**
  *  默认failback请求类型选项
  */
@@ -39,14 +41,32 @@ typedef NS_ENUM(NSInteger, LanguageType) {
     LANGTYPE_AUTO
 };
 
+typedef NS_ENUM(NSInteger, ActivityIndicatorViewType) {
+    /** System Indicator Type */
+    GTIndicatorSystemType = 0,
+    /** Geetest Defualt Indicator Type */
+    GTIndicatorDefaultType,
+    /** Custom Indicator Type */
+    GTIndicatorCustomType,
+};
+
 /**
  *  默认验证处理block
  *
  *  @param gt_captcha_id   用于验证的captcha_id
  *  @param gt_challenge    验证的流水号
- *  @param gt_success_code 网站主检验极验服务的结果
+ *  @param gt_success_code 网站主侦测到极验服务器的状态
  */
 typedef void(^GTDefaultCaptchaHandlerBlock)(NSString *gt_captcha_id, NSString *gt_challenge, NSNumber *gt_success_code);
+
+/**
+ *  自定义状态指示器的动画实现block
+ *
+ *  @param layer 状态指示器视图的layer
+ *  @param size  layer的大小,默认 {64, 64}
+ *  @param color layer的颜色,默认 蓝色 [UIColor colorWithRed:0.3 green:0.6 blue:0.9 alpha:1]
+ */
+typedef void(^GTIndicatorAnimationViewBlock)(CALayer *layer, CGSize size, UIColor *color);
 
 /**
  *  验证完成回调

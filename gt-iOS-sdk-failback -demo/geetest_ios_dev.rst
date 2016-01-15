@@ -75,11 +75,11 @@ _mobileInfo   手机静态信息举例 Code Sample
 	
 回调Block及返回值
 ========================================
+验证结果返回后的操作,非主线程操作
 
 .. code::
 	
-    Block：
-	   ^(NSString *code, NSDictionary *result, NSString *message) {} 
+    typedef void(^GTCallFinishBlock)(NSString *code, NSDictionary *result, NSString *message); 
 	
 返回值：
 
@@ -97,6 +97,14 @@ _mobileInfo   手机静态信息举例 Code Sample
      "geetest_validate": "f0f541006215ac784859e29ec23d5b97",
      "geetest_seccode": "f0f541006215ac784859e29ec23d5b97|jordan"
      }
+
+验证关闭block
+========================================
+验证关闭的操作,非主线程操作
+
+.. code::
+
+    typedef void(^GTCallCloseBlock)(void);
 
 
 gt验证SDK Header暴露的方法
@@ -193,26 +201,10 @@ GTManageDelegate, 处理错误的代理方法
         没有网络时提示
 #.  json解析出错
         
-        只有在使用默认的failback里使用了json转字典
+        在使用默认的failback里使用了json转字典, 检查网站主服务器返回的验证数据格式是否正确
 
         解析使用JSONObjectWithData: options: error:方法
-    
 
-
-验证完成回调block
--------------------------------------------------------------------
-
-.. code::
-
-    typedef void(^GTCallFinishBlock)(NSString *code, NSDictionary *result, NSString *message);
-
-
-验证关闭block
--------------------------------------------------------------------
-
-.. code::
-
-    typedef void(^GTCallCloseBlock)(void);
 
 
 <!>展示验证<!>
@@ -245,6 +237,90 @@ GTManageDelegate, 处理错误的代理方法
     
     - (void)closeGTViewIfIsOpen;
 
+配置状态指示器
+-------------------------------------------------------------------
+
+配置加载验证时的状态指示器
+
+@param animationBlock 自定义时需要实现的动画block,仅在type配置为GTIndicatorCustomType时才执行
+
+@param type           状态指示器的类型
+
+
+.. code::
+
+    - (void)configureAnimatedAcitvityIndicator:(GTIndicatorAnimationViewBlock)animationBlock
+             withActivityIndicatorViewType:(ActivityIndicatorViewType)type;
+
+ActivityIndicatorViewType:
+
+.. code::
+
+    typedef NS_ENUM(NSInteger, ActivityIndicatorViewType) {
+    /** System Indicator Type 系统样式*/
+    GTIndicatorSystemType = 0,
+    /** Geetest Defualt Indicator Type 极验验证默认样式*/
+    GTIndicatorDefaultType,
+    /** Custom Indicator Type 自定义样式*/
+    GTIndicatorCustomType,
+    };
+
+GTIndicatorSystemType
+
+.. image:: img/indicator_system.png
+
+GTIndicatorDefaultType
+
+.. image:: img/indicator_default.png
+
+GTIndicatorCustomType(sample), 可根据需要修改
+
+.. image:: img/indicator_custom_sample.png
+
+HTTPS支持(非必要方法,默认不使用https)
+-------------------------------------------------------------------
+
+使用https协议开启验证, 付费用户可使用, 极验服务器对这块的支持有判定
+
+@param secured 是否需要https支持
+
+.. code::
+    
+    - (void)needSecurityAuthentication:(BOOL)secured;
+
+
+验证展示语言(非必要,默认中文)
+-------------------------------------------------------------------
+
+切换验证展示的语言
+
+@param Type 语言类型
+
+.. code::
+    
+    - (void)languageSwitch:(LanguageType)Type;
+
+LanguageType:
+
+.. code::
+    
+    //语言选项
+    typedef NS_ENUM(NSInteger, LanguageType) {
+    /** Simplified Chinese 简体*/
+    LANGTYPE_ZH_CN = 0,
+    /** Traditional Chinese 繁体*/
+    LANGTYPE_ZH_TW,
+    /** Traditional Chinese 繁体*/
+    LANGTYPE_ZH_HK,
+    /** Korean 韩语*/
+    LANGTYPE_KO_KR,
+    /** Japenese 日语*/
+    LANGTYPE_JA_JP,
+    /** English 英语*/
+    LANGTYPE_EN_US,
+    /** System language, 返回与系统同步的语言 */
+    LANGTYPE_AUTO
+    };
 
 测试服务是否可用(仅限debugMode)
 -------------------------------------------------------------------
@@ -253,15 +329,15 @@ GTManageDelegate, 处理错误的代理方法
 
 @return YES则服务可用；NO则不可用
 
-..code::
+.. code::
     
     - (BOOL)serverStatusWithCaptcha_id:(NSString *)captcha_id;
 
 
-开启debugMode
+开启debugMode(非必要方法)
 -------------------------------------------------------------------
 
-在此开启debugMode用于debug
+开启debugMode用于debug,正常验证不是用此方法或此方法设为 NO
 
 .. code::
 
@@ -270,4 +346,36 @@ GTManageDelegate, 处理错误的代理方法
 
 参考资料
 ========================================
-(无)
+默认验证处理block
+-------------------------------------------------------------------
+
+默认验证处理block, 在使用默认failback设计模式时, 将<核心验证>方法放在此处
+
+@param gt_captcha_id   用于验证的captcha_id
+
+@param gt_challenge    验证的流水号
+
+@param gt_success_code 网站主侦测到极验服务器的状态
+
+.. code::
+
+    typedef void(^GTDefaultCaptchaHandlerBlock)(NSString *gt_captcha_id, NSString *gt_challenge, NSNumber *gt_success_code);
+
+
+自定义状态指示器的动画实现block
+-------------------------------------------------------------------
+
+仅当ActivityIndicatorViewType配置为GTIndicatorCustomType时才执行此block
+
+@param layer 状态指示器视图的layer
+
+@param size  layer的大小,默认 {64, 64}
+
+@param color layer的颜色,默认 蓝色 [UIColor colorWithRed:0.3 green:0.6 blue:0.9 alpha:1]
+
+.. code::
+
+    typedef void(^GTIndicatorAnimationViewBlock)(CALayer *layer, CGSize size, UIColor *color);
+
+
+(完)
