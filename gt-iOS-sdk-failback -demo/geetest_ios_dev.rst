@@ -325,7 +325,6 @@ LanguageType:
 备注:
     LANGTYPE_AUTO 通过 [NSLocale preferredLanguages] 获取语言简码。
 
-
 测试服务是否可用(仅限debugMode)
 -------------------------------------------------------------------
 
