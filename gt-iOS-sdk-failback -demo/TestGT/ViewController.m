@@ -29,19 +29,23 @@
 - (GTManager *)manager{
     if (!_manager) {
         _manager = [GTManager sharedGTManger];
-        [_manager debugModeEnable:YES];
         [_manager setGTDelegate:self];
         /** 以下方法按需使用,非必要方法,有默认值 */
+        //debug配置
+        [_manager debugModeEnable:NO];
+        //https配置
         [_manager needSecurityAuthentication:NO];
+        //多语言配置
         [_manager languageSwitch:LANGTYPE_ZH_CN];
+        //状态指示器配置
         [_manager configureAnimatedAcitvityIndicator:^(CALayer *layer, CGSize size, UIColor *color) {
-            [self setupIndicatorAnimation:layer withSize:size tintColor:color];
+            [self setupIndicatorAnimationSample2:layer withSize:size tintColor:color];
         } withActivityIndicatorViewType:GTIndicatorCustomType];
-        /** 注释在此结束 */
         //开启验证视图的外围阴影
-        _manager.cornerViewShadow = NO;
+        [_manager setCornerViewShadow:NO];
         //验证背景颜色(例:yellow rgb(255,200,50))
-        _manager.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.2];
+        [_manager setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.2]];
+        /** 注释在此结束 */
     }
     return _manager;
 }
@@ -75,7 +79,10 @@
 - (void)requestGTest{
     __weak __typeof(self) weakSelf = self;
     
-    //MBProgressHUD 是不必要的,仅用于演示。建议在异步请求方式时提供状态指示器以告诉用户验证状态。
+    /**
+     *  MBProgressHUD 是不必要的,仅用于演示。
+     *  开启验证前需要向网站主的服务器获取相应的验证数据(id,challenge,success),这块根据用户的网络情况需要若干时间,建议在异步请求方式时提供状态指示器以告诉用户验证状态。
+     */
 //    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     /** TODO 在此写入客户端首次向网站主服务端请求gt验证的链接(api_1) (replace demo api_1 with yours)*/
@@ -133,7 +140,8 @@
 
 /**
  *  二次验证是验证的必要环节,此方法的构造供参考,可根据需求自行调整(MKNetworkKit is just for this demo. You can choose what your like to complete this step.)
- *  使用POST请求将 result 发送至网站主服务器, 极验的server sdk会判断这块的结果
+ *  考虑到mknetworkkit的轻便性,且希望开发者了解这块的逻辑以及重要性,而没使用AFNetworking
+ *  使用POST请求将 result 发送至网站主服务器, 集成极验提供的server sdk会判断这块的结果
  *
  *  @param code    <#code description#>
  *  @param result  <#result description#>
@@ -189,13 +197,14 @@
 }
 
 /**
- *  自定义状态指示器动画
+ *  自定义状态指示器动画 smaple1
  *
  *  @param layer <#layer description#>
  *  @param size  <#size description#>
  *  @param color <#color description#>
  */
-- (void)setupIndicatorAnimation:(CALayer *)layer withSize:(CGSize)size tintColor:(UIColor *)color{
+- (void)setupIndicatorAnimationSample1:(CALayer *)layer withSize:(CGSize)size tintColor:(UIColor *)color{
+    
     CGFloat duration = 1.0f;
     CGFloat beginTime = CACurrentMediaTime();
     
@@ -217,9 +226,9 @@
     CAAnimationGroup *animation = [CAAnimationGroup animation];
     
     animation.animations = @[scaleAnimation, opacityAnimation];
-    animation.duration = duration + 1.2f;
+    animation.duration = duration + 1.4f;
     animation.repeatCount = HUGE_VALF;
-    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
     animation.removedOnCompletion = NO;
     
     for (int i = 0; i < 4; i++) {
@@ -233,6 +242,49 @@
         [circle addAnimation:animation forKey:@"animation"];
         circle.frame = CGRectMake((layer.bounds.size.width - size.width) / 2, (layer.bounds.size.height - size.height) / 2, size.width, size.height);
         [layer addSublayer:circle];
+    }
+}
+
+/**
+ *  custom animation sample2
+ *
+ *  @param layer <#layer description#>
+ *  @param size  <#size description#>
+ *  @param color <#color description#>
+ */
+- (void)setupIndicatorAnimationSample2:(CALayer *)layer withSize:(CGSize)size tintColor:(UIColor *)color{
+    color = [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:1.0];
+    NSTimeInterval beginTime = CACurrentMediaTime();
+    
+    CGFloat oX = (layer.bounds.size.width - size.width) / 2.0f;
+    CGFloat oY = (layer.bounds.size.height - size.height) / 2.0f;
+    for (int i = 0; i < 4; i++) {
+        CALayer *circle = [CALayer layer];
+        circle.frame = CGRectMake(oX, oY, size.width, size.height);
+        circle.backgroundColor = color.CGColor;
+        circle.anchorPoint = CGPointMake(0.5f, 0.5f);
+        circle.opacity = 0.8f;
+        circle.cornerRadius = circle.bounds.size.height / 2.0f;
+        circle.transform = CATransform3DMakeScale(0.0f, 0.0f, 0.0f);
+        
+        CABasicAnimation *transformAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
+        transformAnimation.fromValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.0f, 0.0f, 0.0f)];
+        transformAnimation.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.0f, 1.0f, 0.0f)];
+        
+        CABasicAnimation *opacityAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+        opacityAnimation.fromValue = @(0.8f);
+        opacityAnimation.toValue = @(0.0f);
+        
+        CAAnimationGroup *animationGroup = [CAAnimationGroup animation];
+        animationGroup.removedOnCompletion = NO;
+        animationGroup.beginTime = beginTime + i * 0.2f;
+        animationGroup.repeatCount = HUGE_VALF;
+        animationGroup.duration = 1.2f;
+        animationGroup.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+        animationGroup.animations = @[transformAnimation, opacityAnimation];
+        
+        [layer addSublayer:circle];
+        [circle addAnimation:animationGroup forKey:@"animation"];
     }
 }
 

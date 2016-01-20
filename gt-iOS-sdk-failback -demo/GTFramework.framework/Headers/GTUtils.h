@@ -37,7 +37,7 @@ typedef NS_ENUM(NSInteger, LanguageType) {
     LANGTYPE_JA_JP,
     /** English */
     LANGTYPE_EN_US,
-    /** System language */
+    /** System language*/
     LANGTYPE_AUTO
 };
 
