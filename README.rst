@@ -1,7 +1,7 @@
 
-=======================
+================================================
 gtapp-ios-oc
-=======================
+================================================
 
 为了方便第三方开发者快速集成 极验验证 SDK，我们提供了以下联系方式，协助开发者进行集成。
 
@@ -13,7 +13,7 @@ QQ群: 487868018 (iOS) 请注明验证信息
 .. sectnum::
 
 Screenshot
-==================
+================================================
 .. image:: img/demo_0.png
 
 .. image:: img/demo_1.png
@@ -21,7 +21,7 @@ Screenshot
 .. image:: img/demo_2.png
 
 Outline
-======================
+================================================
 验证主要分为三个部分：
     1.  从网站主服务器 获取所需的验证数据 (id,challenge,success)
     2.  核心验证过程
@@ -35,10 +35,10 @@ demo 演示完成的部分
     1.  二次验证不是由sdk完成，而是网站主自己根据demo的逻辑来完成这一块的部署
 
 Version
-================
+================================================
 
 Description
--------------
+---------------------------------------------------------------------
 
 1.  请认真查阅开发者文档,支持iOS7以上.[*please read developer doc, and support iOS7+*]
 #.  在gtapp-ios-oc项目下已经有两个版本，一个是早期版本，framework版本号为2.15.5.＊之前,已经停止开发,另一个是有failback版本的,版本号为2.15.8.＊之后的版本,现在持续更新和维护中。[*There are two versions of GTFramework. The latest one has the failback feature (version 2.15.8.＊ +). We had stopped to develop the old version. So we recommend you to use the failback version.*]
@@ -46,14 +46,14 @@ Description
 #.  推荐failback版本！！！该版本更为安全，即使极验服务暂时不可用，网站主在相应逻辑位置写入备用验证或处理方法，即可轻松切换。[*The faiback version more safe than the old one. If gt-server is not available, you can set some handle methods*]
 #.  详细内容查看目录下的开发者文档。[*get more information in demo files*]
 
-failback
---------------
+Failback
+---------------------------------------------------------------------
 
 1.  2.15. 5.x            : no failback version
 #.  2.15. 8.x - current  : failback version
 
 About gtapp-ios-oc
-======================
+================================================
 
 1.	GTFramework 极验验证iOS版本的SDK，生成一个基于i386、x86_64、armv7、 armv7s、arm64的framework，支持iOS7.0＋。开发使用的Xcode版本为Xcode 7.0。[*build on i386、x86_64、armv7、 armv7s、arm64, and support iOS7+*]
 #.	gt-iOS-sdk-demo 调用sdk的演示app程序。 [*use demo to know more about GTFramework*]
@@ -74,7 +74,7 @@ How to use GTFramework, run the demo first
 #.	在项目标有TODO注释的地方写入网站主自已的处理代码。[*add you handle method where signed 'TODO'*]
    
 集成GTFramework到swift项目
-===========================
+================================================
 
 暂时只提供纯Objective-C的Framework
 
@@ -95,11 +95,13 @@ How to use GTFramework, run the demo first
 更多请查阅官方文档 `Using Swift with Cocoa and Objective-C (Swift 2) <https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html#//apple_ref/doc/uid/TP40014216-CH10-ID122>`_
 
 iOS9的适配问题<tips>
-==================
+================================================
 
 iOS9适配详细可跳转至  `iOS9适配tips <https://github.com/ChenYilong/iOS9AdaptationTips>`_
 
-1. 对网络传输安全协议https的支持
+对网络传输安全协议https的支持
+---------------------------------------------------------------------
+
     由于 iOS 9 改用更安全的https，为了能够在iOS9中正常使用http，请在"Info.plist"中进行如下配置，否则影响网络的使用。
 
 暂时的解决方案:
@@ -161,11 +163,35 @@ iOS9适配详细可跳转至  `iOS9适配tips <https://github.com/ChenYilong/iOS
         </dict>
     </dict>
 
-2. bitcode
+bitcode
+---------------------------------------------------------------------
+
     苹果在iOS9的SDK中添加了对应用的瘦身的支持，其中就包括bitcode。我们目前也在编译生成了支持bitcode版本的sdk。该版本的sdk请见failback demo目录，将文件"GTFramework_bitcode"去掉后缀后的替换原GTFramework文件。（或者通过设置编译标志ENABLE_BITCODE = NO，亦或者修改工程的构建设置(build settings)可关闭bitcode功能）
-	
+
+Xcode7适配问题
+================================================
+
+使用第三方库导致的问题
+---------------------------------------------------------------------
+
+`Lots of warnings when building with Xcode 7 with 3rd party libraries <https://forums.developer.apple.com/thread/17921>`_
+
+在Build Settings 作如下配置
+
+.. code ::
+
+	Precompile Prefix (GCC_PRECOMPILE_PREFIX_HEADER) = NO
+	Debug Information Format (DEBUG_INFORMATION_FORMAT) = DWARF with dSYM
+	Enabled Modules (C and Objective-C) (CLANG_ENABLE_MODULES) = NO
+
+如果不可行尝试
+
+.. code ::
+
+	Enabled Clang Module Debugging = NO
+
 回调Block及返回值
-===========================
+================================================
 
 .. code ::
 	

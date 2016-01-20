@@ -168,12 +168,15 @@
                         
                         //TODO 二次验证成功后执行的方法(after finish Secondery-Validate, to do something)
                         NSLog(@"client captcha response:%@",completedOperation.responseString);
-                        
-                        [self showSuccessView:YES];
+                        //demo配套的使用的是python server sdk, response里的返回的是success/fail
+                        if ([completedOperation.responseString isEqualToString:@"success"]) {
+                            [self showSuccessView:YES];
+                        }else{
+                            [self showSuccessView:NO];
+                        }
                     } else {
                         NSLog(@"client captcha response:%@",completedOperation.responseString);
                         
-                        [self showSuccessView:NO];
                     }
                 
                 } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
