@@ -264,6 +264,9 @@
     for (int i = 0; i < 4; i++) {
         CALayer *circle = [CALayer layer];
         circle.frame = CGRectMake(oX, oY, size.width, size.height);
+        [circle setShouldRasterize:NO];
+        [circle setMasksToBounds:NO];
+        [circle setContentsScale:[UIScreen mainScreen].scale];
         circle.backgroundColor = color.CGColor;
         circle.anchorPoint = CGPointMake(0.5f, 0.5f);
         circle.opacity = 0.8f;
