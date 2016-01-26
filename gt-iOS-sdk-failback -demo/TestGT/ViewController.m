@@ -139,9 +139,9 @@
 }
 
 /**
- *  二次验证是验证的必要环节,此方法的构造供参考,可根据需求自行调整(MKNetworkKit is just for this demo. You can choose what your like to complete this step.)
- *  考虑到mknetworkkit的轻便性,且希望开发者了解这块的逻辑以及重要性,而没使用AFNetworking
- *  使用POST请求将 result 发送至网站主服务器, 集成极验提供的server sdk会判断这块的结果
+ *  二次验证是验证的必要环节,此方法的构造供参考,可根据需求自行调整(NSURLSession is just a sample for this demo. You can choose what your like to complete this step.)
+ *  考虑到nsurlsession的是苹果推荐的网络库,并且希望开发者了解这块的逻辑以及重要性,而没使用使用大家熟悉的AFNetworking
+ *  使用POST请求将 result 以表单格式发送至网站主服务器进行二次验证, 集成极验提供的server sdk会根据数据作出判断并且返回结果
  *
  *  @param code    <#code description#>
  *  @param result  <#result description#>
@@ -151,42 +151,63 @@
     if (code && result) {
         @try {
             if ([code isEqualToString:@"1"]) {
+                __block NSMutableString *postResult = [[NSMutableString alloc] init];
                 
-                //TODO行为判定通过，进行二次验证,替换成你的api_2(replace this demo api_2 with yours)
+                //TODO 行为判定通过，进行二次验证,替换成你的api_2(replace this demo's api_2 with yours)
                 /** custom_server_validate_url 网站主部署的二次验证链接 (api_2)*/
-                NSString *custom_server_validate_url = @"http://testcenter.geetest.com/gtweb/android_sdk_demo_server_validate/";
+                NSString *custom_server_validate_url = @"http://webapi.geetest.com/apis/mobile-server-validate/";
                 NSDictionary *headerFields = @{@"Content-Type":@"application/x-www-form-urlencoded;charset=UTF-8"};
-                MKNetworkEngine *engine = [[MKNetworkEngine alloc] initWithHostName:nil customHeaderFields:headerFields];
                 
-                MKNetworkOperation *operation = [engine operationWithURLString:custom_server_validate_url
-                                                                        params:result
-                                                                    httpMethod:@"POST"];
-                
-                [operation addCompletionHandler:^(MKNetworkOperation *completedOperation) {
-                    
-                    if (completedOperation.HTTPStatusCode == 200) {
-                        
-                        //TODO 二次验证成功后执行的方法(after finish Secondery-Validate, to do something)
-                        NSLog(@"client captcha response:%@",completedOperation.responseString);
-                        //demo配套的使用的是python server sdk, response里的返回的是success/fail
-                        if ([completedOperation.responseString isEqualToString:@"success"]) {
-                            [self showSuccessView:YES];
-                        }else{
-                            [self showSuccessView:NO];
-                        }
-                    } else {
-                        NSLog(@"client captcha response:%@",completedOperation.responseString);
-                        
-                    }
-                
-                } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
-                    NSLog(@"client captcha response error:%@",error.localizedDescription);
+                NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:custom_server_validate_url]];
+                [result enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+                    [postResult appendFormat:@"%@=%@&",key,obj];
                 }];
                 
-                [engine enqueueOperation:operation];
+                if (postResult.length > 0) {
+                    
+                    NSURLSessionConfiguration *configurtion = [NSURLSessionConfiguration defaultSessionConfiguration];
+                    configurtion.allowsCellularAccess = YES;
+                    configurtion.HTTPAdditionalHeaders = headerFields;
+                    configurtion.timeoutIntervalForRequest = 15.0;
+                    configurtion.timeoutIntervalForResource = 15.0;
+                    
+                    NSURLSession *session = [NSURLSession sessionWithConfiguration:configurtion];
+                    request.HTTPMethod = @"POST";
+                    // demo中与仅仅使用表单格式格式化二次验证数据作为演示, 使用其他的格式也是可以的, 但需要与网站主的服务端沟通好以便提交并解析数据
+                    request.HTTPBody = [postResult dataUsingEncoding:NSUTF8StringEncoding];
+                    
+                    NSURLSessionDataTask *sessionDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+                        
+                        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+                        NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                        
+                        if (data.length > 0 && !error) {
+                            
+                            if (httpResponse.statusCode == 200) {
+                                
+                                //TODO 二次验证成功后执行的方法(after finish Secondery-Validate, to do something)
+                                NSLog(@"client captcha response: %@",responseString);
+                                
+                                //Demo配套的使用的是python server sdk, response里的返回的是success/fail
+                                if ([responseString isEqualToString:@"success"]) {
+                                    // TODO 验证成功(Secondery-Validate success)
+                                    [self showSuccessView:YES];
+                                }else{
+                                    // TODO 验证失败(Secondery-Validate fail)
+                                    [self showSuccessView:NO];
+                                }
+                                
+                            }else{
+                                NSLog(@"statusCode: %ld",(long)httpResponse.statusCode);
+                            }
+                        }else{
+                            NSLog(@"error: %@",error.localizedDescription);
+                        }
+                    }];
+                    [sessionDataTask resume];
+                }
 
             } else {
-                // TODO 验证失败(Secondery-Validate fail)
                 NSLog(@"client captcha failed:\ncode :%@ message:%@ result:%@", code, message, result);
             }
         }
