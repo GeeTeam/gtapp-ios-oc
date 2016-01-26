@@ -13,7 +13,7 @@ iOS-Dev
 #.	 gt-iOS-sdk-demo 调用sdk的演示app程序。
 #.	在gt-iOS-sdk-demo下TestGT项目倒入生成的GTFramework.framework静态库，即可运行TestGT项目。
 #.	演示项目提供了用户服务器的预处理以及完整的一次验证，并将客户端验证结果向示例的客户服务器上发起二次验证的完整通讯过程。
-#.	二次验证使用MKNetworkKit，可根据项目需要自行修改。
+#.	不依赖任何第三方库, demo可根据项目需要自行修改。
 #.  iOS端sdk必须与服务器部署代码配套使用，否者无法完成二次验证。`服务器部署代码请移步官网安装文档   <http://www.geetest.com>`__
 
 验证主要分为三个部分：
