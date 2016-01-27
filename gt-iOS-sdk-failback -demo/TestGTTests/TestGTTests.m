@@ -134,7 +134,7 @@
  *  测试HTTPS,因为是验证产品的关系,需要人工操作通过一次验证
  */
 - (void)testHTTPs{
-    [self.manager needSecurityAuthentication:YES];
+    [self.manager useSecurityAuthentication:YES];
     
     self.customExpectation = [self expectationWithDescription:@"Test HTTPs"];
     
@@ -151,7 +151,7 @@
 }
 
 /**
- *  测试错误处理,因为超时错误提示不是也是很难发生的,所以这个测试用例在网络质量好的情况下多是失败的
+ *  测试错误处理,因为本测试用例中的超时错误提示是很难发生的, 尤其是在网络质量好的情况下多是失败的
  */
 - (void)testErrorHandle{
     
