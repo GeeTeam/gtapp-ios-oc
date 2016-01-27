@@ -34,7 +34,7 @@
         //debug配置
         [_manager debugModeEnable:NO];
         //https配置
-        [_manager needSecurityAuthentication:NO];
+        [_manager useSecurityAuthentication:NO];
         //多语言配置
         [_manager languageSwitch:LANGTYPE_ZH_CN];
         //状态指示器配置
