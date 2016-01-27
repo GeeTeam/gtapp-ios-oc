@@ -64,7 +64,7 @@ About gtapp-ios-oc
 
 1.	GTFramework 极验验证iOS版本的SDK，生成一个基于i386、x86_64、armv7、 armv7s、arm64的framework，支持iOS7.0＋。开发使用的Xcode版本为Xcode 7.0。[*build on i386、x86_64、armv7、 armv7s、arm64, and support iOS7+*]
 #.	gt-iOS-sdk-demo 调用sdk的演示app程序。 [*use demo to know more about GTFramework*]
-#.	演示项目提供了完整的一次验证，并将客户端验证结果向示例的客户服务器上发起二次验证的完整通讯过程。[*in the demo, we use MKNetworkKit as third network*]
+#.	演示项目提供了完整的一次验证，并将客户端验证结果向示例的客户服务器上发起二次验证的完整通讯过程。[*in the demo, we provide a networking flow completely*]
 #.	不依赖任何第三方库，demo里的代码可根据网站主项目需要自行修改。[*you can change what you want in the demo*]
 #.  如果使用failback版本的请下看项目路径下‘gt-iOS-sdk-failback -demo’ [*the failback version in the file 'gt-iOS-sdk-failback -demo'*]
 
