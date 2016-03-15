@@ -35,13 +35,17 @@
 - (void)testExample {
     // Use recording to get started writing UI tests.
     // Use XCTAssert and related functions to verify your tests produce the correct results.
+    [XCUIDevice sharedDevice].orientation = UIDeviceOrientationPortrait;
+    [[[XCUIApplication alloc] init].navigationBars[@"View"].buttons[@"\u6d4b\u8bd5"] tap];
+    
+}
+
+- (void)testOpenAndClose {
+    [XCUIDevice sharedDevice].orientation = UIDeviceOrientationPortrait;
     
     XCUIApplication *app = [[XCUIApplication alloc] init];
-    XCUIElement *button = app.navigationBars[@"\u8d26\u6237"].buttons[@"\u6d4b\u8bd5"];
-    [button tap];
-    
-    XCUIElement *element = [[[[[app childrenMatchingType:XCUIElementTypeWindow] elementBoundByIndex:0] childrenMatchingType:XCUIElementTypeOther] elementBoundByIndex:1] childrenMatchingType:XCUIElementTypeOther].element;
-    [element tap];
+    [app.navigationBars[@"View"].buttons[@"\u6d4b\u8bd5"] tap];
+    [[[[[app childrenMatchingType:XCUIElementTypeWindow] elementBoundByIndex:0] childrenMatchingType:XCUIElementTypeOther] elementBoundByIndex:1] tap];
     
 }
 

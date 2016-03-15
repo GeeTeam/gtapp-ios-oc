@@ -130,11 +130,31 @@
     }];
 }
 
+- (void)testGTCaptchaWithDebugMode {
+    
+    self.customExpectation = [self expectationWithDescription:@"Test Captcha With DebugMode"];
+    
+    [self.manager debugModeEnable:YES];
+    [self.manager requestCustomServerForGTest:self.requestGTestURL timeoutInterval:15.0 withHTTPCookieName:nil options:GTDefaultSynchronousRequest completionHandler:^(NSString *gt_captcha_id, NSString *gt_challenge, NSNumber *gt_success_code) {
+        if ([self.manager serverStatusWithCaptcha_id:gt_captcha_id]) {
+            [self.manager openGTViewAddFinishHandler:^(NSString *code, NSDictionary *result, NSString *message) {
+                [self.customExpectation fulfill];
+            } closeHandler:^{
+                
+            } animated:YES];
+        }
+    }];
+    
+    [self waitForExpectationsWithTimeout:30.0 handler:^(NSError * _Nullable error) {
+        NSLog(@"WARNING: You should finish the captcha to complete this test.");
+    }];
+}
+
 /**
  *  测试HTTPS,因为是验证产品的关系,需要人工操作通过一次验证
  */
 - (void)testHTTPs{
-    [self.manager needSecurityAuthentication:YES];
+    [self.manager useSecurityAuthentication:YES];
     
     self.customExpectation = [self expectationWithDescription:@"Test HTTPs"];
     

@@ -10,11 +10,10 @@
 
 #import "ViewController.h"
 #import "MKNetworkEngine.h"
-#import "MBProgressHUD.h"
 #import <GTFramework/GTFramework.h>
 
 
-@interface ViewController () <GTManageDelegate>
+@interface ViewController () <GTManageDelegate, UITextFieldDelegate>
 
 @property (nonatomic, strong) GTManager *manager;
 
@@ -42,21 +41,14 @@
             [self setupIndicatorAnimationSample2:layer withSize:size tintColor:color];
         } withActivityIndicatorViewType:GTIndicatorCustomType];
         //开启验证视图的外围阴影
-        [_manager setCornerViewShadow:NO];
+        [_manager setCornerViewShadow:YES];
+        //使用背景模糊
+        [_manager useVisualViewWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
         //验证背景颜色(例:yellow rgb(255,200,50))
         [_manager setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.2]];
         /** 注释在此结束 */
     }
     return _manager;
-}
-
-//验证无关, 可用于验证背景的模糊和虚化, sdk本身不带此类效果
-- (UIVisualEffectView *)visualEffect{
-    if (!_visualEffect) {
-        _visualEffect = [[UIVisualEffectView alloc] initWithEffect:[UIVibrancyEffect effectForBlurEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]]];
-        [_visualEffect setFrame:[[UIScreen mainScreen] bounds]];
-    }
-    return _visualEffect;
 }
 
 - (void)viewDidLoad {
@@ -80,61 +72,64 @@
     __weak __typeof(self) weakSelf = self;
     
     /**
-     *  MBProgressHUD 是不必要的,仅用于演示。
-     *  开启验证前需要向网站主的服务器获取相应的验证数据(id,challenge,success),这块根据用户的网络情况需要若干时间,建议在异步请求方式时提供状态指示器以告诉用户验证状态。
+     *  开启验证前需要向网站主的服务器获取相应的验证数据(id,challenge,success),这块根据用户的网络情况需要若干时间来完成,建议在使用异步请求方式时提供状态指示器以告诉用户验证状态。
      */
-//    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     /** TODO 在此写入客户端首次向网站主服务端请求gt验证的链接(api_1) (replace demo api_1 with yours)*/
     NSURL *requestGTestURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://webapi.geetest.com/apis/start-mobile-captcha/"]];
     
-    [self.manager requestCustomServerForGTest:requestGTestURL
-                              timeoutInterval:15.0
-                           withHTTPCookieName:@"msid"
-                                      options:GTDefaultSynchronousRequest
-                            completionHandler:^(NSString *gt_captcha_id, NSString *gt_challenge, NSNumber *gt_success_code) {
-                                NSLog(@"sessionID === %@",self.manager.sessionID);
-                                
-                                if ([gt_success_code intValue] == 1) {
-                                    
-                                    //根据custom server的返回字段判断是否开启failback
-                                    if (gt_captcha_id.length == 32) {
-                                        
-                                        //打开极速验证，在此处完成gt验证结果的返回
-                                        [weakSelf.manager openGTViewAddFinishHandler:^(NSString *code, NSDictionary *result, NSString *message) {
-                                            
-                                            if ([code isEqualToString:@"1"]) {
-                                                
-                                                //在用户服务器进行二次验证(start Secondery-Validate)
-                                                [weakSelf seconderyValidate:code result:result message:message];
-                                                /**UI请在主线程操作*/
-                                            } else {
-                                                NSLog(@"code : %@, message : %@",code,message);
-                                            }
-                                        }closeHandler:^{
-                                            //用户关闭验证后执行的方法
-//                                            [self removeMBProgressHUD];
-                                            NSLog(@"close geetest");
-                                        } animated:YES];
-                                        
-                                    } else {
-//                                        [self removeMBProgressHUD];
-                                        NSLog(@"invalid geetest ID, please set right ID");
-                                    }
-                                }else{
-                                    //TODO 当极验服务器不可用时，将执行此处网站主的自定义验证方法或者其他处理方法(gt-server is not available, add your handler methods)
-                                    /**请网站主务必考虑这一处的逻辑处理，否者当极验服务不可用的时候会导致用户的业务无法正常执行*/
-                                    UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Warning"
-                                                                                      message:@"极验验证服务异常不可用,请准备备用验证"
-                                                                                     delegate:self
-                                                                            cancelButtonTitle:@"OK"
-                                                                            otherButtonTitles:nil, nil];
-                                    dispatch_async(dispatch_get_main_queue(), ^{
-//                                            [MBProgressHUD hideHUDForView:self.view animated:YES];
-                                            [warning show];
-                                    });
-                                    NSLog(@"极验验证服务暂时不可用,请网站主在此写入启用备用验证的方法");
-                                }
+    [self.manager configureGTest:requestGTestURL
+                 timeoutInterval:15.0
+              withHTTPCookieName:@"msid"
+                         options:GTDefaultSynchronousRequest
+               completionHandler:^(NSString *gt_captcha_id, NSString *gt_challenge, NSNumber *gt_success_code) {
+                   
+                   NSLog(@"sessionID === %@",self.manager.sessionID);
+                   
+                   //根据custom server的返回success字段判断是否开启failback
+                   if ([gt_success_code intValue] == 1) {
+                       
+                       if (gt_captcha_id.length == 32) {
+                           
+                           //打开极速验证，在此处完成gt验证结果的返回
+                           [weakSelf.manager openGTViewAddFinishHandler:^(NSString *code, NSDictionary *result, NSString *message) {
+                               
+                               if ([code isEqualToString:@"1"]) {
+                                   
+                                   //在用户服务器进行二次验证(start Secondery-Validate)
+                                   [weakSelf seconderyValidate:code result:result message:message];
+                                   /**UI请在主线程操作*/
+                                   
+                               } else {
+                                   
+                                   NSLog(@"code : %@, message : %@",code,message);
+                                   
+                               }
+                           }closeHandler:^{
+                               
+                               //用户关闭验证后执行的方法
+                               NSLog(@"close geetest");
+                               
+                           } animated:YES];
+                           
+                       } else {
+                           
+                           NSLog(@"invalid geetest ID, please set right ID");
+                           
+                       }
+                   }else{
+                       //TODO 当极验服务器不可用时，将执行此处网站主的自定义验证方法或者其他处理方法(gt-server is not available, add your handler methods in here)
+                       /**请网站主务必考虑这一处的逻辑处理，否者当极验服务不可用的时候会导致用户的业务无法正常执行*/
+                       UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Warning"
+                                                                         message:@"极验验证服务异常不可用,请准备备用验证"
+                                                                        delegate:self
+                                                               cancelButtonTitle:@"OK"
+                                                               otherButtonTitles:nil, nil];
+                       dispatch_async(dispatch_get_main_queue(), ^{
+                           [warning show];
+                       });
+                       NSLog(@"极验验证服务暂时不可用,请网站主在此写入启用备用验证的方法");
+                   }
     }];
 }
 
@@ -154,6 +149,7 @@
                 __block NSMutableString *postResult = [[NSMutableString alloc] init];
                 
                 //TODO 行为判定通过，进行二次验证,替换成你的api_2(replace this demo's api_2 with yours)
+                //‼️请不要在发行版本里使用我们仅供演示的二次验证API, 此API我们可能修改
                 /** custom_server_validate_url 网站主部署的二次验证链接 (api_2)*/
                 NSString *custom_server_validate_url = @"http://webapi.geetest.com/apis/mobile-server-validate/";
                 NSDictionary *headerFields = @{@"Content-Type":@"application/x-www-form-urlencoded;charset=UTF-8"};
@@ -162,7 +158,7 @@
                 [result enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
                     [postResult appendFormat:@"%@=%@&",key,obj];
                 }];
-                
+                NSLog(@"postResult: %@",postResult);
                 if (postResult.length > 0) {
                     
                     NSURLSessionConfiguration *configurtion = [NSURLSessionConfiguration defaultSessionConfiguration];
@@ -188,7 +184,7 @@
                                 //TODO 二次验证成功后执行的方法(after finish Secondery-Validate, to do something)
                                 NSLog(@"client captcha response: %@",responseString);
                                 
-                                //Demo配套的使用的是python server sdk, response里的返回的是success/fail
+                                //Demo配套的使用的是python server sdk, response里的返回的是success/fail表示二次验证结果
                                 if ([responseString isEqualToString:@"success"]) {
                                     // TODO 验证成功(Secondery-Validate success)
                                     [self showSuccessView:YES];
@@ -215,62 +211,13 @@
             NSLog(@"client captcha exception:%@", exception.description);
         }
         @finally {
-//            [self removeMBProgressHUD];
+            
         }
     }
 }
 
 /**
- *  自定义状态指示器动画 smaple1
- *
- *  @param layer <#layer description#>
- *  @param size  <#size description#>
- *  @param color <#color description#>
- */
-- (void)setupIndicatorAnimationSample1:(CALayer *)layer withSize:(CGSize)size tintColor:(UIColor *)color{
-    
-    CGFloat duration = 1.0f;
-    CGFloat beginTime = CACurrentMediaTime();
-    
-    // Scale Animation
-    CABasicAnimation *scaleAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
-    
-    scaleAnimation.duration = duration;
-    scaleAnimation.fromValue = @0.0f;
-    scaleAnimation.toValue = @1.0f;
-    
-    // Opacity Animation
-    CAKeyframeAnimation *opacityAnimation = [CAKeyframeAnimation animationWithKeyPath:@"opacity"];
-    
-    opacityAnimation.duration = duration;
-    opacityAnimation.keyTimes = @[@0.0f, @0.05f, @1.0f];
-    opacityAnimation.values = @[@0.0f, @0.7f, @0.0f];
-    
-    // Group Animation
-    CAAnimationGroup *animation = [CAAnimationGroup animation];
-    
-    animation.animations = @[scaleAnimation, opacityAnimation];
-    animation.duration = duration + 1.4f;
-    animation.repeatCount = HUGE_VALF;
-    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
-    animation.removedOnCompletion = NO;
-    
-    for (int i = 0; i < 4; i++) {
-        CAShapeLayer *circle = [CAShapeLayer layer];
-        UIBezierPath *circlePath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, size.width, size.height) cornerRadius:size.width / 2];
-        
-        animation.beginTime = beginTime + i * 0.2f;
-        circle.fillColor = color.CGColor;
-        circle.path = circlePath.CGPath;
-        circle.opacity = 0.0f;
-        [circle addAnimation:animation forKey:@"animation"];
-        circle.frame = CGRectMake((layer.bounds.size.width - size.width) / 2, (layer.bounds.size.height - size.height) / 2, size.width, size.height);
-        [layer addSublayer:circle];
-    }
-}
-
-/**
- *  custom animation sample2
+ *  custom animation sample
  *
  *  @param layer <#layer description#>
  *  @param size  <#size description#>
@@ -290,7 +237,7 @@
         [circle setContentsScale:[UIScreen mainScreen].scale];
         circle.backgroundColor = color.CGColor;
         circle.anchorPoint = CGPointMake(0.5f, 0.5f);
-        circle.opacity = 0.8f;
+        circle.opacity = 0.6f;
         circle.cornerRadius = circle.bounds.size.height / 2.0f;
         circle.transform = CATransform3DMakeScale(0.0f, 0.0f, 0.0f);
         
@@ -299,7 +246,7 @@
         transformAnimation.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.0f, 1.0f, 0.0f)];
         
         CABasicAnimation *opacityAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
-        opacityAnimation.fromValue = @(0.8f);
+        opacityAnimation.fromValue = @(0.7f);
         opacityAnimation.toValue = @(0.0f);
         
         CAAnimationGroup *animationGroup = [CAAnimationGroup animation];
@@ -313,11 +260,6 @@
         [layer addSublayer:circle];
         [circle addAnimation:animationGroup forKey:@"animation"];
     }
-}
-- (void)removeMBProgressHUD{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-    });
 }
 
 - (void)showSuccessView:(BOOL)result{
@@ -342,9 +284,12 @@
                                                cancelButtonTitle:@"确定"
                                                otherButtonTitles:nil, nil];
     dispatch_async(dispatch_get_main_queue(), ^{
-//        [MBProgressHUD hideHUDForView:self.view animated:YES];
         [errorAlert show];
     });
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    return YES;
 }
 
 @end

@@ -35,7 +35,7 @@
 
 /**
  *  验证的显示状态
- *  此属性告知验证是否在执行
+ *  此属性告知验证是否在展示
  */
 @property (nonatomic, assign) BOOL operated;
 
@@ -70,7 +70,7 @@
  *  ❗️适合没有自己的灾难防备策略的网站主
  *
  *  @seealso
- *  ❗️此方法与 requestGTest:challenge:success: 方法二选一
+ *  ❗️此方法与 configureGTest:challenge:success: 方法二选一
  *
  *  @param requestCustomServerForGTestURL   客户端向网站主服务端发起验证请求的链接(api_1)
  *  @param timeoutInterval                  超时间隔
@@ -85,11 +85,11 @@
             "gt_success_code"   : 1
             }
  */
-- (void)requestCustomServerForGTest:(NSURL *)requestCustomServerForGTestURL
-                    timeoutInterval:(NSTimeInterval)timeoutInterval
-                 withHTTPCookieName:(NSString *)name
-                            options:(DefaultRequestTypeOptions)RequestType
-                  completionHandler:(GTDefaultCaptchaHandlerBlock)handler;
+- (void)configureGTest:(NSURL *)requestCustomServerForGTestURL
+       timeoutInterval:(NSTimeInterval)timeoutInterval
+    withHTTPCookieName:(NSString *)name
+               options:(DefaultRequestTypeOptions)RequestType
+     completionHandler:(GTDefaultCaptchaHandlerBlock)handler;
 
 /**
  *  @abstract 取消异步请求。
@@ -110,7 +110,7 @@
  *  ❗️适合有自己灾难防备策略的网站主
  *
  *  @seealso
- *  ❗️此方法与方法 requestCustomServerForGTest:timeoutInterval:withHTTPCookieName:options:completionHandler:二选一
+ *  ❗️此方法与方法 configureGTest:timeoutInterval:withHTTPCookieName:options:completionHandler:二选一
  *
  *  @param captcha_id   在官网申请的captcha_id
  *  @param gt_challenge 根据极验服务器sdk生成的challenge
@@ -118,9 +118,9 @@
  *
  *  @return YES可开启验证，NO则客户端与geetest服务端之间连接不通畅
  */
-- (BOOL)requestGTest:(NSString *)captcha_id
-           challenge:(NSString *)gt_challenge
-             success:(NSNumber *)successCode;
+- (BOOL)configureGTest:(NSString *)captcha_id
+             challenge:(NSString *)gt_challenge
+               success:(NSNumber *)successCode;
 
 /**
  *  ❗️必要方法❗️
@@ -180,6 +180,14 @@
  *  @param secured 是否需要https支持
  */
 - (void)useSecurityAuthentication:(BOOL)secured;
+
+/**
+ *  iOS8 以上生效
+ *  @abstract配置背景模糊
+ *
+ *  @param blurEffect 模糊特效
+ */
+- (void)useVisualViewWithEffect:(UIBlurEffect *)blurEffect;
 
 /**
  *  (非必要方法)
