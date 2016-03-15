@@ -48,10 +48,17 @@ Description
 ---------------------------------------------------------------------
 
 1.  请认真查阅开发者文档,支持iOS7以上.[*please read developer doc, and support iOS7+*]
-#.  在gtapp-ios-oc项目下已经有两个版本，一个是早期版本，framework版本号为2.15.5.＊之前,已经停止开发,另一个是有failback版本的,版本号为2.15.8.＊之后的版本,现在持续更新和维护中。[*There are two versions of GTFramework. The latest one has the failback feature (version 2.15.8.＊ +). We had stopped to develop the old version. So we recommend you to use the failback version.*]
+#.  在gtapp-ios-oc项目下版本号为2.15.8.＊之后的版本,现在持续更新和维护中。[*The latest one has the failback feature (version 2.15.8.＊ +). We had stopped to develop the old version. So we recommend you to use the failback version.*]
 #.  failback版本在项目路径的‘gt-iOS-sdk-failback -demo’下。[*the failback version in the file 'gt-iOS-sdk-failback -demo'*]
-#.  推荐failback版本！！！该版本更为安全，即使极验服务暂时不可用，网站主在相应逻辑位置写入备用验证或处理方法，即可轻松切换。[*The faiback version more safe than the old one. If gt-server is not available, you can set some handle methods*]
-#.  详细内容查看目录下的开发者文档。[*get more information in demo files*]
+#.  2.16.3.10.1 版本之后需要导入webkit.framework, 添加了对wkwebview的支持。
+#.  详细开发文档查看demo目录下的开发者文档。[*get more information in demo files*]
+
+History
+---------------------------------------------------------------------
+
+1. 2.15.12.30.1 对svg支持，动态获取验证高度，适配新ui
+2. 2.16.1.20.1 添加对https、localization支持，增加对状态指示器自定义
+3. 2.16.3.10.1 优化图层结构，优化性能表现，iOS8以上基于wkwebview，表现更稳定
 
 Failback
 ---------------------------------------------------------------------
@@ -75,7 +82,7 @@ How to use GTFramework, run the demo first
 假设用户自建项目名称为：TestGT
 
 1.	在极验官方主页www.geetest.com注册账号并申请相应的应用公钥，id:{{id}}。[*get geetest id/key from*  `geetest.com <http://www.geetest.com>`_ ]
-#.	将gt-iOS-sdk下的GTFramework项目生成的静态库GTFramework.framework引入到项目中 [*import GTFramework to your preject*]
+#.	将gt-iOS-sdk下的GTFramework项目生成的静态库 GTFramework.framework 和 webkit.framework 引入到项目中 [*import GTFramework to your preject*]
 #.	将GTFramework.framework项目以Static Library的方式进行引用。将所需的GTFramework.framework拷贝到工程所在文件夹下。在 TARGETS->Build Phases-> Link Binary With Libaries中点击“+”按钮，在弹出的窗口中点击“Add Other”按钮，选择GTFramework.framework文件添加到工程中。[*add GTframework to 'Link Binary With Libaries'*]
      
 #.	在项目标有TODO注释的地方写入网站主自已的处理代码。[*add you handle method where signed 'TODO'*]

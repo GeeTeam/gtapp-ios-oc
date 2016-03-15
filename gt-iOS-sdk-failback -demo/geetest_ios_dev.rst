@@ -10,10 +10,10 @@ iOS-Dev
 ================================================
 
 1.	 gt-iOS-sdk 极验验证iOS版本的SDK，生成一个基于i386、x86_64、armv7、 armv7s、arm64的Static Library，支持iOS7.0＋。开发使用的Xcode版本位Xcode 7.2。
-#.	 gt-iOS-sdk-demo 调用sdk的演示app程序。
-#.	在gt-iOS-sdk-demo下TestGT项目倒入生成的GTFramework.framework静态库，即可运行TestGT项目。
+#.	 gt-iOS-sdk－failback-demo 调用sdk的演示app程序。
+#.	在gt-iOS-sdk-failback-demo下TestGT项目倒入生成的GTFramework.framework静态库，即可运行TestGT项目。
 #.	演示项目提供了用户服务器的预处理以及完整的一次验证，并将客户端验证结果向示例的客户服务器上发起二次验证的完整通讯过程。
-#.	不依赖任何第三方库, demo可根据项目需要自行修改。
+#.	不依赖任何第三方库, 需要导入webkit.framework, demo可根据项目需要自行修改。
 #.  iOS端sdk必须与服务器部署代码配套使用，否者无法完成二次验证。`服务器部署代码请移步官网安装文档   <http://www.geetest.com>`__
 
 验证主要分为三个部分：
@@ -30,7 +30,7 @@ iOS SDK 主要完成过程:
 =================================================
 
 自建项目引用
-假设用户自建项目名称为：TestGT
+假设用户自建项目名称为: TestGT
 
 1.  在极验官方主页www.geetest.com注册账号并申请相应的应用公钥，id:{{id}} 
 #.  将gt-iOS-sdk-failback文件夹下的GTFramework.framework引入到项目中
@@ -137,11 +137,11 @@ gt验证SDK Header暴露的方法
 
 .. code::
     
-    - (void)requestCustomServerForGTest:(NSURL *)requestCustomServerForGTestURL 
-    					timeoutInterval:(NSTimeInterval)timeoutInterval 
-    				 withHTTPCookieName:(NSString *)name
-    				 			options:(DefaultRequestTypeOptions)RequestType 
-    				  completionHandler:(GTDefaultCaptchaHandlerBlock)handler;
+    - (void)configureGTest:(NSURL *)requestCustomServerForGTestURL 
+    	   timeoutInterval:(NSTimeInterval)timeoutInterval 
+    	withHTTPCookieName:(NSString *)name
+    			   options:(DefaultRequestTypeOptions)RequestType 
+    	 completionHandler:(GTDefaultCaptchaHandlerBlock)handler;
 
 options: 请求选项
 
@@ -170,9 +170,9 @@ options: 请求选项
 
 .. code::
 
-	- (BOOL)requestGTest:(NSString *)captcha_id 
-			   challenge:(NSString *)gt_challenge
-			     success:(NSNumber *)successCode;
+	- (BOOL)configureGTest:(NSString *)captcha_id 
+			     challenge:(NSString *)gt_challenge
+			       success:(NSNumber *)successCode;
 
 
 错误处理的代理方法
@@ -286,7 +286,21 @@ HTTPS支持(非必要方法,默认不使用https)
 
 .. code::
     
-    - (void)needSecurityAuthentication:(BOOL)secured;
+    - (void)useSecurityAuthentication:(BOOL)secured;
+
+
+配置背景模糊
+-------------------------------------------------------------------
+
+利用UIVisualEffectView 实现背景模糊
+
+iOS8 以上生效, iOS8 一下背景透明
+
+@param blurEffect 模糊特效
+ 
+.. code::
+
+    - (void)useVisualViewWithEffect:(UIBlurEffect *)blurEffect;
 
 
 验证展示语言(非必要,默认中文)
@@ -379,6 +393,5 @@ LanguageType:
 .. code::
 
     typedef void(^GTIndicatorAnimationViewBlock)(CALayer *layer, CGSize size, UIColor *color);
-
 
 (完)
