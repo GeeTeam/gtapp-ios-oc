@@ -16,8 +16,6 @@
 
 @property (nonatomic, strong) GTManager *manager;
 
-@property (nonatomic, strong) UIVisualEffectView *visualEffect;
-
 - (IBAction)testAction:(id)sender;
 
 @end
