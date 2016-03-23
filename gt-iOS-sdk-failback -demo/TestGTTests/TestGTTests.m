@@ -57,7 +57,7 @@
     
     XCTestExpectation * expectation = [self expectationWithDescription:@"Check Sync Data"];
     
-    [self.manager requestCustomServerForGTest:self.requestGTestURL
+    [self.manager configureGTest:self.requestGTestURL
                               timeoutInterval:15.0
                            withHTTPCookieName:@"msid"
                                       options:GTDefaultSynchronousRequest
@@ -79,7 +79,7 @@
     
     XCTestExpectation * expectation = [self expectationWithDescription:@"Check Async Data"];
     
-    [self.manager requestCustomServerForGTest:self.requestGTestURL
+    [self.manager configureGTest:self.requestGTestURL
                               timeoutInterval:15.0
                            withHTTPCookieName:@"msid"
                                       options:GTDefaultAsynchronousRequest
@@ -135,7 +135,7 @@
     self.customExpectation = [self expectationWithDescription:@"Test Captcha With DebugMode"];
     
     [self.manager debugModeEnable:YES];
-    [self.manager requestCustomServerForGTest:self.requestGTestURL timeoutInterval:15.0 withHTTPCookieName:nil options:GTDefaultSynchronousRequest completionHandler:^(NSString *gt_captcha_id, NSString *gt_challenge, NSNumber *gt_success_code) {
+    [self.manager configureGTest:self.requestGTestURL timeoutInterval:15.0 withHTTPCookieName:nil options:GTDefaultSynchronousRequest completionHandler:^(NSString *gt_captcha_id, NSString *gt_challenge, NSNumber *gt_success_code) {
         if ([self.manager serverStatusWithCaptcha_id:gt_captcha_id]) {
             [self.manager openGTViewAddFinishHandler:^(NSString *code, NSDictionary *result, NSString *message) {
                 [self.customExpectation fulfill];
@@ -158,7 +158,7 @@
     
     self.customExpectation = [self expectationWithDescription:@"Test HTTPs"];
     
-    [self.manager requestCustomServerForGTest:self.requestGTestURL
+    [self.manager configureGTest:self.requestGTestURL
                               timeoutInterval:15.0
                            withHTTPCookieName:nil
                                       options:GTDefaultSynchronousRequest
@@ -175,7 +175,7 @@
  */
 - (void)testErrorHandle{
     
-    [self.manager requestCustomServerForGTest:self.requestGTestURL
+    [self.manager configureGTest:self.requestGTestURL
                               timeoutInterval:1.0
                            withHTTPCookieName:@"msid"
                                       options:GTDefaultSynchronousRequest
@@ -218,7 +218,7 @@
     //如果failback使用我们的静态验证方式,下面的bool值填入YES/true
     if ([gt_success intValue] == 1) {
         //根据custom server的返回字段判断是否开启failback
-        if ([self.manager requestGTest:gt_captcha_id challenge:gt_challenge success: gt_success]) {
+        if ([self.manager configureGTest:gt_captcha_id challenge:gt_challenge success: gt_success]) {
             //打开极速验证，在此处完成gt验证结果的返回
             [self.manager openGTViewAddFinishHandler:^(NSString *code, NSDictionary *result, NSString *message) {
                 

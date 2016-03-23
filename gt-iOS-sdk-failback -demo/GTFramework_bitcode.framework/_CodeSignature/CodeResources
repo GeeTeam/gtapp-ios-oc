@@ -18,7 +18,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		ZmnDYBSKJ7BvyqgCYkbHqt2+csQ=
+		LxKaxBPL8dszz2Q6yZG6FU/K5HY=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -28,21 +28,49 @@
 	<key>files2</key>
 	<dict>
 		<key>Headers/GTFramework.h</key>
-		<data>
-		JQr1ptM0U6ctZ50YTTi9gPTZ7Ac=
-		</data>
+		<dict>
+			<key>hash</key>
+			<data>
+			JQr1ptM0U6ctZ50YTTi9gPTZ7Ac=
+			</data>
+			<key>hash2</key>
+			<data>
+			Om0AQpDtYgCektacIaxJJjdxnECy7NXQQqb3lCbrDRQ=
+			</data>
+		</dict>
 		<key>Headers/GTManager.h</key>
-		<data>
-		F/urqyaR8ezQvdFaEEJcV6NTdlY=
-		</data>
+		<dict>
+			<key>hash</key>
+			<data>
+			F/urqyaR8ezQvdFaEEJcV6NTdlY=
+			</data>
+			<key>hash2</key>
+			<data>
+			WtWx+0dYx/so6+d2ONPtgKONEKvlC6E+BGAMHGFB8pM=
+			</data>
+		</dict>
 		<key>Headers/GTUtils.h</key>
-		<data>
-		w6UcitRtjDSxp7kY+CW38Z+rE6Q=
-		</data>
+		<dict>
+			<key>hash</key>
+			<data>
+			w6UcitRtjDSxp7kY+CW38Z+rE6Q=
+			</data>
+			<key>hash2</key>
+			<data>
+			rFNDBwoxNu8GQUrXMo+MtTcFwejdH2vPtOpKrS6dOPU=
+			</data>
+		</dict>
 		<key>Modules/module.modulemap</key>
-		<data>
-		i2dZ3d3VGODYXNzEJQybM3Ac8+E=
-		</data>
+		<dict>
+			<key>hash</key>
+			<data>
+			i2dZ3d3VGODYXNzEJQybM3Ac8+E=
+			</data>
+			<key>hash2</key>
+			<data>
+			8GKrsgmd4uX/H6tlDgIT632eok91R0ockoOp4gvwN/o=
+			</data>
+		</dict>
 	</dict>
 	<key>rules</key>
 	<dict>
