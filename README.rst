@@ -59,7 +59,8 @@ Description
 #.  在gtapp-ios-oc项目下版本号为2.15.8.＊之后的版本,现在持续更新和维护中。[*The latest one has the failback feature (version 2.15.8.＊ +). We had stopped to develop the old version. So we recommend you to use the failback version.*]
 #.  failback版本在项目路径的‘gt-iOS-sdk-failback -demo’下。[*the failback version in the file 'gt-iOS-sdk-failback -demo'*]
 #.  2.16.3.10.1 版本之后需要导入webkit.framework, 添加了对wkwebview的支持。
-#.  详细开发文档查看demo目录下的开发者文档。[*get more information in demo files*]
+#.  详细开发文档查看根目录下的开发者文档。[*get more information in demo files*]
+#.  常见问题查看根目录下的q&a文件。
 
 
 History
