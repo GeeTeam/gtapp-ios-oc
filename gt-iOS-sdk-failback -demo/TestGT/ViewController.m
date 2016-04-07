@@ -8,11 +8,21 @@
 //  Copyright (c) 2015年 gt. All rights reserved.
 //
 
+/**
+ *  将下面用于演示的的两个接口替换成你们服务端配置的
+ *  并且在标有'TODO'的地方写上你们的处理逻辑
+ */
+//客户端向网站主服务端请求gt验证的接口(api_1)
+#define api_1 @"http://webapi.geetest.com/apis/start-mobile-captcha/"
+//网站主部署的二次验证链接 (api_2)
+#define api_2 @"http://webapi.geetest.com/apis/mobile-server-validate/"
+
+
 #import "ViewController.h"
 #import <GTFramework/GTFramework.h>
 
 
-@interface ViewController () <GTManageDelegate, UITextFieldDelegate>
+@interface ViewController () <GTManageDelegate>
 
 @property (nonatomic, strong) GTManager *manager;
 
@@ -73,7 +83,7 @@
      */
     
     /** TODO 在此写入客户端首次向网站主服务端请求gt验证的链接(api_1) (replace demo api_1 with yours)*/
-    NSURL *requestGTestURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://webapi.geetest.com/apis/start-mobile-captcha/"]];
+    NSURL *requestGTestURL = [NSURL URLWithString:[NSString stringWithFormat:api_1]];
     
     [self.manager configureGTest:requestGTestURL
                  timeoutInterval:15.0
@@ -133,7 +143,7 @@
 /**
  *  二次验证是验证的必要环节,此方法的构造供参考,可根据需求自行调整(NSURLSession is just a sample for this demo. You can choose what your like to complete this step.)
  *  考虑到nsurlsession的是苹果推荐的网络库,并且希望开发者了解这块的逻辑以及重要性,而没使用使用大家熟悉的AFNetworking
- *  使用POST请求将 result 以表单格式发送至网站主服务器进行二次验证, 集成极验提供的server sdk会根据数据作出判断并且返回结果
+ *  使用POST请求将 result 以表单格式发送至网站主服务器进行二次验证, 集成极验提供的server sdk会根据提交的数据作出判断并且返回相应的结果
  *
  *  @param code    <#code description#>
  *  @param result  <#result description#>
@@ -148,7 +158,7 @@
                 //TODO 行为判定通过，进行二次验证,替换成你的api_2(replace this demo's api_2 with yours)
                 //‼️请不要在发行版本里使用我们仅供演示的二次验证API, 此API我们可能修改
                 /** custom_server_validate_url 网站主部署的二次验证链接 (api_2)*/
-                NSString *custom_server_validate_url = @"http://webapi.geetest.com/apis/mobile-server-validate/";
+                NSString *custom_server_validate_url = api_2;
                 NSDictionary *headerFields = @{@"Content-Type":@"application/x-www-form-urlencoded;charset=UTF-8"};
                 
                 NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:custom_server_validate_url]];
@@ -259,6 +269,7 @@
     }
 }
 
+//you can kick it out in your project
 - (void)showSuccessView:(BOOL)result{
     
     UIAlertView *seconderyResult = [[UIAlertView alloc] initWithTitle:@"二次验证结果"
@@ -275,7 +286,7 @@
 
 - (void)GTNetworkErrorHandler:(NSError *)error{
     NSLog(@"GTNetWork Error: %@",error.localizedDescription);
-    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"网络错误"
+    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"遇到点错误"
                                                          message:error.localizedDescription
                                                         delegate:self
                                                cancelButtonTitle:@"确定"
@@ -283,10 +294,6 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [errorAlert show];
     });
-}
-
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    return YES;
 }
 
 @end

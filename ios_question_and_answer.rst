@@ -3,8 +3,6 @@ iOS-常见问题Q&A
 ====================================
 
 .. contents:: 目录
-.. sectnum::
-
 
 运行工程报"Undefined symbols for architecture"
 ================================================
@@ -133,5 +131,14 @@ step2:
 .. image:: img/question/question05_02.png
 
 指标: 相较增加3m内存, 真机下, 数值会相应下降一些。
+
+验证请求http 被 block
+================================================
+
+.. image:: img/question/question06_00.png
+
+原因: iOS9 以上默认禁用http协议, 而验证内部使用了http请求验证数据
+
+解决: `参考README  <https://github.com/GeeTeam/gtapp-ios-oc/blob/master/README.rst>`__
 
 (完)
