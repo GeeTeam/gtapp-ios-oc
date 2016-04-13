@@ -285,11 +285,13 @@
 #pragma --mark GTManageDelegate
 
 - (void)GTNetworkErrorHandler:(NSError *)error{
-    NSLog(@"GTNetWork Error: %@",error.localizedDescription);
-    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"遇到点错误"
+    //不推荐直接使用alert将错误弹出, 请对错误做一个判断
+    //使用alert是为了方便开发过程中调试
+    NSLog(@"[GTSDK] Error: %@",error);
+    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"There's a trouble"
                                                          message:error.localizedDescription
                                                         delegate:self
-                                               cancelButtonTitle:@"确定"
+                                               cancelButtonTitle:@"Ok"
                                                otherButtonTitles:nil, nil];
     dispatch_async(dispatch_get_main_queue(), ^{
         [errorAlert show];
