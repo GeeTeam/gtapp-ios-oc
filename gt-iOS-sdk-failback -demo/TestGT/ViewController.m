@@ -10,6 +10,7 @@
 
 /**
  *  将下面用于演示的的两个接口替换成你们服务端配置的
+ *  切勿在正式版本或者发布版本里使用以下两个api, 我们可能在以后的demo版本里修改此处的两个api
  *  并且在标有'TODO'的地方写上你们的处理逻辑
  */
 //客户端向网站主服务端请求gt验证的接口(api_1)
@@ -25,6 +26,8 @@
 @interface ViewController () <GTManageDelegate>
 
 @property (nonatomic, strong) GTManager *manager;
+
+- (IBAction)switchDebugMode:(id)sender;
 
 - (IBAction)testAction:(id)sender;
 
@@ -42,7 +45,7 @@
         //https配置
         [_manager useSecurityAuthentication:NO];
         //多语言配置
-        [_manager languageSwitch:LANGTYPE_ZH_CN];
+        [_manager languageSwitch:LANGTYPE_AUTO];
         //状态指示器配置
         [_manager configureAnimatedAcitvityIndicator:^(CALayer *layer, CGSize size, UIColor *color) {
             [self setupIndicatorAnimationSample2:layer withSize:size tintColor:color];
@@ -66,6 +69,17 @@
     [super didReceiveMemoryWarning];
 }
 
+- (IBAction)switchDebugMode:(id)sender {
+    NSLog(@"111");
+    UISwitch *mSwitch = (UISwitch *)sender;
+    if (mSwitch.isOn) {
+        [self.manager debugModeEnable:YES];
+    }else{
+        [self.manager debugModeEnable:NO];
+    }
+}
+
+//验证触发条件, 可以根据业务需求设计
 - (IBAction)testAction:(id)sender {
     //dismiss keyboard if there is a keyboard.
     [self.view endEditing:YES];
@@ -269,7 +283,7 @@
     }
 }
 
-//you can kick it out in your project
+//you can kick this method out of your projects
 - (void)showSuccessView:(BOOL)result{
     
     UIAlertView *seconderyResult = [[UIAlertView alloc] initWithTitle:@"二次验证结果"
@@ -286,7 +300,7 @@
 
 - (void)GTNetworkErrorHandler:(NSError *)error{
     //不推荐直接使用alert将错误弹出, 请对错误做一个判断
-    //使用alert是为了方便开发过程中调试
+    //使用alert是为了方便用于演示
     NSLog(@"[GTSDK] Error: %@",error);
     UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"There's a trouble"
                                                          message:error.localizedDescription
