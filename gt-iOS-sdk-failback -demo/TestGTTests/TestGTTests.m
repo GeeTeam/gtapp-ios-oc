@@ -23,12 +23,10 @@
 
 - (GTManager *)manager{
     if (!_manager) {
-        _manager = [GTManager sharedGTManger];
-        [_manager debugModeEnable:NO];
+        _manager = [GTManager sharedGTManager];
+        [_manager enableDebugMode:NO];
         [_manager setGTDelegate:self];
-        //在此设置验证背景遮罩的透明度,如果不想要背景遮罩,将此属性设置为0
-        //开启验证视图的外围阴影
-        _manager.cornerViewShadow = NO;
+        [_manager disableAutoReboundGTView:NO];
     }
     return _manager;
 }
@@ -134,7 +132,7 @@
     
     self.customExpectation = [self expectationWithDescription:@"Test Captcha With DebugMode"];
     
-    [self.manager debugModeEnable:YES];
+    [self.manager enableDebugMode:YES];
     [self.manager configureGTest:self.requestGTestURL timeoutInterval:15.0 withHTTPCookieName:nil options:GTDefaultSynchronousRequest completionHandler:^(NSString *gt_captcha_id, NSString *gt_challenge, NSNumber *gt_success_code) {
         if ([self.manager serverStatusWithCaptcha_id:gt_captcha_id]) {
             [self.manager openGTViewAddFinishHandler:^(NSString *code, NSDictionary *result, NSString *message) {

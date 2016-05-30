@@ -50,16 +50,11 @@
 @property (nonatomic, strong) UIColor *backgroundColor;
 
 /**
- *  验证背景窗口的阴影
- */
-@property (nonatomic, assign) BOOL cornerViewShadow;
-
-/**
  *  验证实例（单例）
  *
  *  @return 单例
  */
-+ (instancetype)sharedGTManger;
++ (instancetype)sharedGTManager;
 
 /**
  *  @abstract 默认配置验证方法
@@ -67,10 +62,10 @@
  *  @discussion
  *  向CustomServer发送geetest验证请求，如果网站主服务器判断geetest服务可用，返回验证必要的数据，否则通过错误代理方法里给出错误信息。
  *
- *  ❗️适合没有自己的灾难防备策略的网站主
+ *  ❗️<b>适合没有自己的灾难防备策略的网站主</b>
  *
  *  @seealso
- *  ❗️此方法与 configureGTest:challenge:success: 方法二选一
+ *  ❗️<b>此方法与 configureGTest:challenge:success: 方法二选一</b>
  *
  *  @param requestCustomServerForGTestURL   客户端向网站主服务端发起验证请求的链接(api_1)
  *  @param timeoutInterval                  超时间隔
@@ -79,11 +74,13 @@
  *  @param handler                          请求完成后的处理(主线程)
  *
  *  @return 只有当网站主服务器可用时, 以block的形式返回以下数据
-            {
-            "gt_challenge"      : "12ae1159ffdfcbbc306897e8d9bf6d06" ,
-            "gt_captcha_id"     : "ad872a4e1a51888967bdb7cb45589605" ,
-            "gt_success_code"   : 1
-            }
+ <pre>
+ {
+ "gt_challenge" : "12ae1159ffdfcbbc306897e8d9bf6d06",
+ "gt_captcha_id" : "ad872a4e1a51888967bdb7cb45589605",
+ "gt_success_code" : 1
+ }
+ </pre>
  */
 - (void)configureGTest:(NSURL *)requestCustomServerForGTestURL
        timeoutInterval:(NSTimeInterval)timeoutInterval
@@ -96,7 +93,7 @@
  *
  *  @discussion
  *  当希望取消正在执行的 Default Asynchronous Request时，调用此方法取消。
- *  ❗️有且仅当使用默认异步请求可以调用该方法。
+ *  ❗️<b>有且仅当使用默认异步请求可以调用该方法。</b>
  */
 - (void)cancelRequest;
 
@@ -107,23 +104,23 @@
  *  当网站主使用自己的failback逻辑的时候使用此方法开启验证
  *  使用此方法之前，网站主必须在服务端测试geetest服务可用性然后通知客户端
  *
- *  ❗️适合有自己灾难防备策略的网站主
+ *  ❗️<b>适合有自己灾难防备策略的网站主</b>
  *
  *  @seealso
- *  ❗️此方法与方法 configureGTest:timeoutInterval:withHTTPCookieName:options:completionHandler:二选一
+ *  ❗️<b>此方法与方法 configureGTest:timeoutInterval:withHTTPCookieName:options:completionHandler:二选一</b>
  *
  *  @param captcha_id   在官网申请的captcha_id
  *  @param gt_challenge 根据极验服务器sdk生成的challenge
  *  @param success      网站主服务器监测geetest服务的可用状态 0/1 不可用/可用
  *
- *  @return YES可开启验证，NO则客户端与geetest服务端之间连接不通畅
+ *  @return YES配置成功，NO配置失败
  */
 - (BOOL)configureGTest:(NSString *)captcha_id
              challenge:(NSString *)gt_challenge
                success:(NSNumber *)successCode;
 
 /**
- *  ❗️必要方法❗️
+ *  ❗️<b>必要方法</b>❗️
  *  @abstract 展示验证
  *
  *  @discussion
@@ -144,7 +141,7 @@
  *
  *  @discussion
  *  测试用户端与极验服务连接是否畅通可用,如果直接使用此方法来判断是否开启验证,则会导致当极验验证动态服务器宕机的情况下无法正常进行极验验证。
- *  ❗️此方法仅允许在debugMode可用,用于测试
+ *  ❗️<b>此方法仅允许在debugMode可用,用于测试</b>
  *
  *  @param captcha_id 分配的captcha_id
  *
@@ -183,11 +180,22 @@
 
 /**
  *  iOS8 以上生效
- *  @abstract配置背景模糊
+ *  @abstract 配置背景模糊
  *
  *  @param blurEffect 模糊特效
  */
 - (void)useVisualViewWithEffect:(UIBlurEffect *)blurEffect;
+
+/**
+ *  (非必要方法)
+ *  @abstract 验证标题
+ *
+ *  @discussion
+ *  默认不开启. 字符长度不能超过28, 一个中文字符为两个2字符长度.
+ *
+ *  @param title 验证标题字符串
+ */
+- (void)useGTViewWithTitle:(NSString *)title;
 
 /**
  *  (非必要方法)
@@ -202,6 +210,17 @@
 
 /**
  *  (非必要方法)
+ *  @abstract 禁止自动适配验证高度
+ *
+ *  @discussion
+ *  默认disable = NO, 支持自动适配高度
+ *
+ *  @param disable YES 仅去适配小尺寸验证图片/NO 同时适配大小尺寸图(默认)
+ */
+- (void)disableAutoReboundGTView:(BOOL)disable;
+
+/**
+ *  (非必要方法)
  *  @abstract Debug Mode
  *
  *  @discussion
@@ -210,6 +229,6 @@
  *
  *  @param debugModeAvailable YES开启,NO关闭
  */
-- (void)debugModeEnable:(BOOL)debugEnable;
+- (void)enableDebugMode:(BOOL)debugEnable;
 
 @end

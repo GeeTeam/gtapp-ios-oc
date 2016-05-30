@@ -197,9 +197,9 @@ GTManageDelegate, 处理错误的代理方法
 #.  NSURLErrorNotConnectedToInternet 没有连接到互联网
 
         没有网络时提示
-#.  json解析出错
-        
-        在使用默认的failback里使用了json转字典, 检查网站主服务器返回的验证数据格式是否正确
+#.  json解析出错(error code = 3840等)
+
+        在使用默认的failback里使用了json转字典, 检查网站主服务器返回的验证数据格式是否正确(也可能在failback接口下, 增加了额外的键值导致)
 
         解析使用JSONObjectWithData: options: error:方法
 
@@ -299,6 +299,21 @@ iOS8 以上生效, iOS8 以下背景透明
 .. code::
 
     - (void)useVisualViewWithEffect:(UIBlurEffect *)blurEffect;
+
+
+配置验证高度的自动适配
+-------------------------------------------------------------------
+
+@abstract 禁止自动适配验证高度
+
+@discussion
+默认disable = NO, 支持自动适配高度
+ 
+@param disable YES 仅去适配小尺寸验证图片/NO 同时适配大小尺寸图(默认)
+
+.. code::
+
+    - (void)disableAutoReboundGTView:(BOOL)disable;
 
 
 验证展示语言(非必要,默认中文)

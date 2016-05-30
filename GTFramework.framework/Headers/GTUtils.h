@@ -83,7 +83,7 @@ typedef void(^GTIndicatorAnimationViewBlock)(CALayer *layer, CGSize size, UIColo
 typedef void(^GTCallFinishBlock)(NSString *code, NSDictionary *result, NSString *message);
 
 /**
- * 关闭验证
+ *  关闭验证回调
  */
 typedef void(^GTCallCloseBlock)(void);
 
