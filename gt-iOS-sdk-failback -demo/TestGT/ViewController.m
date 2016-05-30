@@ -35,13 +35,14 @@
 
 @implementation ViewController
 
-- (GTManager *)manager{
+- (GTManager *)manager {
     if (!_manager) {
-        _manager = [GTManager sharedGTManger];
+        _manager = [GTManager sharedGTManager];
         [_manager setGTDelegate:self];
+        
         /** 以下方法按需使用,非必要方法,有默认值 */
         //debug配置
-        [_manager debugModeEnable:NO];
+        [_manager enableDebugMode:NO];
         //https配置
         [_manager useSecurityAuthentication:NO];
         //多语言配置
@@ -50,13 +51,14 @@
         [_manager configureAnimatedAcitvityIndicator:^(CALayer *layer, CGSize size, UIColor *color) {
             [self setupIndicatorAnimationSample2:layer withSize:size tintColor:color];
         } withActivityIndicatorViewType:GTIndicatorCustomType];
-        //开启验证视图的外围阴影
-        [_manager setCornerViewShadow:YES];
+        //配置验证高度的自动适配
+        [_manager disableAutoReboundGTView:NO];
         //使用背景模糊
         [_manager useVisualViewWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
         //验证背景颜色(例:yellow rgb(255,200,50))
-        [_manager setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.2]];
+        [_manager setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.3]];
         /** 注释在此结束 */
+        
     }
     return _manager;
 }
@@ -70,12 +72,11 @@
 }
 
 - (IBAction)switchDebugMode:(id)sender {
-    NSLog(@"111");
     UISwitch *mSwitch = (UISwitch *)sender;
     if (mSwitch.isOn) {
-        [self.manager debugModeEnable:YES];
+        [self.manager enableDebugMode:YES];
     }else{
-        [self.manager debugModeEnable:NO];
+        [self.manager enableDebugMode:NO];
     }
 }
 
@@ -88,70 +89,80 @@
 
 /**
  *  向custom服务器请求gt验证
+ *
+ *  @discussion 开启验证前需要向网站主的服务器获取相应的验证数据(id,challenge,success),这块根据用户的网络情况需要若干时间来完成,建议在使用异步请求方式时提供状态指示器以告诉用户验证状态。
+ *
  */
-- (void)requestGTest{
-    __weak __typeof(self) weakSelf = self;
+- (void)requestGTest {
     
-    /**
-     *  开启验证前需要向网站主的服务器获取相应的验证数据(id,challenge,success),这块根据用户的网络情况需要若干时间来完成,建议在使用异步请求方式时提供状态指示器以告诉用户验证状态。
-     */
+    __weak __typeof(self) weakSelf = self;
     
     /** TODO 在此写入客户端首次向网站主服务端请求gt验证的链接(api_1) (replace demo api_1 with yours)*/
     NSURL *requestGTestURL = [NSURL URLWithString:[NSString stringWithFormat:api_1]];
     
+    //验证通过时调用
+    GTCallFinishBlock finishBlock = ^(NSString *code, NSDictionary *result, NSString *message) {
+        
+        if ([code isEqualToString:@"1"]) {
+            
+            //在用户服务器进行二次验证(start Secondery-Validate)
+            [weakSelf seconderyValidate:code result:result message:message];
+            /**UI请在主线程操作*/
+            
+        } else {
+            
+            NSLog(@"code : %@, message : %@",code,message);
+            
+        }
+    };
+    
+    //用户关闭验证时调用
+    GTCallCloseBlock closeBlock = ^{
+        
+        //用户关闭验证后执行的方法
+        NSLog(@"close geetest");
+    };
+    
+    //默认failback处理, 在此打开验证
+    GTDefaultCaptchaHandlerBlock defaultCaptchaHandlerBlock = ^(NSString *gt_captcha_id, NSString *gt_challenge, NSNumber *gt_success_code) {
+        
+        NSLog(@"sessionID === %@", self.manager.sessionID);
+        
+        //根据custom server的返回success字段判断是否开启failback
+        if ([gt_success_code intValue] == 1) {
+            
+            if (gt_captcha_id.length == 32) {
+                
+                //打开极速验证，在此处完成gt验证结果的返回
+                [weakSelf.manager openGTViewAddFinishHandler:finishBlock closeHandler:closeBlock animated:YES];
+                
+            } else {
+                
+                NSLog(@"invalid geetest ID, please set right ID");
+                
+            }
+        }else{
+            //TODO 当极验服务器不可用时，将执行此处网站主的自定义验证方法或者其他处理方法(gt-server is not available, add your handler methods in here)
+            /**请网站主务必考虑这一处的逻辑处理，否者当极验服务不可用的时候会导致用户的业务无法正常执行*/
+            UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Warning"
+                                                              message:@"极验验证服务异常不可用,请准备备用验证"
+                                                             delegate:self
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles:nil, nil];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [warning show];
+            });
+            NSLog(@"极验验证服务暂时不可用,请网站主在此写入启用备用验证的方法");
+        }
+    };
+    
+    //配置验证
     [self.manager configureGTest:requestGTestURL
                  timeoutInterval:15.0
               withHTTPCookieName:@"msid"
                          options:GTDefaultSynchronousRequest
-               completionHandler:^(NSString *gt_captcha_id, NSString *gt_challenge, NSNumber *gt_success_code) {
-                   
-                   NSLog(@"sessionID === %@",self.manager.sessionID);
-                   
-                   //根据custom server的返回success字段判断是否开启failback
-                   if ([gt_success_code intValue] == 1) {
-                       
-                       if (gt_captcha_id.length == 32) {
-                           
-                           //打开极速验证，在此处完成gt验证结果的返回
-                           [weakSelf.manager openGTViewAddFinishHandler:^(NSString *code, NSDictionary *result, NSString *message) {
-                               
-                               if ([code isEqualToString:@"1"]) {
-                                   
-                                   //在用户服务器进行二次验证(start Secondery-Validate)
-                                   [weakSelf seconderyValidate:code result:result message:message];
-                                   /**UI请在主线程操作*/
-                                   
-                               } else {
-                                   
-                                   NSLog(@"code : %@, message : %@",code,message);
-                                   
-                               }
-                           }closeHandler:^{
-                               
-                               //用户关闭验证后执行的方法
-                               NSLog(@"close geetest");
-                               
-                           } animated:YES];
-                           
-                       } else {
-                           
-                           NSLog(@"invalid geetest ID, please set right ID");
-                           
-                       }
-                   }else{
-                       //TODO 当极验服务器不可用时，将执行此处网站主的自定义验证方法或者其他处理方法(gt-server is not available, add your handler methods in here)
-                       /**请网站主务必考虑这一处的逻辑处理，否者当极验服务不可用的时候会导致用户的业务无法正常执行*/
-                       UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Warning"
-                                                                         message:@"极验验证服务异常不可用,请准备备用验证"
-                                                                        delegate:self
-                                                               cancelButtonTitle:@"OK"
-                                                               otherButtonTitles:nil, nil];
-                       dispatch_async(dispatch_get_main_queue(), ^{
-                           [warning show];
-                       });
-                       NSLog(@"极验验证服务暂时不可用,请网站主在此写入启用备用验证的方法");
-                   }
-    }];
+               completionHandler:defaultCaptchaHandlerBlock];
+    
 }
 
 /**
@@ -299,7 +310,7 @@
 #pragma --mark GTManageDelegate
 
 - (void)GTNetworkErrorHandler:(NSError *)error{
-    //不推荐直接使用alert将错误弹出, 请对错误做一个判断
+    //不推荐直接使用alert将错误弹出, 请对错误做一个判断, 参照开发文档
     //使用alert是为了方便用于演示
     NSLog(@"[GTSDK] Error: %@",error);
     UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"There's a trouble"

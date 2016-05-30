@@ -55,7 +55,8 @@ Version
 Description
 ---------------------------------------------------------------------
 
-1.  请认真查阅开发者文档,支持iOS7以上.[*please read developer doc, and support iOS7+*]
+1.  需要配合极验的服务端sdk一同使用. [*require geetest server sdk*]
+2.  请认真查阅开发者文档,支持iOS7以上. [*please read developer doc, and support iOS7+*]
 #.  在gtapp-ios-oc项目下版本号为2.15.8.＊之后的版本,现在持续更新和维护中。[*The latest one has the failback feature (version 2.15.8.＊ +). We had stopped to develop the old version. So we recommend you to use the failback version.*]
 #.  failback版本在项目路径的‘gt-iOS-sdk-failback -demo’下。[*the failback version in the file 'gt-iOS-sdk-failback -demo'*]
 #.  2.16.3.10.1 版本之后需要导入webkit.framework, 添加了对wkwebview的支持。
@@ -219,11 +220,16 @@ Xcode7适配问题
 	Debug Information Format (DEBUG_INFORMATION_FORMAT) = DWARF with dSYM
 	Enabled Modules (C and Objective-C) (CLANG_ENABLE_MODULES) = NO
 
-如果不可行尝试
+如果不可行尝试(推荐下面的解决方案)
 
 .. code ::
 
 	Enabled Clang Module Debugging = NO
+
+IPv6适配
+================================================
+
+网络层面使用NSURLConnection, 高层次api, 支持IPv6 
 
 回调Block及返回值
 ================================================
