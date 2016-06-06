@@ -22,6 +22,33 @@ typedef NS_ENUM(NSInteger, DefaultRequestTypeOptions) {
 };
 
 /**
+ *  展示方式
+ */
+typedef NS_ENUM(NSInteger, GTPresentType) {
+    /** 居中展示, 默认 */
+    GTPopupCenterType = 0,
+    /**
+     * @abstract 从底部展示验证, 仅限iPhone竖屏
+     *
+     * @discussion 当检测到旋转了屏幕, 会自动关闭验证
+     */
+    GTPopupBottomType
+};
+
+typedef NS_ENUM(NSInteger, GTViewHeightConstraintType) {
+    /** 默认高度 */
+    GTViewHeightConstraintDefault,
+    /** 小图有logo */
+    GTViewHeightConstraintSmallViewWithLogo,
+    /** 小图无logo */
+    GTViewHeightConstraintSmallViewWithNoLogo,
+    /** 大图有logo */
+    GTViewHeightConstraintLargeViewWithLogo,
+    /** 大图无logo */
+    GTViewHeightConstraintLargeViewWithNoLogo
+};
+
+/**
  *  语言选项
  */
 typedef NS_ENUM(NSInteger, LanguageType) {

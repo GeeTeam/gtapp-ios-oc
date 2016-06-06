@@ -199,6 +199,38 @@
 
 /**
  *  (非必要方法)
+ *  @abstract 验证展示方式
+ *
+ *  @discussion 
+ *  默认居中展示 GTPopupCenterType
+ *
+ *  @see GTPresentType
+ *
+ *  @param type 布局类型
+ */
+- (void)useGTViewWithPresentType:(GTPresentType)type;
+
+/**
+ *  @abstract 验证高度约束
+ *
+ *  @discussion
+ *  iOS8以下默认GTViewHeightConstraintDefault, iOS9以上自动适配验证高度
+ *
+ *  @param type 高度约束类型
+ */
+- (void)useGTViewWithHeightConstraintType:(GTViewHeightConstraintType)type;
+
+/**
+ *  @abstract 验证背景交互事件的开关
+ *
+ *  @discussion 默认关闭
+ *
+ *  @param disable YES忽略交互事件/NO接受交互事件
+ */
+- (void)disableBackgroundUserInteraction:(BOOL)disable;
+
+/**
+ *  (非必要方法)
  *  @abstract 切换验证语言
  *
  *  @discussion
@@ -207,17 +239,6 @@
  *  @param Type 语言类型
  */
 - (void)languageSwitch:(LanguageType)Type;
-
-/**
- *  (非必要方法)
- *  @abstract 禁止自动适配验证高度
- *
- *  @discussion
- *  默认disable = NO, 支持自动适配高度
- *
- *  @param disable YES 仅去适配小尺寸验证图片/NO 同时适配大小尺寸图(默认)
- */
-- (void)disableAutoReboundGTView:(BOOL)disable;
 
 /**
  *  (非必要方法)
