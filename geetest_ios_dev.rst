@@ -301,20 +301,85 @@ iOS8 以上生效, iOS8 以下背景透明
     - (void)useVisualViewWithEffect:(UIBlurEffect *)blurEffect;
 
 
-配置验证高度的自动适配
+验证布局方式
 -------------------------------------------------------------------
 
-@abstract 禁止自动适配验证高度
+@abstract 验证展示方式
 
-@discussion
-默认disable = NO, 支持自动适配高度
- 
-@param disable YES 仅去适配小尺寸验证图片/NO 同时适配大小尺寸图(默认)
+@discussion 
+默认居中展示 GTPopupCenterType
+
+@see GTPresentType
+
+@param type 布局类型
 
 .. code::
 
-    - (void)disableAutoReboundGTView:(BOOL)disable;
+    - (void)useGTViewWithPresentType:(GTPresentType)type;
 
+GTPresentType:
+
+.. code::
+
+    /**
+    *  展示方式
+    */
+    typedef NS_ENUM(NSInteger, GTPresentType) {
+        /** 居中展示, 默认 */
+        GTPopupCenterType = 0,
+        /**
+         * @abstract 从底部展示验证, 仅限iPhone竖屏
+         *
+         * @discussion 当检测到旋转了屏幕, 会自动关闭验证
+         */
+        GTPopupBottomType
+    };
+
+
+配置验证高度的适配
+-------------------------------------------------------------------
+
+@abstract 验证高度约束
+
+@discussion
+iOS8以下默认GTViewHeightConstraintDefault, iOS9以上自动适配验证高度
+
+@param type 高度约束类型
+
+.. code::
+
+    - (void)useGTViewWithHeightConstraintType:(GTViewHeightConstraintType)type;
+
+GTViewHeightConstraintType
+
+.. code::
+
+    typedef NS_ENUM(NSInteger, GTViewHeightConstraintType) {
+    /** 默认高度 */
+    GTViewHeightConstraintDefault,
+    /** 小图有logo */
+    GTViewHeightConstraintSmallViewWithLogo,
+    /** 小图无logo */
+    GTViewHeightConstraintSmallViewWithNoLogo,
+    /** 大图有logo */
+    GTViewHeightConstraintLargeViewWithLogo,
+    /** 大图无logo */
+    GTViewHeightConstraintLargeViewWithNoLogo
+    };
+
+
+验证背景交互响应
+-------------------------------------------------------------------
+
+@abstract 验证背景交互事件的开关
+
+@discussion 默认关闭
+
+@param disable YES忽略交互事件/NO接受交互事件
+
+.. code::
+
+    - (void)disableBackgroundUserInteraction:(BOOL)disable;
 
 验证展示语言(非必要,默认中文)
 -------------------------------------------------------------------

@@ -51,8 +51,10 @@
         [_manager configureAnimatedAcitvityIndicator:^(CALayer *layer, CGSize size, UIColor *color) {
             [self setupIndicatorAnimationSample2:layer withSize:size tintColor:color];
         } withActivityIndicatorViewType:GTIndicatorCustomType];
-        //配置验证高度的自动适配
-        [_manager disableAutoReboundGTView:NO];
+        //配置布局方式
+        [_manager useGTViewWithPresentType:GTPopupCenterType];
+        //验证高度约束
+        [_manager useGTViewWithHeightConstraintType:GTViewHeightConstraintLargeViewWithLogo];
         //使用背景模糊
         [_manager useVisualViewWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
         //验证背景颜色(例:yellow rgb(255,200,50))

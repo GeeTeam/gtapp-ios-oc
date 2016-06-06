@@ -26,7 +26,6 @@
         _manager = [GTManager sharedGTManager];
         [_manager enableDebugMode:NO];
         [_manager setGTDelegate:self];
-        [_manager disableAutoReboundGTView:NO];
     }
     return _manager;
 }
