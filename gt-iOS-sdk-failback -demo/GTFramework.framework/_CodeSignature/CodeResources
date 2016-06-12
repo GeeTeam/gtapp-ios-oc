@@ -10,15 +10,15 @@
 		</data>
 		<key>Headers/GTManager.h</key>
 		<data>
-		oyoFIomsrZ78fwyf3uRtIJkpD/Q=
+		fSmMdT4b6hfnyuVsR7+dYnwKwwI=
 		</data>
 		<key>Headers/GTUtils.h</key>
 		<data>
-		bqQjLO1J/W21V1w8G2dn60QcHxI=
+		rLe/R5o/rWEKHiP0cJLi474CAMw=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		aCCFrcIoSqB+zHWHCv2qb8/kthk=
+		ETxAAO57WPhqelzWcRxUng/zFqA=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -42,22 +42,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			oyoFIomsrZ78fwyf3uRtIJkpD/Q=
+			fSmMdT4b6hfnyuVsR7+dYnwKwwI=
 			</data>
 			<key>hash2</key>
 			<data>
-			GitlBtZ6U65Tx6RrktmZYvp8uK+GMOAycY6X3WM+rxY=
+			kIVLDbQTB1TzjXna8C//eYGa3LMz7DZaD9eFQskjwYg=
 			</data>
 		</dict>
 		<key>Headers/GTUtils.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			bqQjLO1J/W21V1w8G2dn60QcHxI=
+			rLe/R5o/rWEKHiP0cJLi474CAMw=
 			</data>
 			<key>hash2</key>
 			<data>
-			3kZEvPyK6/E4KZjblgg9pfAuPlqWj5n37VQCIpcIMj4=
+			2+R+7bbDON24lzVj6YR3E7Qvtl9WUcFr2Tkb0T4Ah3I=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

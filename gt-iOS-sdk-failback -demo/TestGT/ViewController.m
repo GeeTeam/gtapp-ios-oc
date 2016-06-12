@@ -14,9 +14,9 @@
  *  并且在标有'TODO'的地方写上你们的处理逻辑
  */
 //客户端向网站主服务端请求gt验证的接口(api_1)
-#define api_1 @"http://webapi.geetest.com/apis/start-mobile-captcha/"
+#define api_1 @"http://webapi.geelao.ren:8011/gtcap/start-mobile-captcha/"
 //网站主部署的二次验证链接 (api_2)
-#define api_2 @"http://webapi.geetest.com/apis/mobile-server-validate/"
+#define api_2 @"http://webapi.geelao.ren:8011/gtcap/gt-server-validate/"
 
 
 #import "ViewController.h"
@@ -209,29 +209,41 @@
                     NSURLSessionDataTask *sessionDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
                         
                         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-                        NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                         
                         if (data.length > 0 && !error) {
                             
                             if (httpResponse.statusCode == 200) {
                                 
-                                //TODO 二次验证成功后执行的方法(after finish Secondery-Validate, to do something)
-                                NSLog(@"client captcha response: %@",responseString);
+                                // TODO 二次验证成功后执行的方法(after finish Secondery-Validate, to do something)
                                 
-                                //Demo配套的使用的是python server sdk, response里的返回的是success/fail表示二次验证结果
-                                if ([responseString isEqualToString:@"success"]) {
-                                    // TODO 验证成功(Secondery-Validate success)
-                                    [self showSuccessView:YES];
-                                }else{
-                                    // TODO 验证失败(Secondery-Validate fail)
-                                    [self showSuccessView:NO];
+                                NSError *err = nil;
+                                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&err];
+                                
+                                if (!err) {
+                                    
+                                    //Demo配套的使用的是python server sdk, response里的返回的是success/fail表示二次验证结果
+                                    if ([[dic objectForKey:@"msg"] isEqualToString:@"success"]) {
+                                        
+                                        // TODO 验证成功(Secondery-Validate success)
+                                        NSLog(@"captcha success");
+                                        [self showSuccessView:YES];
+                                        
+                                    }else{
+                                        
+                                        // TODO 验证失败(Secondery-Validate fail)
+                                        [self showSuccessView:NO];
+                                        NSLog(@"secondery captcha failed, server response: %@", dic);
+                                        
+                                    }
+                                } else {
+                                    NSLog(@"JSON Format Error: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
                                 }
                                 
                             }else{
-                                NSLog(@"statusCode: %ld",(long)httpResponse.statusCode);
+                                NSLog(@"statusCode: %ld", (long)httpResponse.statusCode);
                             }
                         }else{
-                            NSLog(@"error: %@",error.localizedDescription);
+                            NSLog(@"error: %@", error.localizedDescription);
                         }
                     }];
                     [sessionDataTask resume];

@@ -214,7 +214,7 @@
  *  @abstract 验证高度约束
  *
  *  @discussion
- *  iOS8以下默认GTViewHeightConstraintDefault, iOS9以上自动适配验证高度
+ *  iOS8以下默认GTViewHeightConstraintDefault, iOS9以上自动适配验证高度, 不受此方法约束
  *
  *  @param type 高度约束类型
  */
