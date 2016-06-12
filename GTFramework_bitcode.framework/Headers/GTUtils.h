@@ -25,26 +25,29 @@ typedef NS_ENUM(NSInteger, DefaultRequestTypeOptions) {
  *  展示方式
  */
 typedef NS_ENUM(NSInteger, GTPresentType) {
-    /** 居中展示, 默认 */
+    /** Popup on the center of screen. Default. */
     GTPopupCenterType = 0,
     /**
-     * @abstract 从底部展示验证, 仅限iPhone竖屏
+     * @abstract Popup on the bottom of screen. <b>Portrait ONLY</b>.
      *
-     * @discussion 当检测到旋转了屏幕, 会自动关闭验证
+     * @discussion Close <b>geetest</b> if opened when detect the device orientated. You should open <b>geetest</b> again manually because of the <b>Challenge</b> can't be used twice in the same session.
      */
     GTPopupBottomType
 };
 
+/**
+ *  高度约束类型
+ */
 typedef NS_ENUM(NSInteger, GTViewHeightConstraintType) {
-    /** 默认高度 */
+    /** Default Type */
     GTViewHeightConstraintDefault,
-    /** 小图有logo */
+    /** Small View With Logo*/
     GTViewHeightConstraintSmallViewWithLogo,
-    /** 小图无logo */
+    /** Small View With No Logo */
     GTViewHeightConstraintSmallViewWithNoLogo,
-    /** 大图有logo */
+    /** Large View With Logo */
     GTViewHeightConstraintLargeViewWithLogo,
-    /** 大图无logo */
+    /** Large View With No Logo */
     GTViewHeightConstraintLargeViewWithNoLogo
 };
 
@@ -68,6 +71,9 @@ typedef NS_ENUM(NSInteger, LanguageType) {
     LANGTYPE_AUTO
 };
 
+/**
+ *  活动指示器类型
+ */
 typedef NS_ENUM(NSInteger, ActivityIndicatorViewType) {
     /** System Indicator Type */
     GTIndicatorSystemType = 0,
@@ -89,7 +95,7 @@ typedef void(^GTDefaultCaptchaHandlerBlock)(NSString *gt_captcha_id, NSString *g
 /**
  *  自定义状态指示器的动画实现block
  *
- *  @param layer 状态指示器视图的layer
+*  @param layer 状态指示器视图的layer
  *  @param size  layer的大小,默认 {64, 64}
  *  @param color layer的颜色,默认 蓝色 [UIColor colorWithRed:0.3 green:0.6 blue:0.9 alpha:1]
  */

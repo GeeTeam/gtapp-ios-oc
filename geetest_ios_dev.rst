@@ -187,13 +187,17 @@ GTManageDelegate, 处理错误的代理方法
 
 1.  NSURLErrorTimedOut 超时
     
-        与开发人员配置的超时时间和用户的网络情况的有关,在低速网络可以对这块做测试
+        与开发人员配置的超时时间和用户的网络情况的有关, 在低速网络可以对这块做测试
 #.  NSURLErrorCancelled 取消了网络请求
 
-        一般不出现,SDK里并没有给出用户提前取消请求的方法
+        一般不出现, 可能出现的情况是异步网络加载的时候, 用户关闭了验证
+
+#.  NSURLErrorCannotFindHost 无法找到主机
+    
+        网络异常, 检查网络
 #.  NSURLErrorCannotConnectToHost 无法连接到极验服务器
         
-        网络异常,无法连接到极验服务器
+        网络异常, 无法连接到极验服务器
 #.  NSURLErrorNotConnectedToInternet 没有连接到互联网
 
         没有网络时提示
