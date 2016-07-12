@@ -66,7 +66,7 @@ step2:
 
 .. code::
 	
-	- (void)disableAutoReboundGTView:(BOOL)disable;
+	- (void)useGTViewWithHeightConstraintType:(GTViewHeightConstraintType)type;
 
 
 验证界面完全空白
@@ -112,6 +112,15 @@ step2:
 
 解决: 更新服务端sdk即可解决
 
+验证界面锁定在状态指示器
+================================================
+
+问题截图:
+
+.. image:: img/question/question07_00.png
+
+该问题在在2.16.4.12.1版本之后出现, 情形同"验证界面完全空白"
+
 打开验证时的内存消耗
 ================================================
 
@@ -146,5 +155,12 @@ step2:
 原因: iOS9 以上默认禁用http协议, 而验证内部使用了http请求验证数据
 
 解决: `参考README  <https://github.com/GeeTeam/gtapp-ios-oc/blob/master/README.rst>`__
+
+静态库的体积比较大
+================================================
+
+本framework合成了真机和模拟器的静态库, 所以体积比较大。 其中bitcode版本因为区分了i386、x86_64、armv7、 armv7s、arm64等架构, 所以体积更大。 
+
+在集成到app后, 大约增量100kb。
 
 (完)

@@ -327,14 +327,23 @@
     //不推荐直接使用alert将错误弹出, 请对错误做一个判断, 参照开发文档
     //使用alert是为了方便用于演示
     NSLog(@"[GTSDK] Error: %@",error);
-    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"There's a trouble"
-                                                         message:error.localizedDescription
-                                                        delegate:self
-                                               cancelButtonTitle:@"Ok"
-                                               otherButtonTitles:nil, nil];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [errorAlert show];
-    });
+    
+    if (error.code == -999) {
+        //忽略此类型错误, 仅打印
+        //用户在请求加载之前, 关闭验证可能导致此错误
+        NSLog(@"Error: %@", error.localizedDescription);
+    }
+    else {
+        UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"There's a trouble"
+                                                             message:error.localizedDescription
+                                                            delegate:self
+                                                   cancelButtonTitle:@"Ok"
+                                                   otherButtonTitles:nil, nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [errorAlert show];
+        });
+    }
+    
 }
 
 @end
