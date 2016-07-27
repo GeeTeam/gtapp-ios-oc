@@ -82,10 +82,10 @@
  }
  </pre>
  */
-- (void)configureGTest:(NSURL *)requestCustomServerForGTestURL
-       timeoutInterval:(NSTimeInterval)timeoutInterval
-    withHTTPCookieName:(NSString *)name
-               options:(DefaultRequestTypeOptions)RequestType
+- (void)configureGTest:(NSURL *)customURL
+               timeout:(NSTimeInterval)timeoutInterval
+        withCookieName:(NSString *)name
+               options:(DefaultRequestOptions)RequestType
      completionHandler:(GTDefaultCaptchaHandlerBlock)handler;
 
 /**
@@ -165,7 +165,7 @@
  *  @param type           状态指示器的类型
  */
 - (void)configureAnimatedAcitvityIndicator:(GTIndicatorAnimationViewBlock)animationBlock
-             withActivityIndicatorViewType:(ActivityIndicatorViewType)type;
+                         withIndicatorType:(ActivityIndicatorType)type;
 
 /**
  *  (非必要方法)
@@ -179,8 +179,10 @@
 - (void)useSecurityAuthentication:(BOOL)secured;
 
 /**
- *  iOS8 以上生效
  *  @abstract 配置背景模糊
+ *
+ *  @discussion
+ *  iOS8以上生效
  *
  *  @param blurEffect 模糊特效
  */
@@ -248,7 +250,7 @@
  *  开启debugMode,在开启验证之前调用此方法
  *  默认不开启
  *
- *  @param debugModeAvailable YES开启,NO关闭
+ *  @param debugEnable YES开启,NO关闭
  */
 - (void)enableDebugMode:(BOOL)debugEnable;
 

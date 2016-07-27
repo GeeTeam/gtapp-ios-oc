@@ -143,17 +143,17 @@ gt验证SDK Header暴露的方法
 
 .. code::
     
-    - (void)configureGTest:(NSURL *)requestCustomServerForGTestURL 
-    	   timeoutInterval:(NSTimeInterval)timeoutInterval 
-    	withHTTPCookieName:(NSString *)name
-    			   options:(DefaultRequestTypeOptions)RequestType 
-    	 completionHandler:(GTDefaultCaptchaHandlerBlock)handler;
+    - (void)configureGTest:(NSURL *)customURL
+                   timeout:(NSTimeInterval)timeoutInterval
+            withCookieName:(NSString *)name
+                   options:(DefaultRequestOptions)RequestType
+         completionHandler:(GTDefaultCaptchaHandlerBlock)handler;
 
 options: 请求选项
 
 .. code::
     
-    typedef NS_ENUM(NSInteger, DefaultRequestTypeOptions){
+    typedef NS_ENUM(NSInteger, DefaultRequestOptions){
         //发送同步请求, 基于 [NSURLConnection sendSynchronousRequest: returningResponse: error:&error]
         GTDefaultSynchronousRequest,
         //发送异步请求, 基于 NSURLConnectionDataDelegate
@@ -260,13 +260,13 @@ GTManageDelegate, 处理错误的代理方法
 .. code::
 
     - (void)configureAnimatedAcitvityIndicator:(GTIndicatorAnimationViewBlock)animationBlock
-             withActivityIndicatorViewType:(ActivityIndicatorViewType)type;
+                             withIndicatorType:(ActivityIndicatorType)type;
 
 ActivityIndicatorViewType:
 
 .. code::
 
-    typedef NS_ENUM(NSInteger, ActivityIndicatorViewType) {
+    typedef NS_ENUM(NSInteger, ActivityIndicatorType) {
     /** System Indicator Type 系统样式*/
     GTIndicatorSystemType = 0,
     /** Geetest Defualt Indicator Type 极验验证默认样式*/
