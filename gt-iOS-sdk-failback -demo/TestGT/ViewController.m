@@ -44,13 +44,13 @@
         //debug配置
         [_manager enableDebugMode:NO];
         //https配置
-        [_manager useSecurityAuthentication:NO];
+        [_manager useSecurityAuthentication:YES];
         //多语言配置
         [_manager languageSwitch:LANGTYPE_AUTO];
         //状态指示器配置
         [_manager configureAnimatedAcitvityIndicator:^(CALayer *layer, CGSize size, UIColor *color) {
             [self setupIndicatorAnimationSample2:layer withSize:size tintColor:color];
-        } withActivityIndicatorViewType:GTIndicatorCustomType];
+        } withIndicatorType:GTIndicatorCustomType];
         //配置布局方式
         [_manager useGTViewWithPresentType:GTPopupCenterType];
         //验证高度约束
@@ -106,21 +106,19 @@
     GTCallFinishBlock finishBlock = ^(NSString *code, NSDictionary *result, NSString *message) {
         
         if ([code isEqualToString:@"1"]) {
-            
             //在用户服务器进行二次验证(start Secondery-Validate)
             [weakSelf seconderyValidate:code result:result message:message];
             /**UI请在主线程操作*/
             
-        } else {
-            
-            NSLog(@"code : %@, message : %@",code,message);
-            
         }
+        else {
+            NSLog(@"code : %@, message : %@",code,message);
+        }
+        
     };
     
     //用户关闭验证时调用
     GTCallCloseBlock closeBlock = ^{
-        
         //用户关闭验证后执行的方法
         NSLog(@"close geetest");
     };
@@ -128,22 +126,19 @@
     //默认failback处理, 在此打开验证
     GTDefaultCaptchaHandlerBlock defaultCaptchaHandlerBlock = ^(NSString *gt_captcha_id, NSString *gt_challenge, NSNumber *gt_success_code) {
         
-        NSLog(@"sessionID === %@", self.manager.sessionID);
-        
         //根据custom server的返回success字段判断是否开启failback
         if ([gt_success_code intValue] == 1) {
             
             if (gt_captcha_id.length == 32) {
-                
                 //打开极速验证，在此处完成gt验证结果的返回
                 [weakSelf.manager openGTViewAddFinishHandler:finishBlock closeHandler:closeBlock animated:YES];
-                
-            } else {
-                
-                NSLog(@"invalid geetest ID, please set right ID");
-                
             }
-        }else{
+            else {
+                NSLog(@"invalid geetest ID, please set right ID");
+            }
+            
+        }
+        else {
             //TODO 当极验服务器不可用时，将执行此处网站主的自定义验证方法或者其他处理方法(gt-server is not available, add your handler methods in here)
             /**请网站主务必考虑这一处的逻辑处理，否者当极验服务不可用的时候会导致用户的业务无法正常执行*/
             UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Warning"
@@ -158,12 +153,12 @@
         }
     };
     
-    //配置验证
-    [self.manager configureGTest:requestGTestURL
-                 timeoutInterval:15.0
-              withHTTPCookieName:@"msid"
-                         options:GTDefaultSynchronousRequest
-               completionHandler:defaultCaptchaHandlerBlock];
+    //配置验证, 必须weak, 否则内存泄露
+    [weakSelf.manager configureGTest:requestGTestURL
+                             timeout:15.0
+                      withCookieName:nil
+                             options:GTDefaultAsynchronousRequest
+                   completionHandler:defaultCaptchaHandlerBlock];
     
 }
 
@@ -215,7 +210,6 @@
                             if (httpResponse.statusCode == 200) {
                                 
                                 // TODO 二次验证成功后执行的方法(after finish Secondery-Validate, to do something)
-                                
                                 NSError *err = nil;
                                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&err];
                                 
@@ -228,25 +222,29 @@
                                         NSLog(@"captcha success");
                                         [self showSuccessView:YES];
                                         
-                                    }else{
-                                        
+                                    }
+                                    else {
                                         // TODO 验证失败(Secondery-Validate fail)
                                         [self showSuccessView:NO];
                                         NSLog(@"secondery captcha failed, server response: %@", dic);
-                                        
                                     }
-                                } else {
+                                }
+                                else {
                                     NSLog(@"JSON Format Error: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
                                 }
                                 
-                            }else{
+                            }
+                            else {
                                 NSLog(@"statusCode: %ld", (long)httpResponse.statusCode);
                             }
-                        }else{
+                        }
+                        else {
                             NSLog(@"error: %@", error.localizedDescription);
                         }
                     }];
                     [sessionDataTask resume];
+                    
+                    [session finishTasksAndInvalidate];
                 }
 
             } else {
@@ -330,7 +328,7 @@
     
     if (error.code == -999) {
         //忽略此类型错误, 仅打印
-        //用户在请求加载之前, 关闭验证可能导致此错误
+        //用户在加载请求时, 关闭验证可能导致此错误
         NSLog(@"Error: %@", error.localizedDescription);
     }
     else {
@@ -340,6 +338,8 @@
                                                    cancelButtonTitle:@"Ok"
                                                    otherButtonTitles:nil, nil];
         dispatch_async(dispatch_get_main_queue(), ^{
+            __weak __typeof(self) weakSelf = self;
+            [weakSelf.manager closeGTViewIfIsOpen];
             [errorAlert show];
         });
     }

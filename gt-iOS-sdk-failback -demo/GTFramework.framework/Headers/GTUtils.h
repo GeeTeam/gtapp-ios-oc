@@ -14,7 +14,7 @@
 /**
  *  默认failback请求类型选项
  */
-typedef NS_ENUM(NSInteger, DefaultRequestTypeOptions) {
+typedef NS_ENUM(NSInteger, DefaultRequestOptions) {
     /** Send Synchronous Request */
     GTDefaultSynchronousRequest = 0,
     /** Send Asynchronous Request */
@@ -25,7 +25,7 @@ typedef NS_ENUM(NSInteger, DefaultRequestTypeOptions) {
  *  展示方式
  */
 typedef NS_ENUM(NSInteger, GTPresentType) {
-    /** Popup on the center of screen. Default. */
+    /** Popup on the center of screen. <b>Default</b>. */
     GTPopupCenterType = 0,
     /**
      * @abstract Popup on the bottom of screen. <b>Portrait ONLY</b>.
@@ -74,7 +74,7 @@ typedef NS_ENUM(NSInteger, LanguageType) {
 /**
  *  活动指示器类型
  */
-typedef NS_ENUM(NSInteger, ActivityIndicatorViewType) {
+typedef NS_ENUM(NSInteger, ActivityIndicatorType) {
     /** System Indicator Type */
     GTIndicatorSystemType = 0,
     /** Geetest Defualt Indicator Type */
@@ -95,7 +95,7 @@ typedef void(^GTDefaultCaptchaHandlerBlock)(NSString *gt_captcha_id, NSString *g
 /**
  *  自定义状态指示器的动画实现block
  *
-*  @param layer 状态指示器视图的layer
+ *  @param layer 状态指示器视图的layer
  *  @param size  layer的大小,默认 {64, 64}
  *  @param color layer的颜色,默认 蓝色 [UIColor colorWithRed:0.3 green:0.6 blue:0.9 alpha:1]
  */
