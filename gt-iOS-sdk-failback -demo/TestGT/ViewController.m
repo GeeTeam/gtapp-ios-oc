@@ -14,9 +14,9 @@
  *  并且在标有'TODO'的地方写上你们的处理逻辑
  */
 //客户端向网站主服务端请求gt验证的接口(api_1)
-#define api_1 @"http://webapi.geelao.ren:8011/gtcap/start-mobile-captcha/"
+#define api_1 @"http://api.apiapp.cc/gtcap/start-mobile-captcha/"
 //网站主部署的二次验证链接 (api_2)
-#define api_2 @"http://webapi.geelao.ren:8011/gtcap/gt-server-validate/"
+#define api_2 @"http://api.apiapp.cc/gtcap/gt-server-validate/"
 
 
 #import "ViewController.h"
@@ -44,7 +44,7 @@
         //debug配置
         [_manager enableDebugMode:NO];
         //https配置
-        [_manager useSecurityAuthentication:YES];
+        [_manager useSecurityAuthentication:NO];
         //多语言配置
         [_manager languageSwitch:LANGTYPE_AUTO];
         //状态指示器配置
@@ -108,8 +108,6 @@
             //在用户服务器进行二次验证(start Secondery-Validate)
             [weakSelf seconderyValidate:code result:result message:message];
             /**UI请在主线程操作*/
-            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-            [self.view addSubview:view];
         }
         else {
             NSLog(@"code : %@, message : %@",code,message);
