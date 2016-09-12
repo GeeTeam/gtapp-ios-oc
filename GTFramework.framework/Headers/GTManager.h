@@ -15,7 +15,7 @@
 /**
  *  验证错误的处理方法
  *  主要捕捉网络错误和Json解析错误, 详见在线文档说明
- *  https://github.com/GeeTeam/gtapp-ios-oc/blob/master/gt-iOS-sdk-failback%20-demo/geetest_ios_dev.rst
+ *  https://github.com/GeeTeam/gtapp-ios-oc/blob/master/geetest_ios_dev.rst#id9
  *
  *  @param error 错误源
  */

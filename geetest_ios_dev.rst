@@ -206,9 +206,12 @@ GTManageDelegate, 处理错误的代理方法
 #.  NSURLErrorCannotConnectToHost 无法连接到极验服务器
         
         网络异常, 无法连接到极验服务器
-#.  NSURLErrorNotConnectedToInternet 没有连接到互联网
+#.  NSURLErrorNotConnectedToInternet 没有连接到互联网 
 
         没有网络时提示
+#.  NSURLErrorBadServerResponse 错误500
+    
+        等价于"500 Server Error"
 #.  json解析出错(error code = 3840等)
 
         在使用默认的failback里使用了json转字典, 检查网站主服务器返回的验证数据格式是否正确(也可能在failback接口下, 增加了额外的键值导致)

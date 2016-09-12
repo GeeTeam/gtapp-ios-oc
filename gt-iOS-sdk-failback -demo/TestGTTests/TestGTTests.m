@@ -32,7 +32,7 @@
 
 - (NSURL*)requestGTestURL{
     if (!_requestGTestURL) {
-        _requestGTestURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://webapi.geetest.com/apis/start-mobile-captcha/"]];
+        _requestGTestURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://webapi.geelao.ren:8011/gtcap/start-mobile-captcha/"]];
     }
     return _requestGTestURL;
 }
@@ -55,16 +55,16 @@
     XCTestExpectation * expectation = [self expectationWithDescription:@"Check Sync Data"];
     
     [self.manager configureGTest:self.requestGTestURL
-                              timeoutInterval:15.0
-                           withHTTPCookieName:@"msid"
-                                      options:GTDefaultSynchronousRequest
-                            completionHandler:^(NSString *gt_captcha_id, NSString *gt_challenge, NSNumber *gt_success_code) {
-                                NSLog(@"%@",gt_captcha_id);
-                                XCTAssertTrue(gt_captcha_id.length == 32, @"invalid gt id");
-                                XCTAssertTrue(gt_challenge.length == 32, @"invalid challenge");
-                                XCTAssertTrue([gt_success_code intValue] == 1, @"UNEXCEPTED SUCCESS CODE");
-                                [expectation fulfill];
-                            }];
+                         timeout:15.0
+                  withCookieName:@"msid"
+                         options:GTDefaultSynchronousRequest
+               completionHandler:^(NSString *gt_captcha_id, NSString *gt_challenge, NSNumber *gt_success_code) {
+                   NSLog(@"%@",gt_captcha_id);
+                   XCTAssertTrue(gt_captcha_id.length == 32, @"invalid gt id");
+                   XCTAssertTrue(gt_challenge.length == 32, @"invalid challenge");
+                   XCTAssertTrue([gt_success_code intValue] == 1, @"UNEXCEPTED SUCCESS CODE");
+                   [expectation fulfill];
+               }];
     
     [self waitForExpectationsWithTimeout:15.0 handler:nil];
 }
@@ -77,16 +77,16 @@
     XCTestExpectation * expectation = [self expectationWithDescription:@"Check Async Data"];
     
     [self.manager configureGTest:self.requestGTestURL
-                              timeoutInterval:15.0
-                           withHTTPCookieName:@"msid"
-                                      options:GTDefaultAsynchronousRequest
-                            completionHandler:^(NSString *gt_captcha_id, NSString *gt_challenge, NSNumber *gt_success_code) {
-                                NSLog(@"%@",gt_captcha_id);
-                                XCTAssertTrue(gt_captcha_id.length == 32, @"invalid gt id");
-                                XCTAssertTrue(gt_challenge.length == 32, @"invalid challenge");
-                                XCTAssertTrue([gt_success_code intValue] == 1, @"UNEXCEPTED SUCCESS CODE");
-                                [expectation fulfill];
-                            }];
+                         timeout:15.0
+                  withCookieName:@"msid"
+                         options:GTDefaultAsynchronousRequest
+               completionHandler:^(NSString *gt_captcha_id, NSString *gt_challenge, NSNumber *gt_success_code) {
+                   NSLog(@"%@",gt_captcha_id);
+                   XCTAssertTrue(gt_captcha_id.length == 32, @"invalid gt id");
+                   XCTAssertTrue(gt_challenge.length == 32, @"invalid challenge");
+                   XCTAssertTrue([gt_success_code intValue] == 1, @"UNEXCEPTED SUCCESS CODE");
+                   [expectation fulfill];
+               }];
     
     [self waitForExpectationsWithTimeout:15.0 handler:nil];
 }
@@ -132,7 +132,10 @@
     self.customExpectation = [self expectationWithDescription:@"Test Captcha With DebugMode"];
     
     [self.manager enableDebugMode:YES];
-    [self.manager configureGTest:self.requestGTestURL timeoutInterval:15.0 withHTTPCookieName:nil options:GTDefaultSynchronousRequest completionHandler:^(NSString *gt_captcha_id, NSString *gt_challenge, NSNumber *gt_success_code) {
+    [self.manager configureGTest:self.requestGTestURL
+                         timeout:15.0
+                  withCookieName:nil
+                         options:GTDefaultSynchronousRequest completionHandler:^(NSString *gt_captcha_id, NSString *gt_challenge, NSNumber *gt_success_code) {
         if ([self.manager serverStatusWithCaptcha_id:gt_captcha_id]) {
             [self.manager openGTViewAddFinishHandler:^(NSString *code, NSDictionary *result, NSString *message) {
                 [self.customExpectation fulfill];
@@ -156,12 +159,12 @@
     self.customExpectation = [self expectationWithDescription:@"Test HTTPs"];
     
     [self.manager configureGTest:self.requestGTestURL
-                              timeoutInterval:15.0
-                           withHTTPCookieName:nil
-                                      options:GTDefaultSynchronousRequest
-                            completionHandler:^(NSString *gt_captcha_id, NSString *gt_challenge, NSNumber *gt_success_code) {
-                                [self coreCaptchaMethod:gt_captcha_id withChallenge:gt_challenge succesCode:gt_success_code];
-                            }];
+                         timeout:15.0
+                  withCookieName:nil
+                         options:GTDefaultSynchronousRequest
+               completionHandler:^(NSString *gt_captcha_id, NSString *gt_challenge, NSNumber *gt_success_code) {
+               [self coreCaptchaMethod:gt_captcha_id withChallenge:gt_challenge succesCode:gt_success_code];
+               }];
     [self waitForExpectationsWithTimeout:30.0 handler:^(NSError * _Nullable error) {
         NSLog(@"WARNING: You should finish the captcha to complete this test. Or there are some errors with SSL.");
     }];
@@ -173,10 +176,10 @@
 - (void)testErrorHandle{
     
     [self.manager configureGTest:self.requestGTestURL
-                              timeoutInterval:1.0
-                           withHTTPCookieName:@"msid"
-                                      options:GTDefaultSynchronousRequest
-                            completionHandler:nil];
+                         timeout:1.0
+                  withCookieName:@"msid"
+                         options:GTDefaultSynchronousRequest
+               completionHandler:nil];
 }
 
 

@@ -14,9 +14,9 @@
  *  并且在标有'TODO'的地方写上你们的处理逻辑
  */
 //客户端向网站主服务端请求gt验证的接口(api_1)
-#define api_1 @"http://webapi.geelao.ren:8011/gtcap/start-mobile-captcha/"
+#define api_1 @"http://api.apiapp.cc/gtcap/start-mobile-captcha/"
 //网站主部署的二次验证链接 (api_2)
-#define api_2 @"http://webapi.geelao.ren:8011/gtcap/gt-server-validate/"
+#define api_2 @"http://api.apiapp.cc/gtcap/gt-server-validate/"
 
 
 #import "ViewController.h"
@@ -37,14 +37,14 @@
 
 - (GTManager *)manager {
     if (!_manager) {
-        _manager = [GTManager sharedGTManager];
+        _manager = [[GTManager alloc] init];
         [_manager setGTDelegate:self];
         
         /** 以下方法按需使用,非必要方法,有默认值 */
         //debug配置
         [_manager enableDebugMode:NO];
         //https配置
-        [_manager useSecurityAuthentication:YES];
+        [_manager useSecurityAuthentication:NO];
         //多语言配置
         [_manager languageSwitch:LANGTYPE_AUTO];
         //状态指示器配置
@@ -60,7 +60,6 @@
         //验证背景颜色(例:yellow rgb(255,200,50))
         [_manager setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.3]];
         /** 注释在此结束 */
-        
     }
     return _manager;
 }
@@ -109,7 +108,6 @@
             //在用户服务器进行二次验证(start Secondery-Validate)
             [weakSelf seconderyValidate:code result:result message:message];
             /**UI请在主线程操作*/
-            
         }
         else {
             NSLog(@"code : %@, message : %@",code,message);
@@ -163,7 +161,7 @@
 }
 
 /**
- *  二次验证是验证的必要环节,此方法的构造供参考,可根据需求自行调整(NSURLSession is just a sample for this demo. You can choose what your like to complete this step.)
+ *  二次验证是验证的必要环节,此方法的构造供参考,可根据需求自行调整(NSURLSession is just a sample for this demo. You can choose what you want to complete this step.)
  *  考虑到nsurlsession的是苹果推荐的网络库,并且希望开发者了解这块的逻辑以及重要性,而没使用使用大家熟悉的AFNetworking
  *  使用POST请求将 result 以表单格式发送至网站主服务器进行二次验证, 集成极验提供的server sdk会根据提交的数据作出判断并且返回相应的结果
  *
@@ -206,15 +204,12 @@
                         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
                         
                         if (data.length > 0 && !error) {
-                            
                             if (httpResponse.statusCode == 200) {
-                                
                                 // TODO 二次验证成功后执行的方法(after finish Secondery-Validate, to do something)
                                 NSError *err = nil;
                                 NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&err];
                                 
                                 if (!err) {
-                                    
                                     //Demo配套的使用的是python server sdk, response里的返回的是success/fail表示二次验证结果
                                     if ([[dic objectForKey:@"msg"] isEqualToString:@"success"]) {
                                         
@@ -232,7 +227,6 @@
                                 else {
                                     NSLog(@"JSON Format Error: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
                                 }
-                                
                             }
                             else {
                                 NSLog(@"statusCode: %ld", (long)httpResponse.statusCode);
@@ -262,10 +256,6 @@
 
 /**
  *  custom animation sample
- *
- *  @param layer <#layer description#>
- *  @param size  <#size description#>
- *  @param color <#color description#>
  */
 - (void)setupIndicatorAnimationSample2:(CALayer *)layer withSize:(CGSize)size tintColor:(UIColor *)color{
     color = [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:1.0];
@@ -324,12 +314,11 @@
 - (void)GTNetworkErrorHandler:(NSError *)error{
     //不推荐直接使用alert将错误弹出, 请对错误做一个判断, 参照开发文档
     //使用alert是为了方便用于演示
-    NSLog(@"[GTSDK] Error: %@",error);
     
     if (error.code == -999) {
         //忽略此类型错误, 仅打印
         //用户在加载请求时, 关闭验证可能导致此错误
-        NSLog(@"Error: %@", error.localizedDescription);
+        NSLog(@"[GTSDK] Error: %@", error.localizedDescription);
     }
     else {
         UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"There's a trouble"
@@ -342,6 +331,7 @@
             [weakSelf.manager closeGTViewIfIsOpen];
             [errorAlert show];
         });
+        NSLog(@"[GTSDK] Error: %@", error.localizedDescription);
     }
     
 }
