@@ -185,25 +185,29 @@ GTManageDelegate, 处理错误的代理方法
 
 可能出现的error:
 
-1.  NSURLErrorTimedOut 超时
+1.  NSURLErrorTimedOut -1001 超时
     
         与开发人员配置的超时时间和用户的网络情况的有关, 在低速网络可以对这块做测试
-#.  NSURLErrorCancelled 取消了网络请求
+#.  NSURLErrorCancelled -999 取消了网络请求
 
         一般不出现, 可能出现的情况是异步网络加载的时候, 用户关闭了验证
 
-#.  NSURLErrorCannotFindHost 无法找到主机
+#.  NSURLErrorCannotFindHost -1003 无法找到主机
     
         网络异常, 检查网络
-#.  NSURLErrorCannotConnectToHost 无法连接到极验服务器
+#.  NSURLErrorCannotConnectToHost -1004 无法连接到极验服务器
         
         网络异常, 无法连接到极验服务器
-#.  NSURLErrorNotConnectedToInternet 没有连接到互联网 
+#.  NSURLErrorNotConnectedToInternet -1009 没有连接到互联网 
 
         没有网络时提示
-#.  NSURLErrorBadServerResponse 错误500
+#.  NSURLErrorBadServerResponse -1011 服务器响应500
     
         等价于"500 Server Error"
+
+#.	NSURLErrorNoPermissionsToReadFile -1102 无访访问资源权限
+	
+		传入的参数错误, 被极验服务器拒绝访问. 通常为id(gt)和challenge不正确或者不匹配导致
 #.  json解析出错(error code = 3840等)
 
         在使用默认的failback里使用了json转字典, 检查网站主服务器返回的验证数据格式是否正确(也可能在failback接口下, 增加了额外的键值导致)
