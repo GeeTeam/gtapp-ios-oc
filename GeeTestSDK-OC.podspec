@@ -37,6 +37,6 @@ Pod::Spec.new do |s|
     core.vendored_frameworks = 'GTFramework.framework'
   end
   s.subspec "Bitcode" do |bitcode|
-    bitcode.vendored_frameworks = 'GTFramework.framework'
+    bitcode.vendored_frameworks = 'GTFramework_bitcode.framework'
   end
 end
