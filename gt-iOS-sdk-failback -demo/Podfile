@@ -1,0 +1,6 @@
+use_frameworks!
+target 'TestGT' do
+  pod 'GeeTestSDK-OC/Core', :path => '../'
+  
+  
+end

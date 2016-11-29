@@ -1,0 +1,16 @@
+PODS:
+  - GeeTestSDK-OC/Core (2.16.7.22.1)
+
+DEPENDENCIES:
+  - GeeTestSDK-OC/Core (from `../`)
+
+EXTERNAL SOURCES:
+  GeeTestSDK-OC:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  GeeTestSDK-OC: 26982cc6f4cc76e029f3e74d017da1f04fec7be4
+
+PODFILE CHECKSUM: 0d34506b6e7aac4320c2667ed5d6ad22e93e8c54
+
+COCOAPODS: 1.1.1

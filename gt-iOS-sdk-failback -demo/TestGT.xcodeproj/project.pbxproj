@@ -13,12 +13,10 @@
 		2967F3701B2D8A060081A66F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2967F36E1B2D8A060081A66F /* Main.storyboard */; };
 		2967F3721B2D8A060081A66F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2967F3711B2D8A060081A66F /* Images.xcassets */; };
 		2967F3751B2D8A060081A66F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2967F3731B2D8A060081A66F /* LaunchScreen.xib */; };
+		44D5A5D94F85A7433E5828B8 /* Pods_TestGT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B99738970C5F9D1E49F630FA /* Pods_TestGT.framework */; };
 		735AC3B91C915E87009F89C3 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 735AC3B71C911BAB009F89C3 /* WebKit.framework */; };
 		73A8BFAE1C3286AE0082103E /* TestGTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A8BFAD1C3286AE0082103E /* TestGTTests.m */; };
-		73A8BFB51C3287090082103E /* GTFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29A1E8541B3BEA5C008544F9 /* GTFramework.framework */; };
-		73B4F4521BB3DFBE00D45739 /* GTFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29A1E8541B3BEA5C008544F9 /* GTFramework.framework */; };
 		73E6B7491C33B5CA00C808E0 /* TestGTUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E6B7481C33B5CA00C808E0 /* TestGTUITests.m */; };
-		73E6B7501C33B6DD00C808E0 /* GTFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29A1E8541B3BEA5C008544F9 /* GTFramework.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,7 +47,8 @@
 		2967F36F1B2D8A060081A66F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2967F3711B2D8A060081A66F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		2967F3741B2D8A060081A66F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		29A1E8541B3BEA5C008544F9 /* GTFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GTFramework.framework; sourceTree = "<group>"; };
+		48D3B2437F92B599485CFBD8 /* Pods-TestGT.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestGT.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TestGT/Pods-TestGT.debug.xcconfig"; sourceTree = "<group>"; };
+		6C26E9BF8BF636B625252BDB /* Pods-TestGT.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestGT.release.xcconfig"; path = "Pods/Target Support Files/Pods-TestGT/Pods-TestGT.release.xcconfig"; sourceTree = "<group>"; };
 		735AC3B71C911BAB009F89C3 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		73A8BFAB1C3286AE0082103E /* TestGTTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestGTTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		73A8BFAD1C3286AE0082103E /* TestGTTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestGTTests.m; sourceTree = "<group>"; };
@@ -57,6 +56,7 @@
 		73E6B7461C33B5CA00C808E0 /* TestGTUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestGTUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		73E6B7481C33B5CA00C808E0 /* TestGTUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestGTUITests.m; sourceTree = "<group>"; };
 		73E6B74A1C33B5CA00C808E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B99738970C5F9D1E49F630FA /* Pods_TestGT.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestGT.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,7 +65,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				735AC3B91C915E87009F89C3 /* WebKit.framework in Frameworks */,
-				73B4F4521BB3DFBE00D45739 /* GTFramework.framework in Frameworks */,
+				44D5A5D94F85A7433E5828B8 /* Pods_TestGT.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,7 +73,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				73A8BFB51C3287090082103E /* GTFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,7 +80,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				73E6B7501C33B6DD00C808E0 /* GTFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,11 +90,12 @@
 			isa = PBXGroup;
 			children = (
 				735AC3B71C911BAB009F89C3 /* WebKit.framework */,
-				29A1E8541B3BEA5C008544F9 /* GTFramework.framework */,
 				2967F3631B2D8A060081A66F /* TestGT */,
 				73A8BFAC1C3286AE0082103E /* TestGTTests */,
 				73E6B7471C33B5CA00C808E0 /* TestGTUITests */,
 				2967F3621B2D8A060081A66F /* Products */,
+				72AA9A1CAA9843C092953931 /* Pods */,
+				E0AC11FB400D9E7930224D9C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -134,6 +133,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		72AA9A1CAA9843C092953931 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				48D3B2437F92B599485CFBD8 /* Pods-TestGT.debug.xcconfig */,
+				6C26E9BF8BF636B625252BDB /* Pods-TestGT.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		73A8BFAC1C3286AE0082103E /* TestGTTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -152,6 +160,14 @@
 			path = TestGTUITests;
 			sourceTree = "<group>";
 		};
+		E0AC11FB400D9E7930224D9C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B99738970C5F9D1E49F630FA /* Pods_TestGT.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -159,9 +175,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2967F3841B2D8A060081A66F /* Build configuration list for PBXNativeTarget "TestGT" */;
 			buildPhases = (
+				16C5BECE045892CC6C8B23B9 /* [CP] Check Pods Manifest.lock */,
 				2967F35D1B2D8A060081A66F /* Sources */,
 				2967F35E1B2D8A060081A66F /* Frameworks */,
 				2967F35F1B2D8A060081A66F /* Resources */,
+				86E4DDF7F2F238C1109F2BFF /* [CP] Embed Pods Frameworks */,
+				E0494667E3FC4B86DDC90342 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -277,6 +296,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		16C5BECE045892CC6C8B23B9 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		86E4DDF7F2F238C1109F2BFF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TestGT/Pods-TestGT-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E0494667E3FC4B86DDC90342 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TestGT/Pods-TestGT-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		2967F35D1B2D8A060081A66F /* Sources */ = {
@@ -427,6 +494,7 @@
 		};
 		2967F3851B2D8A060081A66F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 48D3B2437F92B599485CFBD8 /* Pods-TestGT.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -452,6 +520,7 @@
 		};
 		2967F3861B2D8A060081A66F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6C26E9BF8BF636B625252BDB /* Pods-TestGT.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;

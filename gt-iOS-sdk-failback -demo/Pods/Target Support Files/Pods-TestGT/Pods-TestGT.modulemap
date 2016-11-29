@@ -1,0 +1,6 @@
+framework module Pods_TestGT {
+  umbrella header "Pods-TestGT-umbrella.h"
+
+  export *
+  module * { export * }
+}
