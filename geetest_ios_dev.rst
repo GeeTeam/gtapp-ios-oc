@@ -7,11 +7,12 @@ iOS-Dev
 概述
 ================================================
 
-1.	 gt-iOS-sdk 极验验证iOS版本的SDK，生成一个基于i386、x86_64、armv7、 armv7s、arm64的Static Library，支持iOS7.0＋。开发使用的Xcode版本位Xcode 7.2。
+1.	 gt-iOS-sdk 极验验证iOS版本的SDK，生成一个基于i386、x86_64、armv7、 armv7s、arm64的Static Library，支持iOS7.0＋。开发使用的Xcode版本位Xcode 8.1。
 #.	 gt-iOS-sdk－failback-demo 调用sdk的演示app程序。
 #.	在gt-iOS-sdk-failback-demo下TestGT项目倒入生成的GTFramework.framework静态库，即可运行TestGT项目。
 #.	演示项目提供了用户服务器的预处理以及完整的一次验证，并将客户端验证结果向示例的客户服务器上发起二次验证的完整通讯过程。
-#.	不依赖任何第三方库, 需要导入webkit.framework, demo可根据项目需要自行修改。
+#.	不依赖任何第三方库, 需要导入webkit.framework, demo可根据项目需要自行修改。环境原因, 可能还需要引入CoreTelephony.framework
+, SystemConfiguration.framework.
 #.  iOS端sdk必须与服务器部署代码配套使用，否者无法完成二次验证。`服务器部署代码请移步官网安装文档   <http://www.geetest.com>`__
 
 验证主要分为三个部分：
@@ -28,7 +29,7 @@ iOS SDK 主要完成过程:
 ================================================
 
 1. ios 7.0 +
-2. xcode 6.0 +
+2. xcode 8.0 +
 3. arc
 4. webkit.framework
 
