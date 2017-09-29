@@ -71,6 +71,7 @@ History
 2. 2.16.1.20.1 添加对https、localization支持，增加对状态指示器自定义
 3. 2.16.3.10.1 优化图层结构，优化性能表现，iOS8以上基于wkwebview，表现更稳定
 4. 2.16.6.8.1 完善功能，修复bug
+5. 2.17.9.26.1 修复 Xcode9.0 上 WKWebView 崩溃
 
 UnitTest   
 ---------------------------------------------------------------------
@@ -101,9 +102,9 @@ How to use GTFramework, run the demo first
 1.	在极验官方主页www.geetest.com注册账号并申请相应的应用公钥，id:{{id}}。[*get geetest id/key from*  `geetest.com <http://www.geetest.com>`_ ]
 #.	将gt-iOS-sdk下的GTFramework项目生成的静态库 GTFramework.framework 和 webkit.framework 引入到项目中 [*import GTFramework to your preject*]
 #.	将GTFramework.framework项目以Static Library的方式进行引用。将所需的GTFramework.framework拷贝到工程所在文件夹下。在 TARGETS->Build Phases-> Link Binary With Libaries中点击“+”按钮，在弹出的窗口中点击“Add Other”按钮，选择GTFramework.framework文件添加到工程中。[*add GTframework to 'Link Binary With Libaries'*]
-     
+
 #.	在项目标有TODO注释的地方写入网站主自已的处理代码。[*add you handle method where signed 'TODO'*]
-   
+
 集成GTFramework到swift项目
 ================================================
 
@@ -120,7 +121,7 @@ How to use GTFramework, run the demo first
 用下面的语法将框架导入到相应target的 Objective-C .m 文件中:
 
 .. code ::
-    
+
     @import FrameworkName;
 
 更多请查阅官方文档 `Using Swift with Cocoa and Objective-C (Swift 2) <https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html#//apple_ref/doc/uid/TP40014216-CH10-ID122>`_
@@ -198,7 +199,7 @@ bitcode
 ---------------------------------------------------------------------
 
 苹果在iOS9的SDK中添加了对应用的瘦身的支持，其中就包括bitcode。你可以以如下方法解决bitcode适配问题
-    
+
     我们目前也在编译生成了支持bitcode版本的sdk。该版本的sdk请见failback demo目录，将文件"GTFramework_bitcode"去掉后缀后的替换原GTFramework文件。
 
 或者:
@@ -230,16 +231,16 @@ Xcode7适配问题
 IPv6适配
 ================================================
 
-网络层面使用NSURLConnection, 高层次api, 支持IPv6 
+网络层面使用NSURLConnection, 高层次api, 支持IPv6
 
 回调Block及返回值
 ================================================
 
 .. code ::
-	
+
     Block：
-	   ^(NSString *code, NSDictionary *result, NSString *message) {} 
-	
+	   ^(NSString *code, NSDictionary *result, NSString *message) {}
+
 返回值：
 
 1.code
@@ -251,7 +252,7 @@ IPv6适配
 3.result
     详细的返回信息，用于向客户服务器提交之后的SDK二次验证信息
     if you want to finish Secondery-Validate ,you should send those result information to your server.
-	
+
 .. code ::
 
     {
