@@ -9,19 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "GTUtils.h"
 
-@protocol GTManageDelegate <NSObject>
-
-@required
-/**
- *  验证错误的处理方法
- *  主要捕捉网络错误和Json解析错误, 详见在线文档说明
- *  https://github.com/GeeTeam/gtapp-ios-oc/blob/master/geetest_ios_dev.rst#id9
- *
- *  @param error 错误源
- */
-- (void)GTNetworkErrorHandler:(NSError *)error;
-
-@end
+@protocol GTManageDelegate;
 
 /**
  * 验证管理器
@@ -67,13 +55,12 @@
  *  @seealso
  *  ❗️<b>此方法与 configureGTest:challenge:success: 方法二选一</b>
  *
- *  @param requestCustomServerForGTestURL   客户端向网站主服务端发起验证请求的链接(api_1)
- *  @param timeoutInterval                  超时间隔
- *  @param name                             网站主http cookie name的键名,用于获取sessionID,如果不需要可为nil
- *  @param RequestType                      请求的类型
- *  @param handler                          请求完成后的处理(主线程)
+ *  @param customURL        客户端向网站主服务端发起验证请求的链接(api_1)
+ *  @param timeoutInterval  超时间隔
+ *  @param name             网站主http cookie name的键名,用于获取sessionID,如果不需要可为nil
+ *  @param RequestType      请求的类型
+ *  @param handler          请求完成后的处理(主线程)
  *
- *  @return 只有当网站主服务器可用时, 以block的形式返回以下数据
  <pre>
  {
  "gt_challenge" : "12ae1159ffdfcbbc306897e8d9bf6d06",
@@ -111,7 +98,7 @@
  *
  *  @param captcha_id   在官网申请的captcha_id
  *  @param gt_challenge 根据极验服务器sdk生成的challenge
- *  @param success      网站主服务器监测geetest服务的可用状态 0/1 不可用/可用
+ *  @param successCode  网站主服务器监测geetest服务的可用状态 0/1 不可用/可用
  *
  *  @return YES配置成功，NO配置失败
  */
@@ -200,6 +187,15 @@
 - (void)useGTViewWithTitle:(NSString *)title;
 
 /**
+ @abstract 回调的延迟时间
+ 
+ @discussion 推荐1.3s, 默认0.0s.
+ 
+ @param delay 验证回调的延迟时间间隔
+ */
+- (void)useGTViewWithCallbackDelay:(NSTimeInterval)delay;
+
+/**
  *  (非必要方法)
  *  @abstract 验证展示方式
  *
@@ -253,5 +249,19 @@
  *  @param debugEnable YES开启,NO关闭
  */
 - (void)enableDebugMode:(BOOL)debugEnable;
+
+@end
+
+@protocol GTManageDelegate <NSObject>
+
+@required
+/**
+ *  验证错误的处理方法
+ *  主要捕捉网络错误和Json解析错误, 详见在线文档说明
+ *  https://github.com/GeeTeam/gtapp-ios-oc/blob/master/geetest_ios_dev.rst#id9
+ *
+ *  @param error 错误源
+ */
+- (void)manager:(GTManager *)manager errorHandler:(NSError *)error;
 
 @end
